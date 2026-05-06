@@ -11,22 +11,15 @@ HahaNote is an E2EE note sync app, that means all your files decrypted on local 
 
 
 ### Key features
-- support Windows/Linux/Android
 - End-to-end encryption: notes are encrypted on-device before upload; remote servers store only ciphertext.
 - Offline-first: full read/write access offline; changes sync when network returns with robust conflict resolution.
 - File-based: you can use your feature editor to edit your file, then use HahaNote to securely sync them to your Dropbox/WebdavServer or Github
 - Versioning: every file maintains an immutable version history so users can view, compare, and restore previous versions.
-- Cross-platform clients: Windows, Linux, Android
 - Privacy-first: HahaNote use Argon2id to devried secure key and use XChaCha20-Poly1305 to encrypted files, so only you can view your data.
+- Cross-platform: Windows, Linux, Android
 
 
 ### Cryptography details
 - KDF: Argon2id
 - Authenticated encryption: XChaCha20-Poly1305
-
-
-### User flow
-1. Account creation: register
-2. Create an note repo, then you got '.haha_note' folder in your dir, this is haha_note data dir of your repo(just like .git folder for git), don't edit it by your self.
-3. Create some files, then sync
 
