@@ -1,10 +1,12 @@
 ## HahaNote
 #### Haha Note is a file-based + E2EE note sync app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
+
 ### Brief
 You can use any editor to edit your md/txt or any other files, then use HahaNote to sync them.
 
 HahaNote is an E2EE note sync app, that means all your files decrypted on local and encrypted before leave your device, it can avoid platforms read your files. (example, even github or dropbox have data leak, your haha note data still safe, due to is encrypted)
+
 
 ### Sync your Obsidian notes By HahaNote
 - Obsidian is an note taking app with optional sync plugin, HahaNote is an note sync app with basic text edit support, but both are file-based, so you can use HahaNote to sync your Obsidian valut as a choice.
