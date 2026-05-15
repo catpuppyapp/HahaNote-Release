@@ -2,6 +2,10 @@
 #### Haha Note is a file-based + E2EE note sync app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
 
+### Download
+https://github.com/catpuppyapp/HahaNote-Release/releases
+
+
 ### Brief
 You can use any editor to edit your md/txt or any other files, then use HahaNote to sync them.
 
