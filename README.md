@@ -6,10 +6,16 @@
 https://github.com/catpuppyapp/HahaNote-Release/releases
 
 
-### Brief
-You can use any editor to edit your md/txt or any other files, then use HahaNote to sync them.
+### Screenshots
+<img src=img/pc_file_history.jpg width=300>
+<img src=img/pc_sync_page.jpg width=300>
+<img src=img/pc_text_editor.jpg width=300>
 
-HahaNote is an E2EE note sync app, that means all your files decrypted on local and encrypted before leave your device, it can avoid platforms read your files. (example, even github or dropbox have data leak, your haha note data still safe, due to is encrypted)
+
+### Brief
+HahaNote is an e2ee note sync app, it can treat a local directory on your device as a repository and encrypt and sync all files inside it to Dropbox/WebDav servers or GitHub.
+
+So You can use any editor to edit your md/txt or any other files, then use HahaNote to sync them.
 
 
 ### Key features
@@ -25,3 +31,8 @@ HahaNote is an E2EE note sync app, that means all your files decrypted on local 
 - KDF: Argon2id
 - Authenticated encryption: XChaCha20-Poly1305
 
+
+### Why E2EE
+HahaNote is an E2EE note sync app, that means all your files decrypted on local and encrypted before leave your device, it can avoid platforms read your files. (example, even github or dropbox have data leak, your haha note data still safe, due to is encrypted)
+
+E2EE promise data encrypted before leaving your device, but on your local device, all data is decrypted, so you can edit them by any regular text editor, like VSCode, Zed, Notepad++, Obsidian.
