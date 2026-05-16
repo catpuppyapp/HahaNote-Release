@@ -1,9 +1,12 @@
-HahaNote support use Git as backend to store your encrypted data.
+### HahaNote support use Git as backend to store your encrypted data.
+<br>
 
 Tutorial on Android: https://www.youtube.com/watch?v=k-f1JKRgeVM
+<br>
 Tutorial on PC: https://www.youtube.com/watch?v=b_7LMknoTI4
+<br>
 
-NOTE: HahaNote can only use git to storage encrypted files, that means git can't know your files content, and the git diff and other git features not available for your decrypted files.
+#### NOTE: HahaNote can only use git to storage encrypted files, that means git can't know your files content, and the git diff and other git features not available for your decrypted files.
 
 ---
 ### On Android:

@@ -1,9 +1,12 @@
-Videos:
+### Videos:
 Allow Running in background and disable Battery Optimization on Android: https://youtube.com/shorts/cPcIuwv5LhQ
+<br>
 Create Dropbox Repo on Android: https://www.youtube.com/shorts/8xM64cxFKnM
+<br>
 Create a Git-backend repo on Android: https://www.youtube.com/watch?v=k-f1JKRgeVM
+<br>
 Create a Git-backend repo on PC: https://www.youtube.com/watch?v=b_7LMknoTI4
-
+<br>
 
 
 ### Dropbox:

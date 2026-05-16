@@ -40,3 +40,15 @@ So You can use any editor to edit your md/txt or any other files, then use HahaN
 HahaNote is an E2EE note sync app, that means all your files decrypted on local and encrypted before leave your device, it can avoid platforms read your files. (example, even github or dropbox have data leak, your haha note data still safe, due to is encrypted)
 
 E2EE promise data encrypted before leaving your device, but on your local device, all data is decrypted, so you can edit them by any regular text editor, like VSCode, Zed, Notepad++, Obsidian.
+
+
+### Tested
+#### WebDav Server
+dufs(self-hosted): https://github.com/sigoden/dufs
+
+#### WebDav Service
+InfiniCloud(hosted in JP): https://infini-cloud.net
+
+
+### Not Supported （不支持）
+坚果云：并不是HahaNote不支持，而是这个网盘虽然支持WebDav，但是对第三方app有请求数限制，尽管平台声明30分钟600次，但实际测试可能更严苛，10分钟内100次就可能导致被临时封禁，所以如果你使用坚果云的webdav，那么这个app对你来说基本没法用，建议换其他方式同步笔记，比如使用国内的git平台（配置有些麻烦，不过只麻烦一次，后续就省心了），或者自托管webdav服务器，或者如果你可以连接上的话，可以使用Dropbox（可能延迟会比较高，很慢）。
