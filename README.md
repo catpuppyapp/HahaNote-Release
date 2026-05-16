@@ -6,6 +6,10 @@
 https://github.com/catpuppyapp/HahaNote-Release/releases
 
 
+### How To Use
+<a href=how_to_user.md>See</a>
+
+
 ### Screenshots
 <img src=img/pc_file_history.jpg width=300>
 <img src=img/pc_sync_page.jpg width=300>

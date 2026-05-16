@@ -1,11 +1,16 @@
-video:
+Videos:
+Allow Running in background and disable Battery Optimization on Android: https://youtube.com/shorts/cPcIuwv5LhQ
+Create Dropbox Repo on Android: https://www.youtube.com/shorts/8xM64cxFKnM
+Create a Git-backend repo on Android: https://www.youtube.com/watch?v=k-f1JKRgeVM
+Create a Git-backend repo on PC: https://www.youtube.com/watch?v=b_7LMknoTI4
+
 
 
 ### Dropbox:
 #### Create a repo:
 1. Register or Login your HahaNote account
 2. click "Create" to create a note repo
-3. Choose Dropbox and Authorize dropbox account (if on Android, need allow app running in background, else maybe no response after authorized)
+3. Choose Dropbox and Authorize dropbox account (if on Android, need allow app running in background and disable battery optimization, else maybe no response after authorized)
 4. choose a local path to store your files
 5. set a master password
 6. click "Submit"
