@@ -3,17 +3,18 @@
 
 
 ### Download
-https://github.com/catpuppyapp/HahaNote-Release/releases
+[GitHub Releases](https://github.com/catpuppyapp/HahaNote-Release/releases)
 
 
-### How To Use
-<a href=how_to_user.md>See</a>
+### Tutorial
+<a href=how_to_use.md>How To Use</a>
+<a href=git_backend.md>Git Backend Tutorial</a>
 
 
 ### Screenshots
-<img src=img/pc_file_history.jpg width=300>
-<img src=img/pc_sync_page.jpg width=300>
-<img src=img/pc_text_editor.jpg width=300>
+<img src=img/pc_file_history.jpg width=150>
+<img src=img/pc_sync_page.jpg width=150>
+<img src=img/pc_text_editor.jpg width=150>
 
 
 ### Brief
@@ -44,19 +45,17 @@ E2EE promise data encrypted before leaving your device, but on your local device
 
 ### Recommended
 #### WebDav Server
-dufs(self-hosted): https://github.com/sigoden/dufs
+[dufs(self-hosted)](https://github.com/sigoden/dufs)
 
 #### Cloud Drive
-InfiniCloud(WebDav supported, hosted in JP): https://infini-cloud.net
+[InfiniCloud(WebDav supported, hosted in JP)](https://infini-cloud.net)
 
-
-#### Editor
-##### PC
+#### Editor on PC
 [VSCodium](https://github.com/VSCodium/vscodium/releases)
 [VSCode](https://code.visualstudio.com/Download)
 [Obsidian](https://obsidian.md/download)
 
-##### Android
+#### Editor on Android
 [Markor(markdown editor)](https://github.com/gsantner/markor)
 [PuppyGit(Git with an editor)](https://github.com/catpuppyapp/PuppyGit)
 
