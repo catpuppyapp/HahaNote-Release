@@ -42,12 +42,23 @@ HahaNote is an E2EE note sync app, that means all your files decrypted on local 
 E2EE promise data encrypted before leaving your device, but on your local device, all data is decrypted, so you can edit them by any regular text editor, like VSCode, Zed, Notepad++, Obsidian.
 
 
-### Tested
+### Recommended
 #### WebDav Server
 dufs(self-hosted): https://github.com/sigoden/dufs
 
-#### WebDav Service
-InfiniCloud(hosted in JP): https://infini-cloud.net
+#### Cloud Drive
+InfiniCloud(WebDav supported, hosted in JP): https://infini-cloud.net
+
+
+#### Editor
+##### PC
+[VSCodium](https://github.com/VSCodium/vscodium/releases)
+[VSCode](https://code.visualstudio.com/Download)
+[Obsidian](https://obsidian.md/download)
+
+##### Android
+[Markor(markdown editor)](https://github.com/gsantner/markor)
+[PuppyGit(Git with an editor)](https://github.com/catpuppyapp/PuppyGit)
 
 
 ### Not Supported （不支持）
