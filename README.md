@@ -12,9 +12,11 @@
 
 
 ### Screenshots
+<span> 
 <img src=img/pc_file_history.jpg width=150>
 <img src=img/pc_sync_page.jpg width=150>
 <img src=img/pc_text_editor.jpg width=150>
+</span>
 
 
 ### Brief
