@@ -1,12 +1,19 @@
 ### HahaNote support use Git as backend to store your encrypted data.
 <br>
 
+#### If you can use DropBox/WebDav or other way to sync your HahaNote data, then you should not use git, see the `Limits` below
+
 Tutorial on Android: https://www.youtube.com/watch?v=k-f1JKRgeVM
 <br>
 Tutorial on PC: https://www.youtube.com/watch?v=b_7LMknoTI4
 <br>
 
 #### NOTE: HahaNote can only use git to storage encrypted files, that means git can't know your files content, and the git diff and other git features not available for your decrypted files.
+---
+### Limits
+1. Due to HahaNote data base all is binary file, so it make your git repo fast to fat, your GitHub storage maybe excedded, you can regular run below commands to clean unused git objects:
+    - on your local device, cd to your git dir, run git log, find first commit, do `git reset --soft firstCommitHash`, then `git add -A`, then do `git commit -m reset_to_first_commit` and `git push --force`
+    - on git platform(linke GitHub): go to repository settings page, and find options like "GC" or "Clean repo", then do a GC to free unused data.
 
 ---
 ### On Android:
