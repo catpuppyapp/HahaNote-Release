@@ -12,7 +12,7 @@ Tutorial on PC: https://www.youtube.com/watch?v=b_7LMknoTI4
 ---
 ### Limits
 1. Due to HahaNote data base all is binary file, so it make your git repo fast to fat, your GitHub storage maybe excedded, you can regular run below commands to clean unused git objects:
-    - on your local device, cd to your git dir, run git log, find first commit, do `git reset --soft firstCommitHash`, then `git add -A`, then do `git commit -m reset_to_first_commit` and `git push --force`
+    - on your local device, cd to your git dir, run `git log $(git rev-list --max-parents=0 HEAD)`, it will print first commit, copy the hash, then do `git reset --soft hashOfFirstCommit`, then `git add -A`, then do `git commit -m reset_to_first_commit` and `git push --force`
     - on git platform(linke GitHub): go to repository settings page, and find options like "GC" or "Clean repo", then do a GC to free unused data.
 
 ---
