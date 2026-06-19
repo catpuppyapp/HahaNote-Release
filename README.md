@@ -4,7 +4,7 @@
 
 
 ## HahaNote
-#### Haha Note is a file-based + E2EE note sync app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
+#### Haha Note is a file-based + E2EE note taking and syncing app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
 
 ### Download
