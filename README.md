@@ -1,3 +1,8 @@
+## 20260619
+#### Due to just nobody use the app(online a month and a half, just 8 users), so I decide to open source of it and remove account system, old versions will unavailable, must update to latest version, but don't worry, your note still available.
+#### after open source, then I will focus improve desktop ui and improve performence. You can donate to support me.
+
+
 ## HahaNote
 #### Haha Note is a file-based + E2EE note sync app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
