@@ -4,7 +4,7 @@
 
 
 ## HahaNote
-#### Haha Note is a file-based + E2EE note taking and syncing app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
+#### HahaNote is a file-based + E2EE note taking and syncing app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
 
 ### Download
@@ -57,6 +57,10 @@ E2EE promise data encrypted before leaving your device, but on your local device
 2. Translate the value to your language, note: words starts with '$' are placeholders, please do not translate them, e.g. $username, it will replace to username when running
 3. create a pr, and choose the "New Language Submission", and attaching your translated file
 4. then I will add the new language in to the app
+
+
+# MacOS
+It will support mac when I got a Mac
 
 
 ### Recommended
