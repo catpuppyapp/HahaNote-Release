@@ -52,6 +52,12 @@ HahaNote is an E2EE note sync app, that means all your files decrypted on local 
 
 E2EE promise data encrypted before leaving your device, but on your local device, all data is decrypted, so you can edit them by any regular text editor, like VSCode, Zed, Notepad++, Obsidian.
 
+### Help translate
+1. Download `haha_note_src/lib/i18n/en.i18n.json`
+2. Translate the value to your language, note: words starts with '$' are placeholders, please do not translate them, e.g. $username, it will replace to username when running
+3. create a pr, and choose the "New Language Submission", and attaching your translated file
+4. then I will add the new language in to the app
+
 
 ### Recommended
 #### WebDav Server
