@@ -39,6 +39,10 @@ jobs:
             unzip \
             git
 
+      # code_forge requires rustup
+      - name: install rust-toolchain
+        uses: dtolnay/rust-toolchain@stable
+        run: cargo --version
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
