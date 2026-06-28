@@ -1,0 +1,13 @@
+
+# apk, 开混淆，把变量名(symbols)映射存到指定文件（应按app版本存各自的symbol mapping文件，因为代码一变，符号可能变）：
+flutter build apk --release --obfuscate --split-debug-info=symbols_mapping/apk_debug_info_app版本号_这是个输出目录，会有好几个文件
+
+# exe, windows构建完可直接打包发布release文件夹
+flutter build windows --release --obfuscate --split-debug-info=symbols_mapping/exe_debug-info_app版本号
+
+# linux
+flutter build linux --release --obfuscate --split-debug-info=symbols_mapping/linux_debug-info_app版本号
+
+
+恢复混淆后的符号：
+flutter symbolize --debug-info=symbols_mapping/debug_info目录下对应cpu架构的文件 < crash.log > crash_symbolicated.txt

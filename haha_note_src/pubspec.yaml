@@ -1,0 +1,206 @@
+name: cloud_disk_note_app
+description: "HahaNote, an e2ee note sync app"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.3+4
+
+environment:
+  sdk: ^3.11.0
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+#  flutter_localizations: # add this
+#    sdk: flutter
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+
+#  cloud_disk_note:
+#    path: ./local_package/cloud_disk_note
+
+  # dart run build_runner build -d
+  # dart run slang configure
+  slang: ^4.11.1
+  slang_flutter: ^4.11.0
+
+  # var logger = Logger();
+#  logger: ^2.6.2
+  hive_ce: ^2.16.0
+  file_selector: ^1.1.0
+  url_launcher: ^6.3.2
+  hive_ce_flutter: ^2.3.3
+  path_provider: ^2.1.5
+  path: ^1.9.1
+#  fluttertoast: ^9.0.0
+  json_annotation: ^4.10.0
+  permission_handler: ^12.0.1
+  device_info_plus: ^13.1.0
+  open_filex_plus: ^4.7.2
+
+#  re_editor: ^0.9.0
+#  re_editor:
+#    path: ./local_package/re_editor
+
+  re_highlight: ^0.0.3
+#  re_markdown: ^0.0.2
+  flutter_staggered_grid_view: ^0.7.0
+  lifecycle: ^0.10.0
+#  pretty_diff_text:
+#    path: ./local_package/pretty-diff-text
+
+
+  collection: ^1.19.1
+#  es_compression: ^2.0.15  # android must copy so libs
+  cryptography: ^2.9.0
+  # 调用平台api，优点是性能好，缺点是更容易被逆向工程（通过监控系统调用）
+  # 参见 Cons 部分： https://pub.dev/packages/cryptography_flutter
+  cryptography_flutter: ^2.3.4
+  freezed_annotation: ^3.1.0
+  http: ^1.6.0
+
+  # 原项目已经停止维护了，所以自己打包修改了，时常看下，若以后这项目再度更新，则发pr给原作者，待作者合并pr后，使用作者维护的包，这样由flutter管理依赖，省心
+  webdav_client:
+    path: ./local_package/webdav_client
+  # x fixed，在webdav client包里加了个子类继承Dio的CancelToken暴露给外部) webdav client间接使用了这个包的cancelToken，我不引用没法用
+  # dio: ^5.1.0
+  package_info_plus: ^10.1.0
+  diff_match_patch: ^0.4.1
+#  rust_lib_cloud_disk_note_app:
+#     path: rust_builder
+#  flutter_rust_bridge: 2.11.1
+#  pool: ^1.5.2
+  characters: ^1.4.1
+  process_runner: ^4.2.4
+  flutter_single_instance: ^1.7.0
+  glob: ^2.1.3
+  # remember window size and position
+  window_manager: ^0.5.1
+#  gocaptcha: ^0.0.1+7
+  flutter_svg: ^2.3.0
+  flex_color_scheme: ^8.4.0
+  markdown: ^7.3.1
+  flutter_html: ^3.0.0
+  # table/video/audio/iframe support for flutter_html
+  flutter_html_all: ^3.0.0
+  # flutter html，markdown 代码块，语法高亮用这个
+  flutter_highlight: ^0.7.0
+#  code_forge: ^10.6.0
+  # TODO 添加了 Ctrl+Shift+Z 执行Redo的功能，已发pr，等上游合并修改之后改回上游
+  code_forge:
+    git:
+      url: https://github.com/Bandeapart1964/code_forge.git
+      ref: 25386ee51a080405f0486e7b4be15ebde93632d5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^5.0.0
+
+  build_runner: ^2.10.4
+  slang_build_runner: ^4.11.0
+#  hive_ce_generator: ^1.11.0
+
+  # dart run change_app_package_name:main com.catpuppyapp.hahanote
+  change_app_package_name: ^1.5.0
+  json_serializable: ^6.12.0
+  freezed: ^3.2.3
+  flutter_launcher_icons: ^0.14.4
+  integration_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/icon/icon.png
+    - assets/etc/vscode.svg
+    - assets/etc/vscodium.svg
+    - assets/etc/zed_light.svg
+    - assets/etc/zed_dark.svg
+    # 先指定assets，再在代码动态加载
+    - path: assets/fonts/NotoSansSC-Regular.ttf
+      platforms:
+        - windows
+        - macos
+        - linux
+    - path: assets/fonts/JetBrainsMonoNL-Regular.ttf
+#      platforms:
+#        - windows
+#        - macos
+#        - linux
+
+# 用fonts无法根据平台过滤assets，会强制携带，增大apk体积
+#  fonts:
+#    - family: AppRegular
+#      fonts:
+#        - asset: assets/fonts/NotoSansSC-Regular.ttf
+##          weight: 400 # 400即Regular的weight
+##        - asset: assets/fonts/NotoSans-Light.ttf
+##          weight: 300
+##        - asset: assets/fonts/NotoSans-Bold.ttf
+##          weight: 700
+#    - family: AppMono
+#      fonts:
+#        - asset: assets/fonts/JetBrainsMonoNL-Regular.ttf
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
