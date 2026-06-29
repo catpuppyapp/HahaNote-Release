@@ -1,14 +1,10 @@
-## 20260619
-#### I decide to open source of it and remove account system, old versions(before 1.0.3) will unavailable in the future, must update to latest version, but don't worry, your note still available.
-#### after open source, then I will focus improve desktop ui and improve performence. You can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to support me.
-
-
 ## HahaNote
 #### HahaNote is a file-based + E2EE note taking and syncing app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
 
 ### Download
 [GitHub Releases](https://github.com/catpuppyapp/HahaNote-Release/releases)
+...izzyOnDroid comming soon
 
 
 ### Tutorial
@@ -65,15 +61,22 @@ It will support mac when I got a Mac
 #### Cloud Drive
 [InfiniCloud(WebDav supported, hosted in JP)](https://infini-cloud.net)
 
-#### Editor on PC
+#### Editors on PC
+[Zed](https://zed.dev)
 [VSCodium](https://github.com/VSCodium/vscodium/releases)
 [VSCode](https://code.visualstudio.com/Download)
-[Obsidian](https://obsidian.md/download)
+[Notepad++](https://notepad-plus-plus.org)
 
-#### Editor on Android
+#### Editors on Android
 [Markor(markdown editor)](https://github.com/gsantner/markor)
 [PuppyGit(Git with an editor)](https://github.com/catpuppyapp/PuppyGit)
 
 
-### Not Supported （不支持）
-坚果云：并不是HahaNote不支持，而是这个网盘虽然支持WebDav，但是对第三方app有请求数限制，尽管平台声明30分钟600次，但实际测试可能更严苛，10分钟内100次就可能导致被临时封禁，所以如果你使用坚果云的webdav，那么这个app对你来说基本没法用，建议换其他方式同步笔记，比如使用国内的git平台（配置有些麻烦，不过只麻烦一次，后续就省心了），或者自托管webdav服务器，或者如果你可以连接上的话，可以使用Dropbox（可能延迟会比较高，很慢）。
+## To early users (before 1.0.3 released)
+#### I decide to open source of it and remove account system, old versions(before 1.0.3) will unavailable in the future, must update to latest version, but don't worry, your note still available.
+#### after open source, then I will focus improve desktop ui and improve performence. You can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to support me. If I got more donations, then I can improve the performance of the app, and add more features, make the UI looks better...
+
+
+
+### For Chinese users, Not Supported some Drives（不支持的一些网盘）
+坚果云：并不是HahaNote不支持，而是这个网盘虽然支持WebDav，但是对第三方app有请求数限制，尽管平台声明30分钟600次，但实际测试可能更严苛，10分钟内100次就可能导致被临时封禁，所以如果你使用坚果云的webdav，那么这个app对你来说基本没法用，建议换其他方式同步笔记，比如使用其他支持webdav的网盘，或者自建webdav服务器，或者用国内的git平台。
