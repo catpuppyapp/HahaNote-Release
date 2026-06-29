@@ -4,6 +4,7 @@
 
 ### Download
 [GitHub Releases](https://github.com/catpuppyapp/HahaNote-Release/releases)
+
 ...izzyOnDroid comming soon
 
 
@@ -50,7 +51,7 @@ E2EE promise data encrypted before leaving your device, but on your local device
 4. then I will add the new language in to the app
 
 
-# MacOS
+### MacOS
 It will support mac when I got a Mac
 
 
