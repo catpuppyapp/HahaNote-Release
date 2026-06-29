@@ -8,12 +8,12 @@ Tutorial on Android: https://www.youtube.com/watch?v=k-f1JKRgeVM
 Tutorial on PC: https://www.youtube.com/watch?v=b_7LMknoTI4
 <br>
 
-#### NOTE: HahaNote can only use git to storage encrypted files, that means git can't know your files content, and the git diff and other git features not available for your decrypted files.
+#### NOTE: HahaNote can only use git to storage encrypted files, that means git can not know your files content, and the git diff and other git features not available for your files.
 ---
 ### Limits
-1. Due to HahaNote data base all is binary file, so it make your git repo fast to fat, your GitHub storage maybe excedded, you can regular run below commands to clean unused git objects:
+1. Due to HahaNote database is binary file, so it can be make your git repo fast to fat, your GitHub storage maybe excedded, you can regular run below commands to clean unused git objects:
     - on your local device, cd to your git dir, run `git log $(git rev-list --max-parents=0 HEAD)`, it will print first commit, copy the hash, then do `git reset --soft hashOfFirstCommit`, then `git add -A`, then do `git commit -m reset_to_first_commit` and `git push --force`
-    - on git platform(linke GitHub): go to repository settings page, and find options like "GC" or "Clean repo", then do a GC to free unused data.
+    - on git platform: go to repository settings page, and find options like "GC" or "Clean repo", then do a GC to free unused data.(note: GitHub maybe run git gc automatically, so you only need to do gc on your local machine)
 
 ---
 ### On Android:
