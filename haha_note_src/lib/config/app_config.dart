@@ -26,7 +26,8 @@ const languageAuto = "Auto";
 class AppConfig {
   SyncConfig syncConfig;
 
-  String textEditorPackageNameOnOnAndroid;
+  String textEditorPackageNameOnAndroid;
+  String textEditorPackageNameOnPc;
 
   String language;
 
@@ -49,7 +50,8 @@ class AppConfig {
 
   AppConfig({
     SyncConfig? syncConfig,
-    this.textEditorPackageNameOnOnAndroid = "",  //默认值空，之前是自动在支持的编辑器里逐个尝试，后来使用code_forge后，空代表hhnote内置编辑器
+    this.textEditorPackageNameOnAndroid = "",  //默认值空，之前是自动在支持的编辑器里逐个尝试，后来使用code_forge后，空代表hhnote内置编辑器
+    this.textEditorPackageNameOnPc = "",
     this.language = "",  // 空，auto，自动检测设备语言
     this.showLineNumInDiffView = false,
     this.isFirstUse = true,
@@ -117,8 +119,16 @@ class AppConfig {
     return AppConfig.fromJson(jsonDecode(jsonEncode(this)));
   }
 
-  String getTextOfTextEditorPackageNameOnOnAndroid() {
-    final found = NativeOpenFile.supportedEditors.firstWhereOrNull((it) => it.packageName == textEditorPackageNameOnOnAndroid);
+  String getTextOfTextEditorPackageNameOnAndroid() {
+    return _getNameOfEditor(NativeOpenFile.supportedAndroidEditors, textEditorPackageNameOnAndroid);
+  }
+
+  String getTextOfTextEditorPackageNameOnPc() {
+    return _getNameOfEditor(NativeOpenFile.supportedPcEditors, textEditorPackageNameOnPc);
+  }
+
+  String _getNameOfEditor(List<AppInfoAndLink> editors, String target) {
+    final found = editors.firstWhereOrNull((it) => it.packageName == target);
     if(found != null) {
       return found.name;
     }

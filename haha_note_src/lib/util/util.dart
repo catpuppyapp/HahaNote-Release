@@ -193,13 +193,13 @@ Future<bool> openWithInternalEditor(
   }
 
   // 若平台是安卓，如果选择的是内置编辑器，则不进入此代码块，直接使用默认打开；否则尝试使用外部编辑器打开
-  final textEditorPackageNameOnOnAndroid = AppConfig.getConfig().textEditorPackageNameOnOnAndroid;
-  if(textEditorPackageNameOnOnAndroid.isNotEmpty && Platform.isAndroid) {
+  if(Platform.isAndroid && AppConfig.getConfig().textEditorPackageNameOnAndroid.isNotEmpty) {
+    final textEditorPackageNameOnAndroid = AppConfig.getConfig().textEditorPackageNameOnAndroid;
     try {
       await NativeOpenFile.openFileOnAndroid(
         path: path,
         mime: mime,
-        packageName: textEditorPackageNameOnOnAndroid,
+        packageName: textEditorPackageNameOnAndroid,
       );
 
       // 安卓调用外部编辑器，无法轻易判断用户什么时候从其他app返回，所以直接当作没修改，需手动刷新
@@ -218,7 +218,7 @@ Future<bool> openWithInternalEditor(
 
           await Dialogs.showSingleClickablePlainDialog(
             context,
-            NativeOpenFile.supportedEditors,
+            NativeOpenFile.supportedAndroidEditors,
             selected: (it) => false,
             itemText: (it) => it.name,
             onClick: (it) async {
@@ -230,13 +230,13 @@ Future<bool> openWithInternalEditor(
             ),
           );
         }else {
-          App.logger.debug(callerTag, "open file err(err code: 10383357): $e\n$st");
-          showMsgLong("${e.code}: ${e.message}");
+          App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnAndroid, err code: 11866978, err: $e\n$st");
+          showMsgLong("err: ${e.code}: ${e.message}");
         }
 
       }else {
-        App.logger.debug(callerTag, "open file err(err code: 17211153): $e\n$st");
-        showMsgLong("$e");
+        App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnAndroid, err code: 16476550, err: $e\n$st");
+        showMsgLong("err: $e");
       }
 
 
@@ -244,6 +244,23 @@ Future<bool> openWithInternalEditor(
     }
 
     // x 实际已经不需要了，安卓改成离开app再返回就刷新了) 安卓无法判断，直接返回false，当作没修改，用户从外部返回后需手动刷新
+    return false;
+  }
+
+  if(isPcPlatform() && AppConfig.getConfig().textEditorPackageNameOnPc.isNotEmpty) {
+    final textEditorPackageNameOnPc = AppConfig.getConfig().textEditorPackageNameOnPc;
+    try {
+      await NativeOpenFile.openFileOnPc(
+        path: path,
+        packageName: textEditorPackageNameOnPc,
+      );
+    }catch(e, st) {
+      App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnPc, err code: 14373892, err: $e\n$st");
+      showMsgLong("err: $e");
+    }
+
+    // 返回值提示调用者外部程序是否修改了文件内容，
+    // 但使用外部程序打开时无法判定，所以直接返回false当作未修改，用户若看到过期内容，可手动重载
     return false;
   }
 

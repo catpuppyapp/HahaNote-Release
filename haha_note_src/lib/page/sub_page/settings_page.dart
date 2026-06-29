@@ -10,6 +10,7 @@ import 'package:cloud_disk_note_app/main.dart';
 import 'package:cloud_disk_note_app/native_util/open_file.dart';
 import 'package:cloud_disk_note_app/ui/app_layout_observer.dart';
 import 'package:cloud_disk_note_app/util/fs.dart';
+import 'package:cloud_disk_note_app/util/util.dart';
 import 'package:cloud_disk_note_app/widget/base_layout.dart';
 import 'package:cloud_disk_note_app/widget/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -342,20 +343,44 @@ class SettingsPageState extends State<SettingsPage> {
             ListTile(
               leading: Icon(Icons.edit),
               title: getTitle(t.textEditor),
-              subtitle: getSubtitle(_appConfig.getTextOfTextEditorPackageNameOnOnAndroid()),
+              subtitle: getSubtitle(_appConfig.getTextOfTextEditorPackageNameOnAndroid()),
               onTap: () {
                 Dialogs.showSingleClickablePlainDialog(
                   context,
-                  NativeOpenFile.supportedEditorsAndAuto,
-                  selected: (it) => it.packageName == _appConfig.textEditorPackageNameOnOnAndroid,
+                  NativeOpenFile.supportedAndroidEditorsAndBuiltIn,
+                  selected: (it) => it.packageName == _appConfig.textEditorPackageNameOnAndroid,
                   itemText: (it) => it.name,
                   onClick: (it) async {
-                    if(it.packageName == _appConfig.textEditorPackageNameOnOnAndroid) {
+                    if(it.packageName == _appConfig.textEditorPackageNameOnAndroid) {
                       return;
                     }
 
                     await updateConfig((config) async {
-                      config.textEditorPackageNameOnOnAndroid = it.packageName;
+                      config.textEditorPackageNameOnAndroid = it.packageName;
+                    });
+                  },
+                );
+              },
+            ),
+
+          if(isPcPlatform())
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: getTitle(t.textEditor),
+              subtitle: getSubtitle(_appConfig.getTextOfTextEditorPackageNameOnPc()),
+              onTap: () {
+                Dialogs.showSingleClickablePlainDialog(
+                  context,
+                  NativeOpenFile.supportedPcEditorsAndBuiltIn,
+                  selected: (it) => it.packageName == _appConfig.textEditorPackageNameOnPc,
+                  itemText: (it) => it.name,
+                  onClick: (it) async {
+                    if(it.packageName == _appConfig.textEditorPackageNameOnPc) {
+                      return;
+                    }
+
+                    await updateConfig((config) async {
+                      config.textEditorPackageNameOnPc = it.packageName;
                     });
                   },
                 );
