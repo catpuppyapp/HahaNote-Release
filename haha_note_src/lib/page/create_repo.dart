@@ -303,7 +303,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
     }
 
     try {
-      App.logger.debug(_TAG, "start oauth authorization");
+      App.logger.debug(_TAG, "start dropbox oauth authorization");
 
       oauth2Server = await DropboxOauth2.startServer();
       setState(() {
@@ -334,9 +334,17 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
       }else {
         App.logger.debug(_TAG, "dropbox config is null, authorize failed or canceled");
       }
-    }catch(e) {
+    }catch(e, st) {
+      App.logger.debug(_TAG, "dropbox auth err: $e\n$st");
+      if(mounted) {
+        // do not await this dialog, then can be early close the oauth2 server
+        // 不要await这个弹窗，这样可更快执行到下面的 tryCloseOauth2Server
+        Dialogs.showCopyDialog(context, title: t.error, text: "dropbox auth err: $e\n$st", showMsg: showMsg);
+      }
+
+      // if no exception then the server closed after authorized
+      // 如果没异常，服务器会在授权后关闭，所以这里只需在catch里关一下即可，无需写到finally里
       await tryCloseOauth2Server();
-      showMsgLong("launch auth url err: $e");
     }
 
   }
@@ -358,13 +366,11 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
       return;
     }
 
-    setState(() {
-      oauth2ServerLaunched = false;
-    });
+    oauth2ServerLaunched = false;
+    refreshUI();
 
     await doCloseOauth2Server();
-
-    setState((){});
+    refreshUI();
   }
 
 
