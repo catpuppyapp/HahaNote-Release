@@ -1,4 +1,1 @@
-This app now open sourced, you can donate to support us.
-
-~~ ### This app is free for now, your vip will auto-renewal before expired. ~~
-
+This app now open sourced, you can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to support us.
