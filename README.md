@@ -1,5 +1,5 @@
 ## 20260619
-#### I decide to open source of it and remove account system, old versions will unavailable, must update to latest version, but don't worry, your note still available.
+#### I decide to open source of it and remove account system, old versions(before 1.0.3) will unavailable in the future, must update to latest version, but don't worry, your note still available.
 #### after open source, then I will focus improve desktop ui and improve performence. You can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to support me.
 
 
