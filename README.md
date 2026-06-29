@@ -1,6 +1,6 @@
 ## 20260619
-#### Due to just nobody use the app(online a month and a half, just 8 users), so I decide to open source of it and remove account system, old versions will unavailable, must update to latest version, but don't worry, your note still available.
-#### after open source, then I will focus improve desktop ui and improve performence. You can donate to support me.
+#### I decide to open source of it and remove account system, old versions will unavailable, must update to latest version, but don't worry, your note still available.
+#### after open source, then I will focus improve desktop ui and improve performence. You can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to support me.
 
 
 ## HahaNote
@@ -12,18 +12,13 @@
 
 
 ### Tutorial
-<a href=how_to_use.md>How To Use</a>
-<a href=git_backend.md>Git Backend Tutorial</a>
+[How To Use](how_to_use.md)
+
+[Git Backend Tutorial](git_backend.md)
 
 
 ### Screenshots
-<span> 
-<img src=img/pc_sync_page.jpg width=200>
-<img src=img/pc_file_history.jpg width=200>
-<img src=img/pc_text_editor.jpg width=200>
-<img src=img/pc_status_page.jpg width=200>
-<img src=img/pc_diff_view.jpg width=200>
-</span>
+<img src=fastlane/metadata/android/en-US/images/featureGraphic.png>
 
 
 ### Brief
