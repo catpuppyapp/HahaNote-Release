@@ -8,7 +8,7 @@ import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
 /// 1. 去 https://curl.se/docs/caextract.html 下载mozilla证书
 /// 2. 将证书文件放到 'test/res/bundled_certs.pem'
 /// 3. 修改当前函数注释中的"更新于"后面的时间，然后执行当前函数
-/// 4. 移动生成的证书字节文件 'test/res/bundle_certs.dart' 到 'lib/cloud_disk_note/remotes/base/bundle_certs.dart'
+/// 4. 移动生成的证书字节文件 'test/res/bundled_certs.dart' 到 'lib/cloud_disk_note/remotes/base/bundled_certs.dart'
 /// 5. 启动程序，测试网络连接是否正常
 Future<void> main() async {
   final prefixString = r'''
@@ -19,7 +19,7 @@ Future<void> main() async {
 // """这种格式代表多行字符串，可保留换行符"""
 const bundledCertsBytes=[''';
 
-  final out = await getFileAndMakeSureParentDirExist('test/res/bundle_certs.dart');
+  final out = await getFileAndMakeSureParentDirExist('test/res/bundled_certs.dart');
   final bundledCertsBytes = utf8.encode(File('test/res/bundled_certs.pem').readAsStringSync());
   final lastIdx = bundledCertsBytes.length - 1;
   final sb = StringBuffer(prefixString);

@@ -1,7 +1,7 @@
 import 'dart:io' show Directory, HttpClient, HttpOverrides, SecurityContext, File, HttpClientBasicCredentials;
 
 import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/bundle_certs.dart';
+import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/bundled_certs.dart';
 import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/http.dart';
 import 'package:cloud_disk_note_app/util/fs.dart';
 import 'package:http/http.dart' as http;
