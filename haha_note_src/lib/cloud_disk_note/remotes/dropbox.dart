@@ -33,6 +33,8 @@ class DropboxUserInfo {
     return 'DropboxUserInfo{accountId: $accountId, displayName: $displayName, avatarUrl: $avatarUrl}';
   }
 
+  // 可解析 2/users/get_account 或 2/users/get_current_account 返回的数据，
+  // 两者返回的数据结构不完全相同，但取我需要的这几个字段的路径是一致的
   static DropboxUserInfo fromMap(Map<String, dynamic> map) {
     App.logger.debug(_TAG, "dropbox user info http response: $map");
     return DropboxUserInfo(
@@ -822,25 +824,31 @@ class Dropbox extends Remote {
     return remoteConfig;
   }
 
-
   Future<DropboxUserInfo> getUserInfo({required bool updateConfig}) async {
-    // api 1:这个不需要提供account_id，但team和非team用户返回的字段不同
-    // curl -X POST https://api.dropboxapi.com/2/users/get_current_account \
-    // --header "Authorization: Bearer <get access token>"
-
-    // api 2: 需要提供account_id，但返回的结果字段固定
-    // curl -X POST https://api.dropboxapi.com/2/users/get_account \
-    // --header "Authorization: Bearer <get access token>" \
-    // --header "Content-Type: application/json" \
-    // --data "{\"account_id\":\"dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc\"}"
-
-    // 上面两个api其实都行，因为我只支持dropbox个人用户，不过，我还是采用的比较稳妥的方案2
+    //   // api 1:这个不需要提供account_id，但team和非team用户返回的字段不同
+    //   // curl -X POST https://api.dropboxapi.com/2/users/get_current_account \
+    //   // --header "Authorization: Bearer <get access token>"
+    //
+    //   // api 2: 需要提供account_id，但返回的结果字段固定
+    //   // curl -X POST https://api.dropboxapi.com/2/users/get_account \
+    //   // --header "Authorization: Bearer <get access token>" \
+    //   // --header "Content-Type: application/json" \
+    //   // --data "{\"account_id\":\"dbid:AAH4f99T0taONIb-OurWxbNQ6ywGRopQngc\"}"
+    //
+    //   // 上面两个api其实都行，因为我只支持dropbox个人用户(之前觉得方案2返回数据比较稳定，所以采用的方案2，但需额外权限，所以后来换成方案1了)
+    //   // api 2需要额外请求一个权限，所以后来我弃用了
+    //   // 2/users/get_account api 需要额外dropbox权限 sharing.read ，所以弃用
+    //   // 注：这个api返回的数据结构和 2/users/get_current_account 解析起来一样，所以无需修改DropboxUserInfo.fromMap
+    //   final httpResponse = await _sendJsonRequest(
+    //     api: "https://api.dropboxapi.com/2/users/get_account",
+    //     data: {
+    //       "account_id": config.accountId
+    //     }
+    //   );
 
     final httpResponse = await _sendJsonRequest(
-      api: "https://api.dropboxapi.com/2/users/get_account",
-      data: {
-        "account_id": config.accountId
-      }
+      api: "https://api.dropboxapi.com/2/users/get_current_account",
+      data: {}
     );
 
     final userInfo = DropboxUserInfo.fromMap(httpResponse.responseMap!);
