@@ -7,10 +7,26 @@ plugins {
 }
 
 android {
-    // can be make app installer smaller
-    packagingOptions {
-        dex.useLegacyPackaging = true
-        jniLibs.useLegacyPackaging = true
+    packaging {
+        // dex.useLegacyPackaging + jniLibs.useLegacyPackaging can be make app installer smaller,
+        // maybe compress the libs? if it is, then maybe make install process slower a little bit
+        dex {
+            useLegacyPackaging = true
+        }
+        jniLibs {
+            // 此参数作用是: "安装apk后把 .so libs 导出到对应架构的目录"，不然可能不会导出
+            //
+            // 详细解释：
+            // 由于安卓10以上对 "/data/data/包名" 下的目录做了 “可写和可执行互斥”的限制，而app对此目录下又可写，
+            // 所以把可执行文件放这个目录就不能执行，会抛权限被拒绝的异常
+            // 但对 "/data/app/乱码/包名.乱码/lib/架构" 下的so库则是可执行不可写，
+            // 因此，可以把可执行文件放到 lib 目录就能使其可执行了
+            //
+            // 注：可写和可执行互斥是为了避免app安装后被恶意利用，下载文件，执行，或者被黑客利用，
+            // 修改原本应该被执行的文件执行任意代码，总之主要是为了安全考虑，有此限制就可在多数情况
+            // 下确保应用执行的一定是安装时携带的文件，而安装后下载或创建的文件则不被执行
+            useLegacyPackaging = true
+        }
     }
 
     // quit include google signature block in the built apk file, these info using google public key encrypted, if don't publish app to google play, is nonsense
