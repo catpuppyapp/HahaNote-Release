@@ -7,6 +7,12 @@ plugins {
 }
 
 android {
+    // can be make app installer smaller
+    packagingOptions {
+        dex.useLegacyPackaging = true
+        jniLibs.useLegacyPackaging = true
+    }
+
     // quit include google signature block in the built apk file, these info using google public key encrypted, if don't publish app to google play, is nonsense
     // see: https://developer.android.com/build/dependencies?hl=zh-cn#dependency-info-play
     dependenciesInfo {
