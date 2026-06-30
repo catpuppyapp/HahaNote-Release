@@ -1,4 +1,8 @@
 
+1.0.4+5 20260630:
+- change dropbox query api (old version must update, else new authorize will failed)
+
+---
 1.0.3+4 20260620:
 - open source
 - improve desktop ui

@@ -1,0 +1,1 @@
+- change dropbox query api (old version must update, else new authorize will failed)

@@ -7,8 +7,7 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- open source
-- improve desktop ui
+- change dropbox query api (old version must update, else new authorize will failed)
 """;
 
 class ChangelogDialog extends StatelessWidget {
