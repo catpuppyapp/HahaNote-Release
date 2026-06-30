@@ -1,1 +1,11 @@
 HahaNote is a file-based + E2EE note taking and syncing app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
+
+Features:
+- All your data on your own: HahaNote is file-based, so you can access your files anytime, no need to export them from "app-specified-data-format", your data under your control ever
+- End-to-end encryption: Notes are encrypted on-device before upload, remote servers store only ciphertext. that means, even cloud drive platform have data leak, your data still safe
+- Offline-first: Full read/write access offline
+- File-based: You can use your favorite editor to edit your file, then use HahaNote to securely sync them to your Dropbox/Webdav Server or Git platform
+- Versioning: Every file maintains an immutable version history, you can view, compare, and restore anytime
+- Privacy-first: No tracking, respect your privacy
+- Markdown preview supported
+- Cross-platform: Windows/Linux/Android

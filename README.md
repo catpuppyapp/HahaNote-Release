@@ -25,13 +25,14 @@ So You can use any editor to edit your md/txt or any other files, then use HahaN
 
 
 ### Key features
-- All your data on your own: HahaNote is file-based, so you can access your files anytime, no need to export them from "app-specified-data-format", anytime, your data under your control.
-- End-to-end encryption: notes are encrypted on-device before upload; remote servers store only ciphertext. that means, even cloud drive platorm have data leak, your data still safe.
-- Offline-first: full read/write access offline; changes sync when network returns with robust conflict resolution.
-- File-based: you can use your feature editor to edit your file, then use HahaNote to securely sync them to your Dropbox/WebdavServer or Github
-- Versioning: every file maintains an immutable version history so users can view, compare, and restore previous versions.
-- Privacy-first: HahaNote use Argon2id to devried secure key and use XChaCha20-Poly1305 to encrypted files, so only you can view your data.
-- Cross-platform: Windows, Linux, Android
+- All your data on your own: HahaNote is file-based, so you can access your files anytime, no need to export them from "app-specified-data-format", your data under your control ever
+- End-to-end encryption: Notes are encrypted on-device before upload, remote servers store only ciphertext. that means, even cloud drive platform have data leak, your data still safe
+- Offline-first: Full read/write access offline
+- File-based: You can use your favorite editor to edit your file, then use HahaNote to securely sync them to your Dropbox/Webdav Server or Git platform
+- Versioning: Every file maintains an immutable version history, you can view, compare, and restore anytime
+- Privacy-first: No tracking, respect your privacy
+- Markdown preview supported
+- Cross-platform: Windows/Linux/Android
 
 
 ### Cryptography details
