@@ -82,3 +82,13 @@ It will support mac when I got a Mac
 ## To early users (before 1.0.3 released)
 #### I decide to open source of it and remove account system, old versions(before 1.0.3) will unavailable in the future, must update to latest version, but don't worry, your note still available.
 #### after open source, then I will focus improve desktop ui and improve performence. You can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to support me. If I got more donations, then I can improve the performance of the app, and add more features, make the UI looks better...
+
+
+## Thx the packages developers!
+https://pub.dev/packages/cryptography
+https://pub.dev/packages/code_forge
+https://pub.dev/packages/markdown
+https://pub.dev/packages/json_serializable
+https://pub.dev/packages/hive_ce
+... and other all dependencies developers!
+
