@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_disk_note_app/ui/my_fonts.dart';
 import 'package:cloud_disk_note_app/util/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_all/flutter_html_all.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +13,7 @@ import 'package:re_highlight/styles/github.dart';
 import '../db/db.dart';
 import '../i18n/strings.g.dart';
 import '../ui/ui.dart';
+import 'my_highlight_view.dart';
 import 'size_adjuster.dart';
 
 const _TAG = "markdown_html_previewer.dart";
@@ -325,11 +325,11 @@ class MarkdownHtmlPreviewerState extends State<MarkdownHtmlPreviewer> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal, // 必须：支持横向滚动，防止长代码手机端折行错乱
                     padding: const EdgeInsets.all(10),
-                    child: HighlightView(
-                      codeText,
+                    child: MyHighlightView(
+                      code: codeText,
                       language: language,
                       theme: codeTheme,
-                      textStyle: const TextStyle().toMono(),
+                      textStyle: isDarkTheme ? codeTextStyleDark : codeTextStyleLight,
                     ),
                   )
                 ],

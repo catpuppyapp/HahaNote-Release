@@ -40,3 +40,8 @@ extension MonoTextStyle on TextStyle {
     fontFamilyFallback: myFontFallbacksForMono,
   );
 }
+
+
+final codeTextStyleLight = const TextStyle(color: Colors.black87).toMono();
+final codeTextStyleDark = const TextStyle(color: Colors.white70).toMono();
+
