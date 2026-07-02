@@ -30,6 +30,7 @@ jobs:
             tar \
             unzip \
             zip \
+            libgtk-3-dev \
             git
 
       # code_forge requires rustup
