@@ -12,8 +12,8 @@ import 'package:cloud_disk_note_app/ext/state_ext.dart';
 import 'package:cloud_disk_note_app/i18n/strings.g.dart';
 import 'package:cloud_disk_note_app/page/base/searchable_widget_state.dart';
 import 'package:cloud_disk_note_app/util/util.dart' show copyText, formatDateTimeHumanFriendly;
+import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
 import 'package:cloud_disk_note_app/widget/dialogs.dart' show Dialogs;
-import 'package:cloud_disk_note_app/widget/list.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 

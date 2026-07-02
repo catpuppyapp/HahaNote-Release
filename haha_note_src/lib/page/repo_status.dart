@@ -9,7 +9,7 @@ import 'package:cloud_disk_note_app/i18n/strings.g.dart';
 import 'package:cloud_disk_note_app/native_util/open_file.dart';
 import 'package:cloud_disk_note_app/page/base/searchable_page_state.dart';
 import 'package:cloud_disk_note_app/util/util.dart';
-import 'package:cloud_disk_note_app/widget/list.dart';
+import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
 import 'package:flutter/material.dart';
 
 import '../cloud_disk_note/app.dart';

@@ -5,8 +5,8 @@ import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/my_http_overrid
 import 'package:cloud_disk_note_app/i18n/strings.g.dart';
 import 'package:cloud_disk_note_app/page/base/searchable_page_state.dart';
 import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
+import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
 import 'package:cloud_disk_note_app/widget/dialogs.dart';
-import 'package:cloud_disk_note_app/widget/list.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 

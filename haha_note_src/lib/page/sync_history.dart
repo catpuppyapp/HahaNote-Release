@@ -7,8 +7,8 @@ import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/sync_history.da
 import 'package:cloud_disk_note_app/i18n/strings.g.dart';
 import 'package:cloud_disk_note_app/page/base/searchable_page_state.dart';
 import 'package:cloud_disk_note_app/util/util.dart' show formatDateTimeHumanFriendly;
+import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
 import 'package:cloud_disk_note_app/widget/dialogs.dart';
-import 'package:cloud_disk_note_app/widget/list.dart';
 import 'package:flutter/material.dart';
 
 const _TAG = "sync_history.dart";

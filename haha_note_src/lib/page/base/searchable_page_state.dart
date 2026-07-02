@@ -2,7 +2,7 @@ import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
 import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart' show randomStringUnsafeButFaster;
 import 'package:cloud_disk_note_app/state/my_page_state.dart' show MyPageState;
 import 'package:cloud_disk_note_app/widget/base_layout.dart';
-import 'package:cloud_disk_note_app/widget/list.dart';
+import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
 import 'package:cloud_disk_note_app/widget/pull_to_refresh_list.dart';
 import 'package:cloud_disk_note_app/widget/search_text_field.dart';
 import 'package:flutter/material.dart';
