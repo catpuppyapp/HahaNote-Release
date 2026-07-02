@@ -1,0 +1,60 @@
+# 仅构建 apk，不构建libs(使用预编译的库)
+name: Build Linux Bundle
+
+on:
+#  push:
+#    tags:
+#      - 'v*'  # 触发条件：当推送标签以 'v' 开头时
+  workflow_dispatch:  # 允许手动触发工作流
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04  # 使用 Ubuntu 运行环境
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      # with:
+          # submodules: true
+          # repository: catpuppyapp/PuppyGit
+          # fetch-depth: 1
+          # ref: main
+          # path: PuppyGit  # if set, must use `$GITHUB_WORKSPACE/PuppyGit` to access the dir, else can simple use `$GITHUB_WORKSPACE`
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            curl \
+            make \
+            tar \
+            unzip \
+            zip \
+            git
+
+      # code_forge requires rustup
+      - name: install rust-toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - run: cargo --version
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.2
+          cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
+      - run: flutter --version
+
+      - name: Build
+        run: |
+          cd $GITHUB_WORKSPACE/haha_note_src/build_script
+          chmod +x bbbl_build_all_linux.sh
+          ./bbbl_build_all_linux.sh
+
+      - name: Upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux_bundle
+          path: ${{ github.workspace }}/haha_note_src/build/linux/x64/release/*.zip
+          retention-days: 15
+
