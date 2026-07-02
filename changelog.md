@@ -1,4 +1,10 @@
 
+1.0.5+6 20260702:
+- remove unused dependencies
+- update text editor
+
+---
+
 1.0.4+5 20260630:
 - change dropbox query api (old version must update, else new authorize will failed)
 
