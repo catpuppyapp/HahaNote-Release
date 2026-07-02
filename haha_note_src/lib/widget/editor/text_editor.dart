@@ -180,8 +180,8 @@ class TextEditor extends StatelessWidget {
       autoFocus: true,
       keyboardShotcuts: myEditorShortCuts,
       // 输入法联想，若禁用则不会触发下划线选中文本，但是谷歌输入法会无法输入中文；
-      // 若启用，有bug，联想触发时（有下划线），可能无法移动光标，甚至有可能丢失内容！
-      enableKeyboardSuggestions: false,  // ime suggestions, if enable, can be lost data on android
+      // x fixed maybe) 若启用，有bug，联想触发时（有下划线），可能无法移动光标，甚至有可能丢失内容！
+      enableKeyboardSuggestions: true,  // x fixed maybe, or never a bug, just my mistake?) ime suggestions, if enable, can be lost data on android
       enableLocalSuggestions: false, // I am not sure, maybe this is suggestions from file content context? not lsp or keyboard suggestions.
       extraLanguages: [langC, langJava, langXml, langDart, langRust],
     );
