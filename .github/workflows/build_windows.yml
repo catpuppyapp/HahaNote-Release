@@ -31,6 +31,11 @@ jobs:
       - run: flutter --version
 
       - name: Build
+        env:
+          # 注入编译器标志，静默弃用警告
+          # for build cargokit, that the flutter rust bridge dependency it, 
+          # cargokit is out-of-dated, by the way
+          CXXFLAGS: "/D_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS"
         working-directory: haha_note_src
         # if use cd change dir: 
         # should use ${{ github.workspace }} in yaml, it can be replace path before execute
