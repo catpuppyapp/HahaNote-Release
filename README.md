@@ -85,10 +85,10 @@ It will support mac when I got a Mac
 
 
 ## Thx the packages developers!
-https://pub.dev/packages/cryptography
-https://pub.dev/packages/code_forge
-https://pub.dev/packages/markdown
-https://pub.dev/packages/json_serializable
-https://pub.dev/packages/hive_ce
+[cryptography](https://pub.dev/packages/cryptography)
+[code_forge](https://pub.dev/packages/code_forge)
+[markdown](https://pub.dev/packages/markdown)
+[json_serializable](https://pub.dev/packages/json_serializable)
+[hive_ce](https://pub.dev/packages/hive_ce)
 ... and other all dependencies developers!
 
