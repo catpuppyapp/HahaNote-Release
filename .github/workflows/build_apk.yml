@@ -26,7 +26,7 @@ jobs:
         with:
           java-version: '17'  # 设置 JDK 版本
           distribution: 'temurin'  # 指定 JDK 发行版（例如 'adopt', 'zulu', 'temurin', 'oracle' 等）
-          cache: 'gradle' # 开启 gradle 缓存，加速后续构建
+          # cache: 'gradle' # 开启 gradle 缓存，加速后续构建
 
       - name: Install dependencies
         run: |
@@ -48,7 +48,7 @@ jobs:
         with:
           channel: stable
           flutter-version-file: ${{ github.workspace }}/haha_note_src/pubspec.yaml
-          cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
+          # cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
       - run: flutter --version
 
       - name: Build Release APK

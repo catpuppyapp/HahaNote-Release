@@ -42,7 +42,7 @@ jobs:
         with:
           channel: stable
           flutter-version-file: ${{ github.workspace }}/haha_note_src/pubspec.yaml
-          cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
+          # cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
       - run: flutter --version
 
       - name: Build
