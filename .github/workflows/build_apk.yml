@@ -1,4 +1,4 @@
-name: Build Linux Bundle
+name: Build Apk
 
 on:
 #  push:
@@ -20,6 +20,14 @@ jobs:
           # ref: main
           # path: PuppyGit  # if set, must use `$GITHUB_WORKSPACE/PuppyGit` to access the dir, else can simple use `$GITHUB_WORKSPACE`
 
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'  # 设置 JDK 版本
+          distribution: 'temurin'  # 指定 JDK 发行版（例如 'adopt', 'zulu', 'temurin', 'oracle' 等）
+          cache: 'gradle' # 开启 gradle 缓存，加速后续构建
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -28,8 +36,6 @@ jobs:
             make \
             tar \
             unzip \
-            zip \
-            libgtk-3-dev \
             git
 
       # code_forge requires rustup
@@ -45,16 +51,16 @@ jobs:
           cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
       - run: flutter --version
 
-      - name: Build
+      - name: Build Release APK
         run: |
           cd $GITHUB_WORKSPACE/haha_note_src/build_script
-          chmod +x bbbl_build_all_linux.sh
-          ./bbbl_build_all_linux.sh
+          chmod +x bapk_build_apk.sh
+          ./bapk_build_apk.sh
 
-      - name: Upload
+      - name: Upload Release APK
         uses: actions/upload-artifact@v7
         with:
-          name: linux_bundle
-          path: ${{ github.workspace }}/haha_note_src/build/linux/x64/release/*.zip
+          name: app-release-unsigned.apk
+          path: ${{ github.workspace }}/haha_note_src/build/app/outputs/flutter-apk
           retention-days: 15
 
