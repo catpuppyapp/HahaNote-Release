@@ -31,8 +31,13 @@ jobs:
       - run: flutter --version
 
       - name: Build
+        # specifiled a working-directory instead cd
+        # working-directory: haha_note_src/build_script
+        # if use cd change dir: 
+        # should use ${{ github.workspace }} in yaml, it can be replace path before execute
+        # if use $GITHUB_WORKSPACE, in powershell maybe must write as $env:GITHUB_WORKSPACE
         run: |
-          cd $GITHUB_WORKSPACE\haha_note_src\build_script
+          cd ${{ github.workspace }}\haha_note_src\build_script
           .\bwo_build_windows_only.ps1
 
       - name: Upload
