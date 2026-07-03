@@ -1,9 +1,9 @@
 name: Build Apk
 
 on:
-#  push:
-#    tags:
-#      - 'v*'  # 触发条件：当推送标签以 'v' 开头时
+  push:
+    tags:
+      - 'v*'  # 触发条件：当推送标签以 'v' 开头时
   workflow_dispatch:  # 允许手动触发工作流
 
 jobs:
@@ -52,8 +52,9 @@ jobs:
       - run: flutter --version
 
       - name: Build Release APK
+        working-directory: haha_note_src
         run: |
-          cd $GITHUB_WORKSPACE/haha_note_src/build_script
+          cd build_script
           chmod +x bapk_build_apk.sh
           ./bapk_build_apk.sh
 

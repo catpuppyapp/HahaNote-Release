@@ -1,9 +1,9 @@
 name: Build Windows Bundle
 
 on:
-#  push:
-#    tags:
-#      - 'v*'  # 触发条件：当推送标签以 'v' 开头时
+  push:
+    tags:
+      - 'v*'  # 触发条件：当推送标签以 'v' 开头时
   workflow_dispatch:  # 允许手动触发工作流
 
 jobs:
@@ -31,13 +31,13 @@ jobs:
       - run: flutter --version
 
       - name: Build
-        # specifiled a working-directory instead cd
-        # working-directory: haha_note_src/build_script
+        working-directory: haha_note_src
         # if use cd change dir: 
         # should use ${{ github.workspace }} in yaml, it can be replace path before execute
         # if use $GITHUB_WORKSPACE, in powershell maybe must write as $env:GITHUB_WORKSPACE
+        # cd ${{ github.workspace }}\haha_note_src\build_script
         run: |
-          cd ${{ github.workspace }}\haha_note_src\build_script
+          cd build_script
           .\bwo_build_windows_only.ps1
 
       - name: Upload
