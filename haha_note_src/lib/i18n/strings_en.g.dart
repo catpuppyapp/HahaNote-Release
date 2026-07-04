@@ -509,8 +509,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'If the browser doesn't open, please manually copy and paste the link into your browser to open it'
 	String get openLinkByYourself => 'If the browser doesn\'t open, please manually copy and paste the link into your browser to open it';
 
-	/// en: 'Repot Bug'
-	String get reportBug => 'Repot Bug';
+	/// en: 'Report Bug'
+	String get reportBug => 'Report Bug';
 
 	/// en: 'Target dirs or files already exists, do you want to merge dirs and overwrite files?'
 	String get askMergeDirsAndFiles => 'Target dirs or files already exists, do you want to merge dirs and overwrite files?';
@@ -1142,7 +1142,7 @@ extension on Translations {
 			'settings' => 'Settings',
 			'textEditor' => 'Text Editor',
 			'openLinkByYourself' => 'If the browser doesn\'t open, please manually copy and paste the link into your browser to open it',
-			'reportBug' => 'Repot Bug',
+			'reportBug' => 'Report Bug',
 			'askMergeDirsAndFiles' => 'Target dirs or files already exists, do you want to merge dirs and overwrite files?',
 			'syncStarted' => 'Sync started',
 			'tlsCerts' => 'TLS Certs',

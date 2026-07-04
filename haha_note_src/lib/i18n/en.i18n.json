@@ -155,7 +155,7 @@
   "settings": "Settings",
   "textEditor": "Text Editor",
   "openLinkByYourself": "If the browser doesn't open, please manually copy and paste the link into your browser to open it",
-  "reportBug": "Repot Bug",
+  "reportBug": "Report Bug",
   "askMergeDirsAndFiles": "Target dirs or files already exists, do you want to merge dirs and overwrite files?",
   "syncStarted": "Sync started",
   "tlsCerts": "TLS Certs",
