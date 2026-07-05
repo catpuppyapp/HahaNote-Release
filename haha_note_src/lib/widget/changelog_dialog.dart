@@ -7,10 +7,8 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- remove unused dependencies
-- update text editor
-- 移除无用依赖
-- 更新文本编辑器
+- fix typo
+- 修复拼写错误
 """;
 
 class ChangelogDialog extends StatelessWidget {

@@ -1,4 +1,8 @@
 
+1.0.6+7 20260705:
+- fix typo
+
+---
 1.0.5+6 20260702:
 - remove unused dependencies
 - update text editor
