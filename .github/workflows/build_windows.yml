@@ -19,7 +19,7 @@ jobs:
 
       # code_forge requires rustup
       - name: install rust-toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@1.96.1
       - run: cargo --version
 
       - name: Set up Flutter
