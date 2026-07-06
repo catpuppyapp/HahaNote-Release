@@ -32,9 +32,10 @@ jobs:
 
       - name: Run Prebuild scripts
         shell: bash
+        working-directory: haha_note_src/build_script
         run: |
-          chmod +x ${{ github.workspace }}/haha_note_src/build_script/prebuild.sh
-          ${{ github.workspace }}/haha_note_src/build_script/prebuild.sh
+          chmod +x prebuild.sh
+          ./prebuild.sh
 
       - name: Build
         env:

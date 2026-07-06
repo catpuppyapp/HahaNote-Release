@@ -1,6 +1,9 @@
+#!/usr/bin/env bash
+
 # install rust toolchain
 # install rustup
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# the command must run in rust-toolchain.toml dir (or it's parent?)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # run the command will trigger rust toolchains download, 
 # the version specified rust-toolchain.toml file, 
 # find current dir first, if not found, find parent, most maybe 3 layers dirs
