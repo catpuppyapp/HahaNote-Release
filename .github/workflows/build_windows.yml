@@ -18,9 +18,9 @@ jobs:
         run: git config --system core.longpaths true
 
       # code_forge requires rustup
-      - name: install rust-toolchain
-        uses: dtolnay/rust-toolchain@1.96.1
-      - run: cargo --version
+      # - name: install rust-toolchain
+      #   uses: dtolnay/rust-toolchain@1.96.1
+      # - run: cargo --version
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -29,6 +29,13 @@ jobs:
           flutter-version-file: ${{ github.workspace }}/haha_note_src/pubspec.yaml
           # cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
       - run: flutter --version
+
+      - name: Run Prebuild scripts
+        shell: bash
+        working-directory: haha_note_src/build_script
+        run: |
+          chmod +x prebuild.sh
+          ./prebuild.sh
 
       - name: Build
         env:
