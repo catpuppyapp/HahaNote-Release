@@ -1,10 +1,10 @@
 
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/util/form_validator.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/util/form_validator.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 

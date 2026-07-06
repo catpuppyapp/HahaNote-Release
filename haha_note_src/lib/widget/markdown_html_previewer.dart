@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/ui/my_fonts.dart';
-import 'package:cloud_disk_note_app/util/util.dart';
+import 'package:hahanote_app/ui/my_fonts.dart';
+import 'package:hahanote_app/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_all/flutter_html_all.dart';

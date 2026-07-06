@@ -1,6 +1,6 @@
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../cloud_disk_note/app.dart';
+import '../hahanote_lib_sync/app.dart';
 
 const _TAG = "app_info.dart";
 

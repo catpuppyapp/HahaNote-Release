@@ -1,6 +1,6 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/isolate_pool/isolate_pool.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/isolate_pool/isolate_pool.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
 
 
 Future<void> main() async {

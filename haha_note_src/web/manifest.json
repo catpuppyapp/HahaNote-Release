@@ -1,6 +1,6 @@
 {
-    "name": "cloud_disk_note_app",
-    "short_name": "cloud_disk_note_app",
+    "name": "hahanote_app",
+    "short_name": "hahanote",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

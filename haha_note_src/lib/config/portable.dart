@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:cloud_disk_note_app/util/fs.dart';
+import 'package:hahanote_app/util/fs.dart';
 import 'package:path/path.dart' as p;
 
-import '../cloud_disk_note/app.dart';
+import '../hahanote_lib_sync/app.dart';
 
 const _TAG = "portable.dart";
 

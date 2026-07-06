@@ -1,7 +1,7 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/files/file_info.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/msg/msg.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/versioning/version.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_info.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/version.dart';
 
 abstract class Mock {
   static bool enable = false;

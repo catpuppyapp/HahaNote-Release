@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/files/file_path.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
-import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
-import 'package:cloud_disk_note_app/util/util.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
+import 'package:hahanote_app/util/fs.dart' show Fs;
+import 'package:hahanote_app/util/util.dart';
 import 'package:flutter/widgets.dart';
 
 const _TAG = "bean.dart";

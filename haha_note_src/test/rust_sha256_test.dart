@@ -1,11 +1,11 @@
 // import 'dart:io' show File;
 
-// import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-// import 'package:cloud_disk_note_app/cloud_disk_note/app_key.dart';
-// import 'package:cloud_disk_note_app/cloud_disk_note/crypto/hash.dart';
-// import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart';
-// import 'package:cloud_disk_note_app/src/rust/api/simple.dart';
-// import 'package:cloud_disk_note_app/src/rust/frb_generated.dart';
+// import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+// import 'package:hahanote_app/hahanote_lib_sync/app_key.dart';
+// import 'package:hahanote_app/hahanote_lib_sync/crypto/hash.dart';
+// import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
+// import 'package:hahanote_app/src/rust/api/simple.dart';
+// import 'package:hahanote_app/src/rust/frb_generated.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
 

@@ -1,4 +1,4 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/simple_ignore_matcher.dart';
+import 'package:hahanote_app/hahanote_lib_sync/simple_ignore_matcher.dart';
 import 'package:glob/glob.dart';
 
 void main() {

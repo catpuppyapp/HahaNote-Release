@@ -1,7 +1,7 @@
 
 import 'dart:io' show Directory, File;
 
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:path/path.dart' as p;
 
 Future<void> main() async {

@@ -1,14 +1,14 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart' show randomStringUnsafeButFaster;
-import 'package:cloud_disk_note_app/db/entity/repo_entity.dart';
-import 'package:cloud_disk_note_app/widget/base_layout.dart';
-import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
-import 'package:cloud_disk_note_app/widget/pull_to_refresh_list.dart';
-import 'package:cloud_disk_note_app/widget/search_text_field.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show randomStringUnsafeButFaster;
+import 'package:hahanote_app/db/entity/repo_entity.dart';
+import 'package:hahanote_app/widget/base_layout.dart';
+import 'package:hahanote_app/widget/custom_list_view.dart';
+import 'package:hahanote_app/widget/pull_to_refresh_list.dart';
+import 'package:hahanote_app/widget/search_text_field.dart';
 import 'package:flutter/material.dart';
 
 import '../../bean/bean.dart';
-import '../../cloud_disk_note/storage/repo/repo.dart';
+import '../../hahanote_lib_sync/storage/repo/repo.dart';
 import '../../ext/state_ext.dart';
 import '../../i18n/strings.g.dart';
 import '../../widget/bottom_bar.dart';

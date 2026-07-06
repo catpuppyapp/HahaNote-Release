@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/native_util/permission_requester.dart';
-import 'package:cloud_disk_note_app/widget/buttons.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/native_util/permission_requester.dart';
+import 'package:hahanote_app/widget/buttons.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';

@@ -1,14 +1,14 @@
 
 import 'dart:convert';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/serialization/json.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/sync_config.dart';
-import 'package:cloud_disk_note_app/db/db.dart';
-import 'package:cloud_disk_note_app/ext/iterable_ext.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/native_util/open_file.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/serialization/json.dart';
+import 'package:hahanote_app/hahanote_lib_sync/sync_config.dart';
+import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/ext/iterable_ext.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/native_util/open_file.dart';
 
 import 'display_mode.dart';
 

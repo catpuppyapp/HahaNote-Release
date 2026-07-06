@@ -1,8 +1,8 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/serialization/json.dart';
-import 'package:cloud_disk_note_app/db/db.dart' show Db;
-import 'package:cloud_disk_note_app/i18n/strings.g.dart' show t;
-import 'package:cloud_disk_note_app/widget/radios.dart' show RadiosWidget, SelectionItem;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/serialization/json.dart';
+import 'package:hahanote_app/db/db.dart' show Db;
+import 'package:hahanote_app/i18n/strings.g.dart' show t;
+import 'package:hahanote_app/widget/radios.dart' show RadiosWidget, SelectionItem;
 import 'package:flutter/material.dart';
 
 import '../ui/ui.dart';

@@ -1,8 +1,8 @@
-import 'package:cloud_disk_note_app/bean/bean.dart' show ContentItem, ActRegion;
-import 'package:cloud_disk_note_app/db/db.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/page/base/searchable_widget_state.dart';
-import 'package:cloud_disk_note_app/widget/content_item_waterfall.dart';
+import 'package:hahanote_app/bean/bean.dart' show ContentItem, ActRegion;
+import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/page/base/searchable_widget_state.dart';
+import 'package:hahanote_app/widget/content_item_waterfall.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/ui.dart';

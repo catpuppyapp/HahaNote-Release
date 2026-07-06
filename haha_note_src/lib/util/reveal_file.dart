@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:open_filex_plus/open_filex_plus.dart';
 
-import '../cloud_disk_note/storage/files/file_path.dart';
-import '../cloud_disk_note/storage/utils.dart';
+import '../hahanote_lib_sync/storage/files/file_path.dart';
+import '../hahanote_lib_sync/storage/utils.dart';
 
 const _TAG = "reveal_file.dart";
 

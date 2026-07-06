@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math' show min, max;
 
-import 'package:cloud_disk_note_app/db/db.dart' show Db;
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/util/util.dart';
-import 'package:cloud_disk_note_app/widget/bottom_bar.dart';
+import 'package:hahanote_app/db/db.dart' show Db;
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/util/util.dart';
+import 'package:hahanote_app/widget/bottom_bar.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

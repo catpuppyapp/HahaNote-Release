@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/app_key.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/crypto/encrypt.dart';
-import 'package:cloud_disk_note_app/config/app_config.dart';
-import 'package:cloud_disk_note_app/main.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app_key.dart';
+import 'package:hahanote_app/hahanote_lib_sync/crypto/encrypt.dart';
+import 'package:hahanote_app/config/app_config.dart';
+import 'package:hahanote_app/main.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 

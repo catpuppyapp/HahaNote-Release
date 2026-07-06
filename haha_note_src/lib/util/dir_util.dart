@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/util/fs.dart' show Fs;
 
 
 const _TAG = "dir_util.dart";

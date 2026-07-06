@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/bean/bean.dart' show LabelValue;
-import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/my_http_overrides.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/page/base/searchable_page_state.dart';
-import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
-import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
-import 'package:cloud_disk_note_app/widget/dialogs.dart';
+import 'package:hahanote_app/bean/bean.dart' show LabelValue;
+import 'package:hahanote_app/hahanote_lib_sync/remotes/base/my_http_overrides.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/page/base/searchable_page_state.dart';
+import 'package:hahanote_app/util/fs.dart' show Fs;
+import 'package:hahanote_app/widget/custom_list_view.dart';
+import 'package:hahanote_app/widget/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 

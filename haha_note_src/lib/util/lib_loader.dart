@@ -1,11 +1,11 @@
 import 'dart:ffi';
 import 'dart:io' show Platform, File;
 
-import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
+import 'package:hahanote_app/util/fs.dart' show Fs;
 import 'package:path/path.dart' as p;
 
-import '../cloud_disk_note/app.dart';
-import '../cloud_disk_note/storage/files/file_path.dart';
+import '../hahanote_lib_sync/app.dart';
+import '../hahanote_lib_sync/storage/files/file_path.dart';
 
 const _TAG = "lib_loader.dart";
 

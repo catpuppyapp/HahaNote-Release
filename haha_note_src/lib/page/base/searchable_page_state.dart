@@ -1,10 +1,10 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart' show randomStringUnsafeButFaster;
-import 'package:cloud_disk_note_app/state/my_page_state.dart' show MyPageState;
-import 'package:cloud_disk_note_app/widget/base_layout.dart';
-import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
-import 'package:cloud_disk_note_app/widget/pull_to_refresh_list.dart';
-import 'package:cloud_disk_note_app/widget/search_text_field.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show randomStringUnsafeButFaster;
+import 'package:hahanote_app/state/my_page_state.dart' show MyPageState;
+import 'package:hahanote_app/widget/base_layout.dart';
+import 'package:hahanote_app/widget/custom_list_view.dart';
+import 'package:hahanote_app/widget/pull_to_refresh_list.dart';
+import 'package:hahanote_app/widget/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
 

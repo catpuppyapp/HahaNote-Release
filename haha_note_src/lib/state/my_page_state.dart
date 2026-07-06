@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart' show t;
-import 'package:cloud_disk_note_app/main.dart' show defaultBackHandler;
-import 'package:cloud_disk_note_app/native_util/msg.dart';
-import 'package:cloud_disk_note_app/ui/ui.dart' show UI;
-import 'package:cloud_disk_note_app/util/util.dart' show copyText;
-import 'package:cloud_disk_note_app/widget/loading.dart' show doActWithLoading;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/i18n/strings.g.dart' show t;
+import 'package:hahanote_app/main.dart' show defaultBackHandler;
+import 'package:hahanote_app/native_util/msg.dart';
+import 'package:hahanote_app/ui/ui.dart' show UI;
+import 'package:hahanote_app/util/util.dart' show copyText;
+import 'package:hahanote_app/widget/loading.dart' show doActWithLoading;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HardwareKeyboard, KeyDownEvent, LogicalKeyboardKey;
 import 'package:lifecycle/lifecycle.dart' show LifecycleAware, LifecycleMixin, LifecycleEvent;

@@ -1,14 +1,14 @@
-import 'package:cloud_disk_note_app/bean/bean.dart' show LabelValue, MenuItem;
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/repo.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/sync.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/sync_history.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/page/base/searchable_page_state.dart';
-import 'package:cloud_disk_note_app/util/util.dart' show formatDateTimeHumanFriendly;
-import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
-import 'package:cloud_disk_note_app/widget/dialogs.dart';
+import 'package:hahanote_app/bean/bean.dart' show LabelValue, MenuItem;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync_history.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/page/base/searchable_page_state.dart';
+import 'package:hahanote_app/util/util.dart' show formatDateTimeHumanFriendly;
+import 'package:hahanote_app/widget/custom_list_view.dart';
+import 'package:hahanote_app/widget/dialogs.dart';
 import 'package:flutter/material.dart';
 
 const _TAG = "sync_history.dart";

@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/ext/iterable_ext.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/native_util/common.dart' show appNativeMethodChannel;
-import 'package:cloud_disk_note_app/util/util.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/ext/iterable_ext.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/native_util/common.dart' show appNativeMethodChannel;
+import 'package:hahanote_app/util/util.dart';
 
 const mimeTextPlain = "text/plain";
 

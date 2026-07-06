@@ -1,6 +1,6 @@
-import 'package:cloud_disk_note_app/main.dart' show defaultBackHandler;
-import 'package:cloud_disk_note_app/ui/app_layout_observer.dart';
-import 'package:cloud_disk_note_app/ui/ui.dart' show UI;
+import 'package:hahanote_app/main.dart' show defaultBackHandler;
+import 'package:hahanote_app/ui/app_layout_observer.dart';
+import 'package:hahanote_app/ui/ui.dart' show UI;
 import 'package:flutter/material.dart';
 
 abstract class BaseLayout {

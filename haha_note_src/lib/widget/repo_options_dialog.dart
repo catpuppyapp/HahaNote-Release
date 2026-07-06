@@ -1,10 +1,10 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/sync.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart' show t;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
+import 'package:hahanote_app/i18n/strings.g.dart' show t;
 import 'package:flutter/material.dart';
 
-import '../cloud_disk_note/storage/repo/config.dart';
-import '../cloud_disk_note/storage/repo/repo.dart';
+import '../hahanote_lib_sync/storage/repo/config.dart';
+import '../hahanote_lib_sync/storage/repo/repo.dart';
 import '../ui/ui.dart';
 
 

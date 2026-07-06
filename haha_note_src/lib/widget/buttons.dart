@@ -1,4 +1,4 @@
-import 'package:cloud_disk_note_app/ui/ui.dart';
+import 'package:hahanote_app/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/cons.dart';

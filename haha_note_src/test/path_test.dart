@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/files/file_path.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/path_place_holder.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart';
-import 'package:cloud_disk_note_app/util/form_validator.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/path_place_holder.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
+import 'package:hahanote_app/util/form_validator.dart';
 import 'package:path/path.dart' as p;
 
 Future<void> main() async {

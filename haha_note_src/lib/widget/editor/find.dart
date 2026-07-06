@@ -1,4 +1,4 @@
-import 'package:cloud_disk_note_app/i18n/strings.g.dart' show t;
+import 'package:hahanote_app/i18n/strings.g.dart' show t;
 import 'package:flutter/material.dart';
 import 'package:code_forge/code_forge.dart'; // 1. 替换为 CodeForge 核心库
 

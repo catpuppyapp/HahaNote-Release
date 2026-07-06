@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/config/app_config.dart';
-import 'package:cloud_disk_note_app/util/util.dart';
+import 'package:hahanote_app/config/app_config.dart';
+import 'package:hahanote_app/util/util.dart';
 import 'package:flutter/widgets.dart';
 
 import '../config/display_mode.dart';

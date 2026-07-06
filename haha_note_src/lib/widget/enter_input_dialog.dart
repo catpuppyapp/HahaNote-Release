@@ -1,4 +1,4 @@
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 
 /// 可复用的弹窗组件：按回车提交并关闭弹窗

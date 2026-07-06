@@ -1,4 +1,4 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/string_ext.dart';
+import 'package:hahanote_app/hahanote_lib_sync/string_ext.dart';
 
 Future<void> main() async {
   assert("".split("\n").length == 1);

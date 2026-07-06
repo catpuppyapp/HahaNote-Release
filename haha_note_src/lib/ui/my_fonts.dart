@@ -1,7 +1,7 @@
-import 'package:cloud_disk_note_app/util/util.dart';
+import 'package:hahanote_app/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../cloud_disk_note/app.dart';
+import '../hahanote_lib_sync/app.dart';
 
 const _TAG = "my_fonts.dart";
 

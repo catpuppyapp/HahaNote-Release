@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/files/file_path.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/temp/temp_dir.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart';
-import 'package:cloud_disk_note_app/config/portable.dart';
-import 'package:cloud_disk_note_app/util/byte_count.dart' show ByteCountingSink;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/temp/temp_dir.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
+import 'package:hahanote_app/config/portable.dart';
+import 'package:hahanote_app/util/byte_count.dart' show ByteCountingSink;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory, getApplicationDocumentsDirectory;
 
-import '../cloud_disk_note/pair.dart';
+import '../hahanote_lib_sync/pair.dart';
 
 const _TAG = "fs.dart";
 

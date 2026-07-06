@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/widget/loading.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/widget/loading.dart';
 import 'package:flutter/material.dart';
 
 class SearchTextFiled extends StatefulWidget {

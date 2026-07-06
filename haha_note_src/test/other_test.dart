@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/client/client.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/remote.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/remotes/pack/obj_pack.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/files/file_path.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/repo.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/client/client.dart';
+import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
+import 'package:hahanote_app/hahanote_lib_sync/remotes/pack/obj_pack.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
 import 'package:flutter/widgets.dart';
 
 

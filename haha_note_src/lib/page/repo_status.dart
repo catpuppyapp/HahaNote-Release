@@ -1,19 +1,19 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/bean/bean.dart' show LabelValue, MenuItem;
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/repo.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/status_item.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/versioning/version.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/native_util/open_file.dart';
-import 'package:cloud_disk_note_app/page/base/searchable_page_state.dart';
-import 'package:cloud_disk_note_app/util/util.dart';
-import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
+import 'package:hahanote_app/bean/bean.dart' show LabelValue, MenuItem;
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/status_item.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/version.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/native_util/open_file.dart';
+import 'package:hahanote_app/page/base/searchable_page_state.dart';
+import 'package:hahanote_app/util/util.dart';
+import 'package:hahanote_app/widget/custom_list_view.dart';
 import 'package:flutter/material.dart';
 
-import '../cloud_disk_note/app.dart';
-import '../cloud_disk_note/storage/repo/sync.dart';
+import '../hahanote_lib_sync/app.dart';
+import '../hahanote_lib_sync/storage/repo/sync.dart';
 import '../constants/cons.dart';
 import '../ui/ui.dart';
 import '../util/fs.dart';

@@ -1,5 +1,5 @@
-import '../cloud_disk_note/storage/repo/repo.dart';
-import '../cloud_disk_note/storage/repo/sync.dart';
+import '../hahanote_lib_sync/storage/repo/repo.dart';
+import '../hahanote_lib_sync/storage/repo/sync.dart';
 import '../i18n/strings.g.dart';
 
 // 关联函数 MergeMode.toText，要改连关联函数一起改

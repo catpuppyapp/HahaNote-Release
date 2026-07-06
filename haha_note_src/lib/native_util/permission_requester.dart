@@ -1,9 +1,9 @@
 
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/native_util/common.dart' show appNativeMethodChannel;
-import 'package:cloud_disk_note_app/util/app_info.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/native_util/common.dart' show appNativeMethodChannel;
+import 'package:hahanote_app/util/app_info.dart';
 
 class PermissionRequester {
   static Future<void> requestDisableBatteryOptimization() async {

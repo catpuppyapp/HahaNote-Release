@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/bean/bean.dart' show FileItem, Canceler;
-import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
+import 'package:hahanote_app/bean/bean.dart' show FileItem, Canceler;
+import 'package:hahanote_app/util/fs.dart' show Fs;
 import 'package:flutter/material.dart';
 
 import '../i18n/strings.g.dart';

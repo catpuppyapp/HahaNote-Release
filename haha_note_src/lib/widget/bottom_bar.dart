@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/widget/dialogs.dart' show Dialogs;
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
 import 'package:flutter/material.dart';
 
 // 小于65按钮按下阴影不圆，高度不够

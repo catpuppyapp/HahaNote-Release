@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/native_util/common.dart' show appNativeMethodChannel;
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/native_util/common.dart' show appNativeMethodChannel;
 import 'package:flutter/services.dart';
 
 const _TAG = "TaskMan";

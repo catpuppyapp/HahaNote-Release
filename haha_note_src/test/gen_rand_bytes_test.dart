@@ -1,4 +1,4 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
 import 'package:cryptography/helpers.dart';
 
 // generate random bytes

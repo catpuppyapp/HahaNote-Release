@@ -1,10 +1,10 @@
 import 'dart:io' show File;
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/state/my_page_state.dart' show MyPageState;
-import 'package:cloud_disk_note_app/util/fs.dart' show Fs;
-import 'package:cloud_disk_note_app/widget/base_layout.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/state/my_page_state.dart' show MyPageState;
+import 'package:hahanote_app/util/fs.dart' show Fs;
+import 'package:hahanote_app/widget/base_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:path/path.dart' as p;

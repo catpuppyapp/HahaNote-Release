@@ -1,22 +1,22 @@
-import 'package:cloud_disk_note_app/bean/bean.dart' show LabelValue, ActRegion, MenuItem;
-import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/remote.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/files/file_info.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/repo.dart' show Repo;
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/sync.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/versioning/related_oids.dart';
-import 'package:cloud_disk_note_app/constants/cons.dart' show Cons;
-import 'package:cloud_disk_note_app/db/db.dart';
-import 'package:cloud_disk_note_app/db/entity/repo_entity.dart';
-import 'package:cloud_disk_note_app/ext/state_ext.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart';
-import 'package:cloud_disk_note_app/page/base/searchable_widget_state.dart';
-import 'package:cloud_disk_note_app/util/fs.dart';
-import 'package:cloud_disk_note_app/util/util.dart' show formatDateTimeHumanFriendly, copyText;
-import 'package:cloud_disk_note_app/widget/custom_list_view.dart';
-import 'package:cloud_disk_note_app/widget/dialogs.dart' show Dialogs;
+import 'package:hahanote_app/bean/bean.dart' show LabelValue, ActRegion, MenuItem;
+import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_info.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart' show Repo;
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/related_oids.dart';
+import 'package:hahanote_app/constants/cons.dart' show Cons;
+import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/db/entity/repo_entity.dart';
+import 'package:hahanote_app/ext/state_ext.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/page/base/searchable_widget_state.dart';
+import 'package:hahanote_app/util/fs.dart';
+import 'package:hahanote_app/util/util.dart' show formatDateTimeHumanFriendly, copyText;
+import 'package:hahanote_app/widget/custom_list_view.dart';
+import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
 import 'package:flutter/material.dart';
 
-import '../../cloud_disk_note/storage/files/file_path.dart';
+import '../../hahanote_lib_sync/storage/files/file_path.dart';
 import '../../ui/ui.dart';
 
 

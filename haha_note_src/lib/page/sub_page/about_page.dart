@@ -1,7 +1,7 @@
-import 'package:cloud_disk_note_app/i18n/strings.g.dart' show t;
-import 'package:cloud_disk_note_app/main.dart';
-import 'package:cloud_disk_note_app/util/util.dart' show openUrlOrShowErrMsg, openEmailOrShowErrMsg;
-import 'package:cloud_disk_note_app/widget/app_icon.dart';
+import 'package:hahanote_app/i18n/strings.g.dart' show t;
+import 'package:hahanote_app/main.dart';
+import 'package:hahanote_app/util/util.dart' show openUrlOrShowErrMsg, openEmailOrShowErrMsg;
+import 'package:hahanote_app/widget/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

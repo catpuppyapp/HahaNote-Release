@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/main.dart';
-import 'package:cloud_disk_note_app/util/util.dart';
+import 'package:hahanote_app/main.dart';
+import 'package:hahanote_app/util/util.dart';
 import 'package:flutter/material.dart';
 
 import '../db/db.dart';

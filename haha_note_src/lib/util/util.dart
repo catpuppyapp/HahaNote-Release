@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/repo/status_item.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/storage/utils.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/time/time_data.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/status_item.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
+import 'package:hahanote_app/hahanote_lib_sync/time/time_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show ClipboardData, Clipboard, PlatformException;
 import 'package:markdown/markdown.dart' as md;
@@ -12,7 +12,7 @@ import 'package:path/path.dart' as p;
 import 'package:process_runner/process_runner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../cloud_disk_note/storage/files/file_path.dart';
+import '../hahanote_lib_sync/storage/files/file_path.dart';
 import '../config/app_config.dart';
 import '../constants/cons.dart';
 import '../db/db.dart';

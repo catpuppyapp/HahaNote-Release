@@ -1,19 +1,19 @@
 import 'dart:io' show FileSystemEntityType;
 import 'dart:math';
 
-import 'package:cloud_disk_note_app/bean/bean.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/app.dart';
-import 'package:cloud_disk_note_app/cloud_disk_note/exception/exception.dart';
-import 'package:cloud_disk_note_app/i18n/strings.g.dart' show t;
-import 'package:cloud_disk_note_app/main.dart';
-import 'package:cloud_disk_note_app/util/util.dart';
-import 'package:cloud_disk_note_app/widget/checkbox_dialog.dart';
-import 'package:cloud_disk_note_app/widget/enter_input_dialog.dart';
-import 'package:cloud_disk_note_app/widget/path_chooser.dart';
+import 'package:hahanote_app/bean/bean.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/i18n/strings.g.dart' show t;
+import 'package:hahanote_app/main.dart';
+import 'package:hahanote_app/util/util.dart';
+import 'package:hahanote_app/widget/checkbox_dialog.dart';
+import 'package:hahanote_app/widget/enter_input_dialog.dart';
+import 'package:hahanote_app/widget/path_chooser.dart';
 import 'package:flutter/material.dart';
 
-import '../cloud_disk_note/on_off_util.dart';
-import '../cloud_disk_note/storage/repo/sync.dart';
+import '../hahanote_lib_sync/on_off_util.dart';
+import '../hahanote_lib_sync/storage/repo/sync.dart';
 import '../ui/ui.dart';
 import '../util/fs.dart';
 

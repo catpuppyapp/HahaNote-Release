@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/ui/ui.dart' show UI;
-import 'package:cloud_disk_note_app/widget/editor/find.dart' show CodeFindPanelView;
+import 'package:hahanote_app/ui/ui.dart' show UI;
+import 'package:hahanote_app/widget/editor/find.dart' show CodeFindPanelView;
 import 'package:code_forge/code_forge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

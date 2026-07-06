@@ -1,5 +1,5 @@
-import 'package:cloud_disk_note_app/cloud_disk_note/remotes/base/remote.dart';
-import 'package:cloud_disk_note_app/widget/sort_dialog.dart';
+import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
+import 'package:hahanote_app/widget/sort_dialog.dart';
 import 'package:flutter/material.dart';
 
 /// Flutter code sample for [Radio].
