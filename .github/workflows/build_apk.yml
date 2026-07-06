@@ -55,6 +55,8 @@ jobs:
         working-directory: haha_note_src
         run: |
           cd build_script
+          chmod +x prebuild.sh
+          ./prebuild.sh
           chmod +x bapk_build_apk.sh
           ./bapk_build_apk.sh
 
