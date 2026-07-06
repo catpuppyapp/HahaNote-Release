@@ -96,6 +96,15 @@ class MarkdownHtmlPreviewerState extends State<MarkdownHtmlPreviewer> {
     return Html(
       data: widget.data,
       extensions: [
+        TagExtension(
+          // <hr />
+          // the default style have too much bottom padding,
+          // so use a divider instead of it.
+          tagsToExtend: {"hr"},
+          builder: (extensionContext) {
+            return const Divider();
+          }
+        ),
         // 拦截图片标签 <img>
         TagExtension(
           tagsToExtend: {"img"},
