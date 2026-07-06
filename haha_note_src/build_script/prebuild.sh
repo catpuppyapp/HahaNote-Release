@@ -16,4 +16,8 @@ echo ${PUB_CACHE}
 echo rust print: rustc version is:
 rustc -Vv
 
-sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+# if file does not exist, will throw err
+# sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
+# find then sed to avoid throw err, it will only run sed when file exists
+find "${PUB_CACHE}/hosted/" -path "*/jni-*/src/CMakeLists.txt" -exec sed -i -e 's/-Wl,/-Wl,--build-id=none,/' {} +
+
