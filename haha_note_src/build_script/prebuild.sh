@@ -3,7 +3,9 @@
 # install rust toolchain
 # install rustup
 # the command must run in rust-toolchain.toml dir (or it's parent?)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+# sh -s -- -y, the -s is read from stdin
+# -y is answer yes
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 . "$HOME/.cargo/env"
 # run the command will trigger rust toolchains download, 
 # the version specified rust-toolchain.toml file, 
