@@ -13,6 +13,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 . versions.sh
 rustup toolchain install ${VER_RUST_TOOLCHAIN}
 rustup default ${VER_RUST_TOOLCHAIN}
+export RUSTUP_TOOLCHAIN=${VER_RUST_TOOLCHAIN}
 # reload rust env
 . "$HOME/.cargo/env"
 rustup target add \
