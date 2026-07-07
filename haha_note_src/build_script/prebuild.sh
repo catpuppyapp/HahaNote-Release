@@ -16,15 +16,16 @@ rustup default ${VER_RUST_TOOLCHAIN}
 export RUSTUP_TOOLCHAIN=${VER_RUST_TOOLCHAIN}
 # reload rust env
 . "$HOME/.cargo/env"
-rustup target add \
-  aarch64-linux-android \
-  armv7-linux-androideabi \
-  i686-linux-android \
-  x86_64-linux-android \
-  x86_64-pc-windows-gnu \
-  x86_64-unknown-linux-gnu
 
-rustup toolchain uninstall stable
+# rustup target add \
+#   aarch64-linux-android \
+#   armv7-linux-androideabi \
+#   i686-linux-android \
+#   x86_64-linux-android \
+#   x86_64-pc-windows-gnu \
+#   x86_64-unknown-linux-gnu
+
+# rustup toolchain uninstall stable
 
 
 # check version
