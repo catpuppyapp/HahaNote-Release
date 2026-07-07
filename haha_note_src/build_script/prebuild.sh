@@ -3,10 +3,18 @@
 # install rust toolchain
 # install rustup
 # the command must run in rust-toolchain.toml dir (or it's parent?)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+. "$HOME/.cargo/env"
 # run the command will trigger rust toolchains download, 
 # the version specified rust-toolchain.toml file, 
 # find current dir first, if not found, find parent, most maybe 3 layers dirs
+cargo check
+# reload rust env
+. "$HOME/.cargo/env"
+
+# check version
+echo rust print: rust toolchain version is:
+cargo --version
 rustc -Vv
 
 
@@ -16,8 +24,7 @@ flutter pub get
 echo flutter print: flutter_pub_cache_path_is:
 echo ${PUB_CACHE}
 
-echo rust print: rustc version is:
-rustc -Vv
+echo "will try insert 'build-id=none' to 'flutter pub cache/middle dirs/CMakeLists.txt'"
 
 # if file does not exist, will throw err
 # sed -i -e 's/-Wl,/-Wl,--build-id=none,/' ${PUB_CACHE}/hosted/*/jni-*/src/CMakeLists.txt
