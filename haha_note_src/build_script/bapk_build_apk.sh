@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-cd ..
+chmod +x prebuild.sh
+./prebuild.sh
+
+pushd ..
 flutter build apk --release --split-per-abi
 
 
-cd build_script
+popd
 # echo "explorer ..\build\app\outputs\flutter-apk"

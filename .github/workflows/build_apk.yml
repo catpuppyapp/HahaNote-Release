@@ -52,21 +52,13 @@ jobs:
           # cache: true # 开启 flutter 缓存，下次可能就不会重新下载了，而是复用已下载的sdk
       - run: flutter --version
 
-      - name: Run Prebuild scripts
-        shell: bash
-        working-directory: haha_note_src/build_script
-        run: |
-          chmod +x prebuild.sh
-          ./prebuild.sh
-
       - name: Build Release APK
         working-directory: haha_note_src
         run: |
-          cd build_script
-          echo "rust version before build apk:"
-          rustc -Vv
+          pushd build_script
           chmod +x bapk_build_apk.sh
           ./bapk_build_apk.sh
+          popd
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v7
