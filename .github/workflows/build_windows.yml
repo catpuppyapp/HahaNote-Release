@@ -20,7 +20,7 @@ jobs:
       # code_forge requires rustup
       - name: install rust-toolchain
         uses: dtolnay/rust-toolchain@stable
-      - run: cargo --version
+      - run: rustc -Vv
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -49,8 +49,9 @@ jobs:
         # if use $GITHUB_WORKSPACE, in powershell maybe must write as $env:GITHUB_WORKSPACE
         # cd ${{ github.workspace }}\haha_note_src\build_script
         run: |
-          cd build_script
+          pushd build_script
           .\bwo_build_windows_only.ps1
+          popd
 
       - name: Upload
         uses: actions/upload-artifact@v7

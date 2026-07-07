@@ -39,13 +39,10 @@ jobs:
             git
 
       # code_forge requires rustup
-      # this action have bug:
-      #   if specified version to 1.96.1, 
-      #   will use 1.96.0 to build code forge,
-      #   so I use script install rust instead
-      # - name: install rust-toolchain
-      #   uses: dtolnay/rust-toolchain@stable
-      # - run: cargo --version
+      # if specified version the cargokit or flutter rust birdge still choose the stable version, so better override the stable version
+      - name: install rust-toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - run: rustc -Vv
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2

@@ -1,0 +1,33 @@
+name: Print Env
+
+on:
+  push:
+    tags:
+      - 'v*'  # 触发条件：当推送标签以 'v' 开头时
+  workflow_dispatch:  # 允许手动触发工作流
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04  # 使用 Ubuntu 运行环境
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            curl \
+            make \
+            tar \
+            unzip \
+            git
+
+      # code_forge requires rustup
+      # if specified version the cargokit or flutter rust birdge still choose the stable version, so better override the stable version
+      - name: Rust toolchain version
+        uses: dtolnay/rust-toolchain@stable
+      - run: rustc -Vv
+
+

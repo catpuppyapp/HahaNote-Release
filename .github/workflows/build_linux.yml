@@ -35,7 +35,7 @@ jobs:
       # code_forge requires rustup
       - name: install rust-toolchain
         uses: dtolnay/rust-toolchain@stable
-      - run: cargo --version
+      - run: rustc -Vv
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -55,9 +55,10 @@ jobs:
       - name: Build
         working-directory: haha_note_src
         run: |
-          cd build_script
+          pushd build_script
           chmod +x bbbl_build_all_linux.sh
           ./bbbl_build_all_linux.sh
+          popd
 
       - name: Upload
         uses: actions/upload-artifact@v7
