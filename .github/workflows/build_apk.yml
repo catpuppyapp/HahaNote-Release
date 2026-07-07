@@ -66,6 +66,8 @@ jobs:
         working-directory: haha_note_src
         run: |
           cd build_script
+          echo "rust version before build apk:"
+          rustc -Vv
           chmod +x bapk_build_apk.sh
           ./bapk_build_apk.sh
 

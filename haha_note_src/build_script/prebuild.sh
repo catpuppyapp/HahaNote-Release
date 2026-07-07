@@ -10,14 +10,26 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # run the command will trigger rust toolchains download, 
 # the version specified rust-toolchain.toml file, 
 # find current dir first, if not found, find parent, most maybe 3 layers dirs
-cargo check
+. versions.sh
+rustup toolchain install ${VER_RUST_TOOLCHAIN}
+rustup default ${VER_RUST_TOOLCHAIN}
 # reload rust env
 . "$HOME/.cargo/env"
+rustup target add \
+  aarch64-linux-android \
+  armv7-linux-androideabi \
+  i686-linux-android \
+  x86_64-linux-android \
+  x86_64-pc-windows-gnu \
+  x86_64-unknown-linux-gnu
+
 
 # check version
 echo rust print: rust toolchain version is:
 cargo --version
 rustc -Vv
+echo rustup show
+rustup show
 
 
 # flutter pub get then use sed to add build-id=none to CMakeLists.txt for pass the RB, else maybe generate difference apks
