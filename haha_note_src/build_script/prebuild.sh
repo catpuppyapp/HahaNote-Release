@@ -23,6 +23,8 @@ rustup target add \
   x86_64-pc-windows-gnu \
   x86_64-unknown-linux-gnu
 
+rustup toolchain uninstall stable
+
 
 # check version
 echo rust print: rust toolchain version is:
