@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-# if any non-zero returned, then abort this script
+# if any non-zero returned, then abort this script, 
+# but will not abort github workflow, 
+# just abort to run the commands in this file after the line which return non-zero
+# `echo $?` to show returned of last executed command
 set -e
 
 echo "BEGIN: apply cargokit_patch for code_forge"
