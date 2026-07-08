@@ -1,0 +1,4 @@
+# cargokit.yaml
+cargo:
+  release:
+    toolchain: 1.96.0
