@@ -14,7 +14,6 @@ echo "will try insert 'build-id=none' to 'flutter pub cache/middle dirs/CMakeLis
 find "${PUB_CACHE}/hosted/" -path "*/jni-*/src/CMakeLists.txt" -exec sed -i -e 's/-Wl,/-Wl,--build-id=none,/' {} +
 
 # apply cargokit patch for code_forge, to make sure it use our expceted rust toolchain
-echo "apply cargokit_patch (for code_forge)"
 pushd cargokit_patch
 chmod +x apply.sh
 ./apply.sh
