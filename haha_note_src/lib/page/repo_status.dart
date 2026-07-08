@@ -412,14 +412,14 @@ class _RepoStatusPageState extends SearchablePageState<RepoStatusPage> {
           value: "copy_path",
           text: t.copyPath,
           onClick: () async {
-            await copyTextThenShowMsg(item.relativePathUnderWorkdir);
+            await copyTextThenShowMsg(item.getFullPathOfItem(widget.repoPath));
           },
         ),
         MenuItem(
-          value: "copy_absolute_path",
-          text: t.copyAbsolutePath,
+          value: "copy_relative_path",
+          text: t.copyRelativePath,
           onClick: () async {
-            await copyTextThenShowMsg(item.getFullPathOfItem(widget.repoPath));
+            await copyTextThenShowMsg(item.relativePathUnderWorkdir);
           },
         ),
         MenuItem(

@@ -2339,10 +2339,10 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
               _showFileInfo(fullPath);
             }),
             MenuItem(value: "copy_path", text: t.copyPath, onClick: () async {
-              _copyRepoRelativePath(fullPath);
-            }),
-            MenuItem(value: "copy_absolute_path", text: t.copyAbsolutePath, onClick: () async {
               copyTextThenShowMsg(fullPath);
+            }),
+            MenuItem(value: "copy_relative_path", text: t.copyRelativePath, onClick: () async {
+              _copyRepoRelativePath(fullPath);
             }),
             MenuItem(value: "go_to", text: t.goTo, onClick: () async {
               final path = await Dialogs.showInputDialog(
@@ -2747,9 +2747,9 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                     } else if (v == 'info') {
                       _showFileInfo(fullPath);
                     } else if (v == 'copy_path') {
-                      _copyRepoRelativePath(fullPath);
-                    } else if (v == 'copy_absolute_path') {
                       copyTextThenShowMsg(fullPath);
+                    } else if (v == 'copy_relative_path') {
+                      _copyRepoRelativePath(fullPath);
                     } else if (v == 'history') {
                       goToFileHistoryPage(fullPath);
                     } else if (v == 'revealInFileExplorer') {
@@ -2764,7 +2764,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                     PopupMenuItem(value: 'delete', child: Text(t.delete)),
                     PopupMenuItem(value: 'info', child: Text(t.info)),
                     PopupMenuItem(value: 'copy_path', child: Text(t.copyPath)),
-                    PopupMenuItem(value: 'copy_absolute_path', child: Text(t.copyAbsolutePath)),
+                    PopupMenuItem(value: 'copy_relative_path', child: Text(t.copyRelativePath)),
                     PopupMenuItem(value: 'history', child: Text(t.history)),
                   ],
                 ),

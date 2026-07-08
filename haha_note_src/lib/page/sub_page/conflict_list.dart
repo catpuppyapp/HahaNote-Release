@@ -316,8 +316,8 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           },
         ),
         MenuItem(
-          value: "copy_path",
-          text: t.copyPath,
+          value: "copy_relative_path",
+          text: t.copyRelativePath,
           onClick: () async {
             copyText(getItemPath(item));
           },

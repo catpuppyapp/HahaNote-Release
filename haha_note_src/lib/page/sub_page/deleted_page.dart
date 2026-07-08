@@ -310,8 +310,8 @@ class DeletedPageState extends SearchableWidgetState<DeletedPage> {
           },
         ),
         MenuItem(
-          value: "copy_path",
-          text: t.copyPath,
+          value: "copy_relative_path",
+          text: t.copyRelativePath,
           onClick: () async {
             copyText(item.path);
           },
