@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# loading versions
+chmod +x versions.sh
+# must use `. ./script` to make sure it load to current shell rather than a sub shell
+. ./versions.sh
+
 # flutter pub get then use sed to add build-id=none to CMakeLists.txt for pass the RB, else maybe generate difference apks
 # see: https://codeberg.org/IzzyOnDroid/repodata/issues/327#issuecomment-18667955
 flutter pub get
@@ -13,8 +18,9 @@ echo "will try insert 'build-id=none' to 'flutter pub cache/middle dirs/CMakeLis
 # find then sed to avoid throw err, it will only run sed when file exists
 find "${PUB_CACHE}/hosted/" -path "*/jni-*/src/CMakeLists.txt" -exec sed -i -e 's/-Wl,/-Wl,--build-id=none,/' {} +
 
-# apply cargokit patch for code_forge, to make sure it use our expceted rust toolchain
-pushd cargokit_patch
-chmod +x apply.sh
-./apply.sh
-popd
+# use versions instead of, it can read rustup toolchain from shell envs
+# apply cargokit patch for code_forge, to make sure it use our expected rust toolchain
+#pushd cargokit_patch
+#chmod +x apply.sh
+#./apply.sh
+#popd

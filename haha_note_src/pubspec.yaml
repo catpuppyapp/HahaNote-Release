@@ -104,12 +104,12 @@ dependencies:
   flutter_html: ^3.0.0
   # table/video/audio/iframe support for flutter_html
   flutter_html_all: ^3.0.0
-  code_forge: ^10.7.1
+  #  code_forge: ^10.7.1
   # x 添加了 Ctrl+Shift+Z 执行Redo的功能，已发pr，上游已合并，所以可直接用上游了
-  # code_forge:
-  #   git:
-  #     url: https://github.com/Bandeapart1964/code_forge.git
-  #     ref: 25386ee51a080405f0486e7b4be15ebde93632d5
+  code_forge:
+    git:
+      url: https://github.com/Bandeapart1964/code_forge.git
+      ref: 65162edad2fbc29f1639fc71b338f9291f323256
 
 dev_dependencies:
   flutter_test:
