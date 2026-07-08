@@ -47,18 +47,26 @@ class SourceSpanException implements Exception {
   }
 }
 
+// Simulate the enum `Toolchain`, but use class instead,
+// so can use custom value as toolchain version
 class Toolchain {  
   static final stable = Toolchain("stable");
   static final beta = Toolchain("beta");
   static final nightly = Toolchain("nightly");
 
+  // Simulate an enum’s name field
+  // e.g. enum Toolchain { stable },
+  // have an default field `Toolchain.stable.name`
   final String name;
   Toolchain(this.name);
 
   
   @override
   String toString() {
-    return 'name: $name';
+    // Simulate an enum’s toString() method.
+    // e.g. enum Toolchain { stable }, toString is `Toolchain.stable`,
+    // for the class, is "Toolchain.$name"
+    return "Toolchain.$name";
   }
 
   @override
