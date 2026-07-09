@@ -970,7 +970,7 @@ class Repo {
       App.logger.debug(_TAG, "#doActWithLock: waiting for lock...");
 
       while(locked == null) {
-        await Future.delayed(Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 100));
       }
 
       if(!locked!) {
@@ -1000,7 +1000,7 @@ class Repo {
 
         // 若git后端，避免提交会话和上传lock冲突，等待，直到上传锁结束
         while(await isLockRenewaling()) {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
         }
 
         childSp?.send(lockCmdRemoteSessionCommitBegin);
@@ -1026,7 +1026,7 @@ class Repo {
             // 等10秒，等到子线程退出，100毫秒检查一次，检查100次
             final waitCount = 100;
             for(var i = 0; i < waitCount; i++) {
-              await Future.delayed(Duration(milliseconds: 100));
+              await Future.delayed(const Duration(milliseconds: 100));
 
               if(unlockSuccess) {
                 App.logger.debug(_TAG, "#doActWithLock(): unlock success");

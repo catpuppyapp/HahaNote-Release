@@ -138,7 +138,7 @@ class IsolatePool {
       }else if(m["type"] == "err") {
         // 把流关了
         msp.send({"type": "checkClose", "force": true});
-        await Future.delayed(Duration(seconds: 1)); // 等1秒，尽量等待关闭后再继续抛错误
+        await Future.delayed(const Duration(seconds: 1)); // 等1秒，尽量等待关闭后再继续抛错误
         // 设置错误信息，调用者通过 throwIfErr() 检查并抛出异常
         _errMsg = m["msg"] ?? "sub isolate got an unknown error";
 
@@ -152,7 +152,7 @@ class IsolatePool {
         throw AppException("create isolates err, expect ${workersSendPorts.length} isolates, but got: $readyCount");
       }
 
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
     }
   }
 
@@ -192,7 +192,7 @@ class IsolatePool {
     }
 
     // wait for close
-    // await Future.delayed(Duration(milliseconds: 200));
+    // await Future.delayed(const Duration(milliseconds: 200));
 
     // kill workers
     // 倒序，给优雅关闭留点时间
@@ -273,7 +273,7 @@ Future<void> _isolateEntryPoint(Map initMsg) async {
     // 定时让main检查是否任务已经结束
     () async {
       while(!closed) {
-        await Future.delayed(Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 100));
         mainSp.send({"type": "checkClose"});
       }
     }();

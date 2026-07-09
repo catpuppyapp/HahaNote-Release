@@ -4290,7 +4290,7 @@ abstract class Remote implements ClosableSession {
 
   Future<void> awaitLockRenewalFinished() async {
     while((await isLockRenewaling?.call()) == true) {
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future.delayed(const Duration(milliseconds: 200));
     }
   }
 

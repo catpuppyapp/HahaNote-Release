@@ -696,7 +696,7 @@ class Dropbox extends Remote {
       // 查询，直到操作完成
       while(true) {
         // 400ms检查一次
-        await Future.delayed(Duration(milliseconds: 400));
+        await Future.delayed(const Duration(milliseconds: 400));
 
         final httpResponse = await _sendJsonRequest(
             api: api,
