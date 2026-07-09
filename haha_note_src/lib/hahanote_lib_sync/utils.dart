@@ -1,4 +1,4 @@
-import 'dart:async' show TimeoutException;
+import 'dart:async' show TimeoutException, Completer;
 import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:math';
@@ -357,7 +357,7 @@ Future<void> doInterruptibleTask<T>({
   // 则抛出异常
   task.whenComplete(() => done = true);
 
-  duration = duration ?? Duration(milliseconds: 500);
+  duration = duration ?? const Duration(milliseconds: 500);
   while(!done) {
     try {
       // 每500毫秒检查一次会话是否已经取消
@@ -385,12 +385,14 @@ bool isInvalidPort(int? port) {
   return port == null || port < 1;
 }
 
-//TODO 期望修改为：任一任务完成则立刻添加下一个任务，任一出错则此函数直接抛出异常（试过，比想象中复杂，重点是有些东西我不确定，还需要测试，由于是非必要的功能，想想还是算了）
-//TODO expect change to: Any task err add next task immediately, any task err throw immediately (must test)
+///任一任务完成则立刻添加下一个任务，任一出错则此函数直接抛出异常
+///Any task err add next task immediately, any task err throw immediately
 Future<void> futureFunctionPool(
   List<Future Function()> futuresFunctions, {
   int max = 5,
-  // if got any error: when eagerErr is true, throw immediately, else, throw after all task complete
+  // if got any error:
+  // when eagerErr is true, throw immediately;
+  // else, throw after all task completed
   bool eagerError = true,
 }) async {
   if(max < 1) {
@@ -416,21 +418,67 @@ Future<void> futureFunctionPool(
   }
 
   // 并发执行
-  final tasks = <Future>[];
-  for(final f in futuresFunctions) {
-    if(tasks.length < max) {
-      tasks.add(f());
-    }else {
-      // eagerError: true，作用是任一任务出错就立刻抛异常；
-      // 否则出错时，会先执行完所有任务，然后才抛出第一个错误，后续任务若有错，会被丢弃
-      await Future.wait(tasks, eagerError: eagerError);
-      tasks.clear();
-    }
+  final completers = List<Completer>.generate(futuresFunctions.length, (idx) => Completer(), growable: false);
+
+  int indexOfTask = 0;
+  int running = 0;
+  int done = 0;
+  Completer? errorCompleter;
+  void onValue(int index) {
+    done++;
+    running--;
+
+    completers[index].complete();
   }
 
-  if(tasks.isNotEmpty) {
-    await Future.wait(tasks, eagerError: eagerError);
-    tasks.clear();
+  void onError(int index, Object error, StackTrace stack) {
+    done++;
+    running--;
+
+    // 应该可以保证只设置第一个error吧，因为这些任务运行在同一线程而且是同步调度的，
+    // 不过就算无法保证也没事，抛出第2或后续错误也无妨
+    if(errorCompleter != null) return;
+
+    final completer = completers[index];
+    // 每个future绑定各自的completer，
+    // 所以不需要使用 completer.isCompleted 来判断Future是否已完成
+    // btw Future.any本质上就是多个future绑定同一个completer，
+    // 在回调通过 completer.isCompleted 来忽略后续future的onValue和onError调用
+    completer.completeError(error, stack);
+    errorCompleter = completer;
+  }
+
+
+  while(done != futuresFunctions.length) {
+    if(eagerError && errorCompleter != null) {
+      return errorCompleter!.future;
+    }
+
+    // all tasks launched, no more to run, just wait all done
+    if(indexOfTask == futuresFunctions.length) {
+      await Future.delayed(const Duration(milliseconds: 20));
+      continue;
+    }
+
+    while(running == max) {
+      await Future.delayed(const Duration(milliseconds: 20));
+    }
+
+    // run task
+    running++;
+    final currentTaskIndex = indexOfTask++;
+    futuresFunctions[currentTaskIndex]().then(
+      (v) {
+        onValue(currentTaskIndex);
+      },
+      onError: (error, stack) {
+        onError(currentTaskIndex, error, stack);
+      }
+    );
+  }
+
+  if(errorCompleter != null) {
+    return errorCompleter!.future;
   }
 
 }
