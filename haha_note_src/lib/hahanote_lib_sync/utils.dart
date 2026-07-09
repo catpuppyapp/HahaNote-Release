@@ -385,9 +385,12 @@ bool isInvalidPort(int? port) {
   return port == null || port < 1;
 }
 
+//TODO 期望修改为：任一任务完成则立刻添加下一个任务，任一出错则此函数直接抛出异常（试过，比想象中复杂，重点是有些东西我不确定，还需要测试，由于是非必要的功能，想想还是算了）
+//TODO expect change to: Any task err add next task immediately, any task err throw immediately (must test)
 Future<void> futureFunctionPool(
   List<Future Function()> futuresFunctions, {
   int max = 5,
+  // if got any error: when eagerErr is true, throw immediately, else, throw after all task complete
   bool eagerError = true,
 }) async {
   if(max < 1) {
