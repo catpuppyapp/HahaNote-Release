@@ -42,7 +42,11 @@ class _ContentItemWaterfallState extends State<ContentItemWaterfall> {
     return Card(
       color: widget.selected?.call(idx, item) == true ? UI.getSelectedBgColor(theme) : null,
       elevation: 2.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        // border
+        side: const BorderSide(color: Colors.grey, width: 0.2),
+      ),
       child: Padding(
         padding: EdgeInsets.all(12.0),
         child: Column(
