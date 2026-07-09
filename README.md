@@ -3,9 +3,12 @@
 
 
 ### Download
-[GitHub Releases](https://github.com/catpuppyapp/HahaNote-Release/releases)
-
-...izzyOnDroid comming soon
+<a href="https://github.com/catpuppyapp/HahaNote-Release/releases" target="_blank">
+    <img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" alt="Get it on GitHub" width=300>
+</a>
+<a href="https://apt.izzysoft.de/fdroid/index/apk/com.catpuppyapp.hahanote" target="_blank">
+    <img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" width=300>
+</a>
 
 
 ### Tutorial
@@ -52,8 +55,9 @@ E2EE promise data encrypted before leaving your device, but on your local device
 4. then I will add the new language in to the app
 
 
-### MacOS
-It will support mac when I got a Mac
+### Mac and IOS
+It will support mac and ios when I got them, your [donation](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) can help me got them faster.
+
 
 
 ### Recommended

@@ -1,4 +1,11 @@
 
+
+---
+1.0.7+8 20260709:
+- Make the colors in the recent files list clearer in dark theme
+- 让最近文件列表的颜色在暗色模式下更清晰
+
+---
 1.0.6+7 20260705:
 - fix typo
 
