@@ -418,17 +418,16 @@ Future<void> futureFunctionPool(
   }
 
   // 并发执行
-  final completers = List<Completer>.generate(futuresFunctions.length, (idx) => Completer(), growable: false);
-
   int indexOfTask = 0;
   int running = 0;
   int done = 0;
-  Completer? errorCompleter;
+  Object? taskError;
+  StackTrace? taskStack;
+  final completer = Completer();
+
   void onValue(int index) {
     done++;
     running--;
-
-    completers[index].complete();
   }
 
   void onError(int index, Object error, StackTrace stack) {
@@ -437,21 +436,16 @@ Future<void> futureFunctionPool(
 
     // 应该可以保证只设置第一个error吧，因为这些任务运行在同一线程而且是同步调度的，
     // 不过就算无法保证也没事，抛出第2或后续错误也无妨
-    if(errorCompleter != null) return;
+    if(taskError != null) return;
 
-    final completer = completers[index];
-    // 每个future绑定各自的completer，
-    // 所以不需要使用 completer.isCompleted 来判断Future是否已完成
-    // btw Future.any本质上就是多个future绑定同一个completer，
-    // 在回调通过 completer.isCompleted 来忽略后续future的onValue和onError调用
-    completer.completeError(error, stack);
-    errorCompleter = completer;
+    taskError = error;
+    taskStack = stack;
   }
 
 
   while(done != futuresFunctions.length) {
-    if(eagerError && errorCompleter != null) {
-      return errorCompleter!.future;
+    if(eagerError && taskError != null) {
+      break;
     }
 
     // all tasks launched, no more to run, just wait all done
@@ -462,6 +456,7 @@ Future<void> futureFunctionPool(
 
     while(running == max) {
       await Future.delayed(const Duration(milliseconds: 20));
+      continue;
     }
 
     // run task
@@ -477,8 +472,12 @@ Future<void> futureFunctionPool(
     );
   }
 
-  if(errorCompleter != null) {
-    return errorCompleter!.future;
+  if(taskError != null) {
+    completer.completeError(taskError!, taskStack);
+  }else {
+    completer.complete();
   }
 
+  // completer返回的future可通过 await 捕获到异常
+  return completer.future;
 }
