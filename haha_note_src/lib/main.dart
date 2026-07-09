@@ -1031,6 +1031,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     refreshUI();
 
     try {
+      final tasks = <Future Function()>[];
       for(final repoEntity in repos) {
         // 并发执行是ok的
         final curStatus = repoStatusMap[repoEntity.path];
@@ -1039,7 +1040,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
           // 登录后自动刷新，又执行，若不创建这个，就重复执行了，然后就会抛出RepoBusy的异常
           repoStatusMap[repoEntity.path] = RepoStatus();
 
-          () async {
+          task() async {
             repoStatusMap[repoEntity.path] = await RepoStatus.checkRepoStatus(
               repoEntity.path,
               throwIfInterrupted: () {
@@ -1052,9 +1053,13 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
               },
             );
             refreshUI();
-          }();
+          }
+
+          tasks.add(task);
         }
       }
+
+      await futureFunctionPool(tasks);
     }catch(e, st) {
       App.logger.debug(_TAG, "loading repos status err: $e\n$st");
       showMsgLong("loading repos status err: $e");
