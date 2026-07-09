@@ -695,7 +695,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
         recentFilesPageKey.currentState?.loadItems();
         return true;
       }else if(currentPage == Cons.homePageCodeRepo 
-        || currentPage == Cons.homePageCodeHome  // 这个是为了刷新仓库列表状态
+        || currentPage == Cons.homePageCodeHome  // 在主页响应F5是为了刷新仓库列表状态
       ) {
         loadHome();
         return true;
@@ -703,7 +703,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     }
 
     // Ctrl+T，sync
-    if(pressedKey == LogicalKeyboardKey.keyT && isControlDown && !isAltDown && !isShiftDown) {
+    if(repo != null && pressedKey == LogicalKeyboardKey.keyT && isControlDown && !isAltDown && !isShiftDown) {
       _doSync();
       return true;
     }
