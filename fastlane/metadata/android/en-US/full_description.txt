@@ -1,4 +1,4 @@
-HahaNote is a file-based + E2EE note taking and syncing app, can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
+HahaNote is a file-based note-taking app, supports  E2EE sync, it can sync your notes to Dropbox/WebDav Server/Github(and other git platforms), support Windows/Linux/Android
 
 Features
 
