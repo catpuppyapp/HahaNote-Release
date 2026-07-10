@@ -8,6 +8,12 @@ Future<void> main() async {
     // eagerError: false, throw when all task done
     await futureFunctionPool(tasks, max: 3, eagerError: true);
     // await futureFunctionPool(tasks, max: 3, eagerError: false);
+    // await futureFunctionPool(tasks, max: 1, eagerError: false);
+    // await futureFunctionPool(tasks, max: 1, eagerError: true);
+    // await futureFunctionPool([task3]);
+    // await futureFunctionPool([task1]);
+    // await futureFunctionPool([task1], max: 0);
+    // await futureFunctionPool([task1], max: -1);
     print("all completed!");  // only saw this if all task done without err
   }catch(e) {
     print("error caught: $e");

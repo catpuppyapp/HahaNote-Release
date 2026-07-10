@@ -391,10 +391,17 @@ Future<void> futureFunctionPool(
   List<Future Function()> futuresFunctions, {
   int max = 5,
   // if got any error:
-  // when eagerErr is true, throw immediately;
+  // when eagerErr is true, throw as soon as possible;
   // else, throw after all task completed
+  // note: set to true cannot promise throw immediately when got an err,
+  // maybe will delay, e.g. task3 got err,
+  // but error maybe throw after task4 or task5 completed
   bool eagerError = true,
 }) async {
+  // 参数检测需抛异常的一律放最前面
+  // 例如这里，这个检测放到列表的空检测前是为了尽早发现参数错误，不然，
+  // 如果测试时 futuresFunctions.isEmpty 为 true，而max参数有误，无法立刻发现，
+  // 运行时若刚好列表非true，max还是1，就会抛出异常，但这个异常明明可在测试时就抛出的
   if(max < 1) {
     throw AppException("invalid `max` value, expected `max >= 1`, but got: $max");
   }
@@ -408,14 +415,16 @@ Future<void> futureFunctionPool(
     return;
   }
 
-  // 最多执行1个任务，一个一个等，其实就是非并发执行
-  if(max == 1) {
-    for(final f in futuresFunctions) {
-      await f();
-    }
-
-    return;
-  }
+  // x 废弃）最多执行1个任务，一个一个等，其实就是非并发执行
+  // 为什么注释：因为还要根据eagerError决定是立刻抛异常，还是全执行完后再抛，
+  // 所以不能简单一个一个执行，不如直接走正式流程
+  // if(max == 1) {
+  //   for(final f in futuresFunctions) {
+  //     await f();
+  //   }
+  //
+  //   return;
+  // }
 
   // 并发执行
   int indexOfTask = 0;
@@ -454,6 +463,7 @@ Future<void> futureFunctionPool(
       continue;
     }
 
+    // wait a seat for next task
     while(running == max) {
       await Future.delayed(const Duration(milliseconds: 20));
       continue;
