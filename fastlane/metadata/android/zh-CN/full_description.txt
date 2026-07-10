@@ -1,4 +1,4 @@
-HahaNote 是一款基于文件的端到端加密（E2EE）笔记与同步应用。它可以将您的笔记同步至 Dropbox、WebDAV 服务器、GitHub（及其他 Git 平台），并支持 Windows、Linux 和 Android 系统。
+HahaNote 是一款基于文件且支持端到端加密（E2EE）同步的笔记应用。它可以将您的笔记同步至 Dropbox、WebDAV 服务器、GitHub（及其他 Git 平台），并支持 Windows、Linux 和 Android 系统。
 
 特性
 
