@@ -667,7 +667,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
         && mounted
     ) {
       // 传false，禁止esc键调用退出app的函数，退出app的函数只在手机上调用，按esc说明有键盘，用不到，想退出可用alt+f4之类的快捷键
-      if(_backHandler(exit: false)) {
+      if(_backHandler()) {
         return true;
       }
     }
@@ -3160,7 +3160,13 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     return false;
   }
 
-  bool _backHandler({bool exit = true}) {
+  bool _backHandler() {
+    // if drawer opened, handle it first
+    if(!isLandscapeLayout() && Global.scaffoldKey.currentState?.isDrawerOpen == true) {
+      softExitApp();
+      return true;
+    }
+
     if(currentPage == Cons.homePageCodeFiles) {
       if(_quitSelectionModeForFiles()) {
         return true;
@@ -3191,10 +3197,8 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
       final scaffold = Global.scaffoldKey.currentState;
       if(scaffold != null) {
         if(scaffold.isDrawerOpen) {
-          if(exit) {
-            softExitApp();
-            return true;
-          }
+          softExitApp();
+          return true;
         }else {
           scaffold.openDrawer();
           return true;
