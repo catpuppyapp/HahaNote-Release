@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_all/flutter_html_all.dart';
+import 'package:flutter_html_math/flutter_html_math.dart';
+import 'package:flutter_html_svg/flutter_html_svg.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hahanote_app/ui/my_fonts.dart';
 import 'package:hahanote_app/util/util.dart';
@@ -14,8 +16,6 @@ import '../db/db.dart';
 import '../i18n/strings.g.dart';
 import '../ui/ui.dart';
 import 'my_highlight_view.dart';
-import 'my_html_audio_extension.dart';
-import 'my_html_video_extension.dart';
 import 'size_adjuster.dart';
 
 const _TAG = "markdown_html_previewer.dart";
@@ -351,8 +351,9 @@ class MarkdownHtmlPreviewerState extends State<MarkdownHtmlPreviewer> {
 
         // flutter_html包内置扩展标签
         TableHtmlExtension(),
-        MyAudioHtmlExtension(basePath: widget.basePath),
-        MyVideoHtmlExtension(basePath: widget.basePath),
+        // 不支持windows，而且视频和音频最好用专门的播放器，所以禁用了
+        // MyAudioHtmlExtension(basePath: widget.basePath),
+        // MyVideoHtmlExtension(basePath: widget.basePath),
         MathHtmlExtension(),
         // 这个必须放到我写的img标签处理器的下面，
         // 不然svg图片会被这个扩展拦截导致点svg图片不会打开对应资源（因为这个svg扩展处理器
