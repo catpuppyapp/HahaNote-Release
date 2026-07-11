@@ -1,6 +1,6 @@
 {
   "appName": "HahaNote",
-  "appDesc": "HahaNote is an e2ee note-taking and syncing app",
+  "appDesc": "A cross-platforms note-taking app, supports E2EE sync",
   "create": "Create",
   "import": "Import",
   "open": "Open",

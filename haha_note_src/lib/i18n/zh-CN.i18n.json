@@ -1,6 +1,6 @@
 {
   "appName": "HahaNote",
-  "appDesc": "HahaNote 是一款支持端到端加密同步的笔记应用",
+  "appDesc": "跨平台笔记应用，支持端到端加密同步",
   "create": "新建",
   "import": "导入",
   "open": "打开",
