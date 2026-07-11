@@ -42,8 +42,8 @@ dependencies:
 
   # dart run build_runner build -d
   # dart run slang configure
-  slang: ^4.11.1
-  slang_flutter: ^4.11.0
+  slang: ^4.18.0
+  slang_flutter: ^4.18.0
 
   # var logger = Logger();
 #  logger: ^2.6.2
@@ -122,8 +122,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
-  build_runner: ^2.10.4
-  slang_build_runner: ^4.11.0
+  build_runner: ^2.15.1
+  slang_build_runner: ^4.18.0
 #  hive_ce_generator: ^1.11.0
 
   # dart run change_app_package_name:main com.catpuppyapp.hahanote

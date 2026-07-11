@@ -38,7 +38,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 
 	// Translations
 	@override String get appName => 'HahaNote';
-	@override String get appDesc => 'HahaNote 是一款支持端到端加密同步的笔记应用';
+	@override String get appDesc => '跨平台笔记应用，支持端到端加密同步';
 	@override String get create => '新建';
 	@override String get import => '导入';
 	@override String get open => '打开';
@@ -360,7 +360,7 @@ extension on TranslationsZhCn {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'appName' => 'HahaNote',
-			'appDesc' => 'HahaNote 是一款支持端到端加密同步的笔记应用',
+			'appDesc' => '跨平台笔记应用，支持端到端加密同步',
 			'create' => '新建',
 			'import' => '导入',
 			'open' => '打开',

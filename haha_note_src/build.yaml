@@ -1,0 +1,11 @@
+# build.yaml
+targets:
+  $default:
+    builders:
+      slang_build_runner:
+        enabled: false
+      # legacy to avoid err: Asset already exists
+      slang_build_runner:legacy:
+        enabled: true
+        options:
+          base_locale: en

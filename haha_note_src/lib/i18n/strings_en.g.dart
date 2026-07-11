@@ -44,8 +44,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'HahaNote'
 	String get appName => 'HahaNote';
 
-	/// en: 'HahaNote is an e2ee note-taking and syncing app'
-	String get appDesc => 'HahaNote is an e2ee note-taking and syncing app';
+	/// en: 'A cross-platforms note-taking app, supports E2EE sync'
+	String get appDesc => 'A cross-platforms note-taking app, supports E2EE sync';
 
 	/// en: 'Create'
 	String get create => 'Create';
@@ -987,7 +987,7 @@ extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'appName' => 'HahaNote',
-			'appDesc' => 'HahaNote is an e2ee note-taking and syncing app',
+			'appDesc' => 'A cross-platforms note-taking app, supports E2EE sync',
 			'create' => 'Create',
 			'import' => 'Import',
 			'open' => 'Open',
