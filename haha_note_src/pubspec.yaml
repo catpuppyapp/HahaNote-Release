@@ -153,6 +153,7 @@ flutter:
     - assets/etc/zed_light.svg
     - assets/etc/zed_dark.svg
     # 先指定assets，再在代码动态加载
+    # 注：Noto中文字体包太大，所以才不内置到手机版，并非不兼容
     - path: assets/fonts/NotoSansSC-Regular.ttf
       platforms:
         - windows
