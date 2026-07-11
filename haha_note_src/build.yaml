@@ -2,6 +2,7 @@
 targets:
   $default:
     builders:
+      # slang
       slang_build_runner:
         enabled: false
       # legacy to avoid err: Asset already exists
@@ -9,3 +10,14 @@ targets:
         enabled: true
         options:
           base_locale: en
+      # json
+      # json_serializable:
+        # options:
+          # Options configure how source code is generated for every
+          # `@JsonSerializable`-annotated class in the package.
+          # see: https://pub.dev/packages/json_serializable
+          # due to I was don't know can set this field in `build.yaml`,
+          # so I use `@myJsonSerializable` instead use `@JsonSerializable`
+          # 
+          # explicit_to_json: true
+
