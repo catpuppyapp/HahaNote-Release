@@ -32,6 +32,9 @@ import '../widget/text_and_shortcut.dart';
 
 const _TAG = "editor.dart";
 
+// 横屏，预览和编辑器是否同步滚动，感觉不好，故禁用，日后考虑设个设置项让用户控制
+const scrollSyncEnabled = false;
+
 // 如果文件由有效的utf8字符组成，那么读取不会报错，编辑器能正常打开，比较文件若不同则报错的逻辑可靠；
 // 若文件有非法utf8字符，那么读取会报错，无法保存
 // 所以如果打开一个非文本文件，理论上应该不会转码错误使文件损坏（但没严格测试）
@@ -162,6 +165,10 @@ class _EditorPageState extends MyPageState<EditorPage> {
   }
 
   void _scrollSyncHandler(final ScrollController? src, final ScrollController? mirror) {
+    if(!scrollSyncEnabled) {
+      return;
+    }
+
     if(src == null || mirror == null) {
       return;
     }
