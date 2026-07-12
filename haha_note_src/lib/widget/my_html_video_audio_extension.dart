@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
 import 'package:hahanote_app/widget/media_bar.dart';
+
+import '../hahanote_lib_sync/storage/files/file_path.dart';
 
 /// [MyHtmlVideoAudioExtension] adds support for the <video> and <audio> tag to the flutter_html
 /// library.
@@ -77,23 +80,17 @@ class _VideoAudioWidgetState extends State<VideoAudioWidget> {
     return CssBoxWidget(
       style: widget.context.styledElement!.style,
       childIsReplaced: true,
-      child: Expanded(
-        child: ListView.builder(
-          itemCount: sources.length,
-          itemBuilder: (context, index) {
-            final item = sources[index];
-            if(item == null) {
-              return const SizedBox.shrink();
-            }
-
-            return MediaBar(
-              path: item,
+      child: Column(
+        children: [
+          for(final src in sources) src == null
+            ? const SizedBox.shrink()
+            : MediaBar(
+              path: isHttpUrl(src) ? src : FilePath.fromString(widget.basePath+"/"+src).toString(),
               headingIcon: widget.isVideo ? Icons.movie_creation_outlined : Icons.music_note_outlined,
               showMsg: widget.showMsg,
               showMsgLong: widget.showMsgLong
-            );
-          }
-        )
+          ),
+        ],
       ),
     );
   }
