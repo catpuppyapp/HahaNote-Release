@@ -367,7 +367,7 @@ IconData getIconByFileName(String fileName, {required bool isDir}) {
       || name.endsWith(".flv") || name.endsWith(".mov")
       || name.endsWith(".avi") || name.endsWith(".webm")
       || name.endsWith(".rmvb") || name.endsWith(".rm")) {
-    return Icons.play_circle_outline;
+    return Icons.movie_creation_outlined;
   }
 
   if(name.endsWith(".jpg") || name.endsWith(".jpeg")
