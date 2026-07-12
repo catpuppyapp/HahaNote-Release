@@ -45,6 +45,7 @@ class _MediaBarState extends State<MediaBar> {
     super.initState();
     isRelativePath = !isHttpUrl(widget.path);
     fileName = p.basename(widget.path);
+    // note: only supports relative path under repo dir, does not support absolute path
     fullPath = isRelativePath ? FilePath.fromString(widget.basePath+"/"+widget.path).toString() : widget.path;
   }
 
