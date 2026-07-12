@@ -1,11 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/util/reveal_file.dart';
 import 'package:hahanote_app/util/util.dart';
+import 'package:hahanote_app/widget/line.dart';
 import 'package:path/path.dart' as p;
 
 import '../hahanote_lib_sync/storage/files/file_path.dart';
 import '../hahanote_lib_sync/utils.dart';
+import '../ui/app_layout_observer.dart';
 
 const _TAG = "MediaBar";
 const _iconSize = 20.0;
@@ -46,6 +50,17 @@ class _MediaBarState extends State<MediaBar> {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    if(isLandscapeLayout()) {
+      screenWidth = screenWidth / 4.5;
+    }else {
+      screenWidth = screenWidth / 2.2;
+    }
+
+    // guess a width, else the file path cannot scroll
+    // max 50 to ensure at least have 50 width
+    screenWidth = max(50, screenWidth);
+
     final bar = Row(
       children: [
         Padding(
@@ -60,12 +75,14 @@ class _MediaBarState extends State<MediaBar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(fileName),
-                  Text(isRelativePath
-                    ? FilePath.genRelativePathSafe(widget.basePath, fullPath, ifErrReturnEmpty: false).toString()
-                    : fullPath,
-                    style: const TextStyle(fontSize: 12),
-                  )
+                  SizedBox(width: screenWidth, child: singleScrollableRow2(children: [Text(fileName)])),
+                  SizedBox(width: screenWidth, child: singleScrollableRow2(children: [
+                    Text(isRelativePath
+                      ? FilePath.genRelativePathSafe(widget.basePath, fullPath, ifErrReturnEmpty: false).toUnixPathStr()
+                      : fullPath,
+                      style: const TextStyle(fontSize: 12),
+                    )
+                  ])),
                 ],
               ),
             ),

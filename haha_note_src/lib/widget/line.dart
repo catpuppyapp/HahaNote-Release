@@ -42,13 +42,21 @@ Widget singleScrollableRow(
   bool textSelectable = false,
   TextStyle? textStyle,
   String? headingIconUrl,
-  List<Widget>? children,
+}) {
+  return singleScrollableRow2(
+    children: headingIconAndText(text, textSelectable: textSelectable, textStyle: textStyle, headingIconUrl: headingIconUrl),
+  );
+}
+
+Widget singleScrollableRow2({
+  final double spacing = 10,
+  required List<Widget> children,
 }) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(
-      spacing: 10,
-      children: children ?? headingIconAndText(text, textSelectable: textSelectable, textStyle: textStyle, headingIconUrl: headingIconUrl),
+      spacing: spacing,
+      children: children,
     ),
   );
 }

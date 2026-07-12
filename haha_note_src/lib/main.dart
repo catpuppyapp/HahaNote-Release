@@ -929,8 +929,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                     child: doubleScrollableLine(
                       "",
                       path,
-                      line1Widget: singleScrollableRow(
-                        "",
+                      line1Widget: singleScrollableRow2(
                         children: [
                           IconButton(
                             icon: Icon(
