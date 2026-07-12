@@ -86,7 +86,8 @@ class _VideoAudioWidgetState extends State<VideoAudioWidget> {
           for(final src in sources) src == null
             ? const SizedBox.shrink()
             : MediaBar(
-              path: isHttpUrl(src) ? src : FilePath.fromString(widget.basePath+"/"+src).toString(),
+              basePath: widget.basePath,
+              path: src,
               headingIcon: widget.isVideo ? Icons.movie_creation_outlined : Icons.music_note_outlined,
               showMsg: widget.showMsg,
               showMsgLong: widget.showMsgLong
