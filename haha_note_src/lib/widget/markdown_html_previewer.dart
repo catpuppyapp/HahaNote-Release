@@ -17,6 +17,7 @@ import '../db/db.dart';
 import '../i18n/strings.g.dart';
 import '../ui/ui.dart';
 import 'my_highlight_view.dart';
+import 'my_html_video_audio_extension.dart';
 import 'size_adjuster.dart';
 
 const _TAG = "markdown_html_previewer.dart";
@@ -355,6 +356,9 @@ class MarkdownHtmlPreviewerState extends State<MarkdownHtmlPreviewer> {
         // 不支持windows，而且视频和音频最好用专门的播放器，所以禁用了
         // MyAudioHtmlExtension(basePath: widget.basePath),
         // MyVideoHtmlExtension(basePath: widget.basePath),
+        MyHtmlVideoAudioExtension(isVideo: true, basePath: widget.basePath, showMsg: widget.showMsg, showMsgLong: widget.showMsgLong),
+        MyHtmlVideoAudioExtension(isVideo: false, basePath: widget.basePath, showMsg: widget.showMsg, showMsgLong: widget.showMsgLong),
+
         MathHtmlExtension(),
         // 这个必须放到我写的img标签处理器的下面，
         // 不然svg图片会被这个扩展拦截导致点svg图片不会打开对应资源（因为这个svg扩展处理器

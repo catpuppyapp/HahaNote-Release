@@ -10,8 +10,8 @@ const _TAG = "MediaBar";
 class MediaBar extends StatefulWidget {
   final String path;
   final IconData headingIcon;
-  final void Function(String) showMsg;
-  final void Function(String) showMsgLong;
+  final void Function(String)? showMsg;
+  final void Function(String)? showMsgLong;
 
   const MediaBar({
     super.key,

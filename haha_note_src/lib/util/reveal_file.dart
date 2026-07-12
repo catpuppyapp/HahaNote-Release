@@ -9,13 +9,13 @@ import '../hahanote_lib_sync/storage/utils.dart';
 const _TAG = "reveal_file.dart";
 
 // showMsgLong用来显示错误
-Future<void> revealFile(String filePath, {required void Function(String) showMsgLong}) async {
+Future<void> revealFile(String filePath, {required void Function(String)? showMsgLong}) async {
   try {
     // x 能，和预期一致）测试外部调用当前函数不await，然后内部函数_revealFile抛异常，这里能不能正常捕获，期望能
     await _revealFile(filePath);
   }catch(e, st) {
     App.logger.debug(_TAG, "revealFile err: $e\n$st");
-    showMsgLong("revealFile err: $e");
+    showMsgLong?.call("revealFile err: $e");
   }
 }
 
