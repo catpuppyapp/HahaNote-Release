@@ -491,3 +491,7 @@ Future<void> futureFunctionPool(
   // completer返回的future可通过 await 捕获到异常
   return completer.future;
 }
+
+bool isHttpUrl(String str) {
+  return str.startsWith("https://") || str.startsWith("http://");
+}

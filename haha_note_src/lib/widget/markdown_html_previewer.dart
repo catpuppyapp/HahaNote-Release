@@ -6,6 +6,7 @@ import 'package:flutter_html_math/flutter_html_math.dart';
 import 'package:flutter_html_svg/flutter_html_svg.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
 import 'package:hahanote_app/ui/my_fonts.dart';
 import 'package:hahanote_app/util/util.dart';
 import 'package:path/path.dart' as p;
@@ -385,7 +386,7 @@ class MarkdownHtmlPreviewerState extends State<MarkdownHtmlPreviewer> {
         if(url == null) {
           return;
         }
-        if(url.startsWith("https://") || url.startsWith("http://")) {
+        if(isHttpUrl((url))) {
           launchUrlExtByStr(url);
         }
       },

@@ -10,9 +10,12 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart' as p;
 
 
 Future<void> main() async {
+  print(p.basename("https://abc/def.txt")); // output: def.txt
+
   bool? a = null;
   a = false;
   assert(!a!);
