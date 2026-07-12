@@ -4,12 +4,14 @@ import 'package:hahanote_app/util/reveal_file.dart';
 import 'package:hahanote_app/util/util.dart';
 import 'package:path/path.dart' as p;
 
+import '../hahanote_lib_sync/storage/files/file_path.dart';
 import '../hahanote_lib_sync/utils.dart';
 
 const _TAG = "MediaBar";
 const _iconSize = 20.0;
 
 class MediaBar extends StatefulWidget {
+  final String basePath;
   final String path;
   final IconData headingIcon;
   final void Function(String)? showMsg;
@@ -17,6 +19,7 @@ class MediaBar extends StatefulWidget {
 
   const MediaBar({
     super.key,
+    required this.basePath,
     required this.path,
     required this.headingIcon,
     required this.showMsg,
@@ -31,12 +34,14 @@ class MediaBar extends StatefulWidget {
 class _MediaBarState extends State<MediaBar> {
   bool isRelativePath = false;
   String fileName = "";
+  String fullPath = "";
 
   @override
   void initState() {
     super.initState();
     isRelativePath = !isHttpUrl(widget.path);
     fileName = p.basename(widget.path);
+    fullPath = isRelativePath ? FilePath.fromString(widget.basePath+"/"+widget.path).toString() : widget.path;
   }
 
   @override
@@ -52,7 +57,17 @@ class _MediaBarState extends State<MediaBar> {
           children: [
             Padding(
               padding: const EdgeInsetsGeometry.all(10),
-              child: Text(fileName),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(fileName),
+                  Text(isRelativePath
+                    ? FilePath.genRelativePathSafe(widget.basePath, fullPath, ifErrReturnEmpty: false).toString()
+                    : fullPath,
+                    style: const TextStyle(fontSize: 12),
+                  )
+                ],
+              ),
             ),
             Row(
               children: [
@@ -61,9 +76,9 @@ class _MediaBarState extends State<MediaBar> {
                   iconSize: _iconSize,
                   onPressed: () {
                     if(isRelativePath) {
-                      openFileInExternal(widget.path, showMsgLong: widget.showMsgLong, callerTag: _TAG);
+                      openFileInExternal(fullPath, showMsgLong: widget.showMsgLong, callerTag: _TAG);
                     }else {
-                      launchUrlExtByStr(widget.path);
+                      launchUrlExtByStr(fullPath);
                     }
                   },
                   icon: Icon(Icons.play_circle_outline),
@@ -72,7 +87,7 @@ class _MediaBarState extends State<MediaBar> {
                   tooltip: t.copyPath,
                   iconSize: _iconSize,
                   onPressed: () {
-                    copyText(widget.path);
+                    copyText(fullPath);
                   },
                   icon: Icon(Icons.copy),
                 ),
@@ -80,7 +95,7 @@ class _MediaBarState extends State<MediaBar> {
                   tooltip: t.revealInFileExplorer,
                   iconSize: _iconSize,
                   onPressed: () {
-                    revealFile(widget.path, showMsgLong: widget.showMsgLong);
+                    revealFile(fullPath, showMsgLong: widget.showMsgLong);
                   },
                   icon: Icon(Icons.folder_outlined),
                 ),
