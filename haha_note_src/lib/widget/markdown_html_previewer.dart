@@ -390,7 +390,7 @@ class MarkdownHtmlPreviewerState extends State<MarkdownHtmlPreviewer> {
         if(url == null) {
           return;
         }
-        if(isHttpUrl((url))) {
+        if(isHttpUrl(url)) {
           launchUrlExtByStr(url);
         }
       },

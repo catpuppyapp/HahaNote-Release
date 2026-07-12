@@ -349,6 +349,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get displayMode => '显示模式';
 	@override String get landscape => '横屏';
 	@override String get portrait => '竖屏';
+	@override String get play => '播放';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -671,6 +672,7 @@ extension on TranslationsZhCn {
 			'displayMode' => '显示模式',
 			'landscape' => '横屏',
 			'portrait' => '竖屏',
+			'play' => '播放',
 			_ => null,
 		};
 	}

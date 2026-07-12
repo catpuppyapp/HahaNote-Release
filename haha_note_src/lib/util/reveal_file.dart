@@ -4,7 +4,6 @@ import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:open_filex_plus/open_filex_plus.dart';
 
 import '../hahanote_lib_sync/storage/files/file_path.dart';
-import '../hahanote_lib_sync/storage/utils.dart';
 
 const _TAG = "reveal_file.dart";
 

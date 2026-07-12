@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/util/reveal_file.dart';
 import 'package:hahanote_app/util/util.dart';
 import 'package:path/path.dart' as p;
@@ -6,6 +7,7 @@ import 'package:path/path.dart' as p;
 import '../hahanote_lib_sync/utils.dart';
 
 const _TAG = "MediaBar";
+const _iconSize = 20.0;
 
 class MediaBar extends StatefulWidget {
   final String path;
@@ -39,17 +41,24 @@ class _MediaBarState extends State<MediaBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final bar = Row(
       children: [
-        Icon(widget.headingIcon),
+        Padding(
+          padding: const EdgeInsetsGeometry.all(10),
+          child: Icon(widget.headingIcon, size: 30),
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(fileName),
-            const Divider(),
+            Padding(
+              padding: const EdgeInsetsGeometry.all(10),
+              child: Text(fileName),
+            ),
             Row(
               children: [
                 IconButton(
+                  tooltip: t.play,
+                  iconSize: _iconSize,
                   onPressed: () {
                     if(isRelativePath) {
                       openFileInExternal(widget.path, showMsgLong: widget.showMsgLong, callerTag: _TAG);
@@ -60,12 +69,16 @@ class _MediaBarState extends State<MediaBar> {
                   icon: Icon(Icons.play_circle_outline),
                 ),
                 IconButton(
+                  tooltip: t.copyPath,
+                  iconSize: _iconSize,
                   onPressed: () {
                     copyText(widget.path);
                   },
                   icon: Icon(Icons.copy),
                 ),
                 if(isRelativePath) IconButton(
+                  tooltip: t.revealInFileExplorer,
+                  iconSize: _iconSize,
                   onPressed: () {
                     revealFile(widget.path, showMsgLong: widget.showMsgLong);
                   },
@@ -76,6 +89,20 @@ class _MediaBarState extends State<MediaBar> {
           ],
         )
       ],
+    );
+
+
+    return Padding(
+      padding: const EdgeInsetsGeometry.all(10),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey,
+            width: 1,
+          ),
+        ),
+        child: bar,
+      ),
     );
   }
 }

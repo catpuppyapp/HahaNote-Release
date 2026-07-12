@@ -310,5 +310,6 @@
   "softWrap": "软换行",
   "displayMode": "显示模式",
   "landscape": "横屏",
-  "portrait": "竖屏"
+  "portrait": "竖屏",
+  "play": "播放"
 }

@@ -976,6 +976,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Portrait'
 	String get portrait => 'Portrait';
+
+	/// en: 'Play'
+	String get play => 'Play';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1298,6 +1301,7 @@ extension on Translations {
 			'displayMode' => 'Display Mode',
 			'landscape' => 'Landscape',
 			'portrait' => 'Portrait',
+			'play' => 'Play',
 			_ => null,
 		};
 	}

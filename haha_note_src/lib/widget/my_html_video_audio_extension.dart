@@ -79,6 +79,7 @@ class _VideoAudioWidgetState extends State<VideoAudioWidget> {
 
     return CssBoxWidget(
       style: widget.context.styledElement!.style,
+      // 设为true代表组件可能有自己的宽度
       childIsReplaced: true,
       child: Column(
         children: [
