@@ -169,6 +169,11 @@ class _EditorPageState extends MyPageState<EditorPage> {
       return;
     }
 
+    _syncSrcScrollPosToMirror(src, mirror);
+  }
+
+  // 同步src的滚动位置到mirror
+  void _syncSrcScrollPosToMirror(final ScrollController? src, final ScrollController? mirror) {
     if(src == null || mirror == null) {
       return;
     }
@@ -443,6 +448,16 @@ class _EditorPageState extends MyPageState<EditorPage> {
     controller.scrollToLine(lineIndex);
     // 必须focus，不然中文这种带缓冲的输入法，可能会光标漂移，不知道漂到哪里去
     controller.focusNode?.requestFocus();
+
+    // if disabled scroll sync,
+    // need set force sync scroll once
+    // to let preview scroll to the pos of editor
+    if(!scrollSyncEnabled) {
+      () async {
+        await Future.delayed(const Duration(milliseconds: 500));
+        _syncSrcScrollPosToMirror(scrollController, previewScrollController);
+      }();
+    }
   }
 
   void _doGoToPos(FilePos pos) {
