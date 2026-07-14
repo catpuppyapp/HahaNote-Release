@@ -452,7 +452,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
     // if disabled scroll sync,
     // need set force sync scroll once
     // to let preview scroll to the pos of editor
-    if(!scrollSyncEnabled) {
+    if(useSplitPreviewPanel && !scrollSyncEnabled) {
       () async {
         await Future.delayed(const Duration(milliseconds: 500));
         _syncSrcScrollPosToMirror(scrollController, previewScrollController);
