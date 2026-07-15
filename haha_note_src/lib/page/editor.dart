@@ -84,6 +84,8 @@ class _EditorPageState extends MyPageState<EditorPage> {
 
   // 若true，启用分面板预览，否则跳转到独立页面预览，暂时没必要传参，以后有需要再改
   final bool useSplitPreviewPanel = isLandscapeLayout();
+  // 当 useSplitPreviewPanel 为true时，此变量控制是否展开预览面板；
+  // 当 useSplitPreviewPanel 为false时，此参数无效
   bool editorPreviewEnabled = false;
   final previewState = GlobalKey<MarkdownHtmlPreviewerState>();
   final ScrollController previewScrollController = ScrollController();
@@ -452,7 +454,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
     // if disabled scroll sync,
     // need set force sync scroll once
     // to let preview scroll to the pos of editor
-    if(useSplitPreviewPanel && !scrollSyncEnabled) {
+    if(editorPreviewEnabled && !scrollSyncEnabled) {
       () async {
         await Future.delayed(const Duration(milliseconds: 500));
         _syncSrcScrollPosToMirror(scrollController, previewScrollController);
@@ -710,7 +712,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
   }
 
   Future<void> _preview() async {
-    if(useSplitPreviewPanel) {
+    if(useSplitPreviewPanel) {  // toggle preview panel expand or hidden
       final newValue = !editorPreviewEnabled;
       editorPreviewEnabled = newValue;
       if(newValue) {
@@ -730,7 +732,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
 
       setStateSafe(() {});
       AppConfig.update((config) async => config.editorPreviewEnabled = newValue);
-    }else {
+    }else {  // go to preview page
       editorPreviewEnabled = false;
       updatePreviewContent(null);
       await Navigator.pushNamed(
