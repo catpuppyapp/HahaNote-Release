@@ -270,9 +270,8 @@ class _EditorPageState extends MyPageState<EditorPage> {
       }else { // text changed, update
         controller.text = text;
 
-        if(useSplitPreviewPanel) {
-          updatePreviewContent(text);
-        }
+        updatePreviewContent(text);
+
 
         _resetUndoAndNeedSaveState();
 
@@ -455,11 +454,13 @@ class _EditorPageState extends MyPageState<EditorPage> {
     // need set force sync scroll once
     // to let preview scroll to the pos of editor
     if(editorPreviewEnabled && !scrollSyncEnabled) {
-      () async {
-        await Future.delayed(const Duration(milliseconds: 500));
-        _syncSrcScrollPosToMirror(scrollController, previewScrollController);
-      }();
+      delayThenSyncEditorScrollPosToPreviewPanel();
     }
+  }
+
+  Future<void> delayThenSyncEditorScrollPosToPreviewPanel() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    _syncSrcScrollPosToMirror(scrollController, previewScrollController);
   }
 
   void _doGoToPos(FilePos pos) {
@@ -718,14 +719,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
       if(newValue) {
         updatePreviewContent(getEditorText(restoreLineBreak: false));
         // 打开预览面板后滚动到编辑器面板的位置（尽量，不保证精准，因为渲染后的内容高度可能和文字不同）
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          final editorSc = scrollController;
-          if(editorSc == null || !editorSc.hasClients || !previewScrollController.hasClients) {
-            return;
-          }
-
-          previewScrollController.jumpTo(editorSc.position.pixels.clamp(0, previewScrollController.position.maxScrollExtent));
-        });
+        delayThenSyncEditorScrollPosToPreviewPanel();
       }else {
         updatePreviewContent(null);
       }
