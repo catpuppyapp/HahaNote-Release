@@ -384,6 +384,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if(!landscapeLayoutInited) {
+      // 平板之类的会在这初始化是否横屏模式，若是pc会在上面initWindows()时初始化
       landscapeLayoutInited = true;
       final size = MediaQuery.sizeOf(context);
       isLandscapeLayoutNotifier.value = isLandscapeMode(size);

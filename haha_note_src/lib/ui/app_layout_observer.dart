@@ -6,10 +6,19 @@ import '../config/display_mode.dart';
 
 final ValueNotifier<bool> isLandscapeLayoutNotifier = ValueNotifier(false);
 
+var _ignoreOnceWindowSizeChange = true;
 
 class AppLayoutObserver extends WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
+    // 不知道为什么，启动窗口后，初始获取窗口大小，
+    // 会比实际大小小，所以忽略初次调用
+    if(_ignoreOnceWindowSizeChange) {
+      _ignoreOnceWindowSizeChange = false;
+      return;
+    }
+
+
     final view = WidgetsBinding.instance.platformDispatcher.views.firstOrNull;
     if(view == null) {
       return;
