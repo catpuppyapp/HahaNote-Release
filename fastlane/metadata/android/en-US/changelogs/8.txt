@@ -1,0 +1,3 @@
+- Make the colors in the recent files list clearer in dark theme
+- fix markdown preview video/audio error
+- update bundled certs

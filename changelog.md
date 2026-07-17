@@ -1,11 +1,13 @@
 
 
 ---
-1.0.7+8 20260709:
+1.0.7+8 20260709-20260717:
 - Make the colors in the recent files list clearer in dark theme
 - fix markdown preview video/audio error
+- update bundled certs
 - 让最近文件列表的颜色在暗色模式下更清晰
 - 修复markdown预览视频或音频出错
+- 更新内置证书
 
 
 ---
