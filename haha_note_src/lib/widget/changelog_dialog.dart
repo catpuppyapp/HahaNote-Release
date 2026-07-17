@@ -16,8 +16,7 @@ const _changelog = """
 """;
 
 class ChangelogDialog extends StatelessWidget {
-  final VoidCallback onClose;
-  const ChangelogDialog({super.key, required this.onClose});
+  const ChangelogDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,6 @@ class ChangelogDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            onClose();
             Navigator.of(context).pop();
           },
           child: Text(t.close),
@@ -52,13 +50,18 @@ class ChangelogDialog extends StatelessWidget {
   }
 }
 
-Future<void> showChangelogDialog(BuildContext context, {required VoidCallback onClose}) async {
+Future<void> showChangelogDialog(BuildContext context, {required Future<void> Function() onClose}) async {
   await showDialog(
     context: context,
     builder: (BuildContext context) {
-      return ChangelogDialog(onClose: onClose);
+      return const ChangelogDialog();
     },
   );
+
+  // 把onClose放showDialog后面是有原因的，这样写，
+  // 点按钮或点非弹窗区域，皆可调用onClose，
+  // 若设onClose回调，只有点按钮才会调用
+  await onClose();
 }
 
 Future<void> showChangeLogDialogIfNeed(BuildContext context) async {
