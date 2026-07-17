@@ -4358,6 +4358,11 @@ class Repo {
         //   return;
         // }
 
+        // if oldItem exists, update modified time only;
+        // if oldItem does not exist, create new IndexItem.
+        // in most cases the oldItem should exists when reached here,
+        // that means only the modified time is different,
+        // if the oldItem does not exist, maybe cleaned index or deleted the index file
         final newItem = index.getByPathStr(relativePathUnixStr)
             ?.copyWith(mTimeMs: (await workdirFileEntity.lastModified()).millisecondsSinceEpoch)
             ?? (await IndexItem.fromFile(workdirFileEntity, hashOfWorkdirFile));
