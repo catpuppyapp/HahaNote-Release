@@ -23,7 +23,7 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_info.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart' show Msg, MsgType;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart' show Config, ConfigUtil, RemoteConfigDataForDropbox;
-import 'package:hahanote_app/hahanote_lib_sync/storage/repo/index.dart' show Index;
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/index.dart' show Index, IndexItem;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo_info.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/status_item.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
@@ -4352,15 +4352,26 @@ class Repo {
         statusItems.add(StatusItem.create(type: StatusItemType.deleted, relativePathUnderWorkdir: path, sizeInBytes: size));
       },
       // file maybe updated, but no changes, so only need update modified time in index
-      unmodifiedHandler: ({required String relativePathUnixStr, required File workdirFileEntity}) async {
-        final oldItem = index.getByPathStr(relativePathUnixStr);
-        if(oldItem == null) {
+      unmodifiedHandler: ({required String relativePathUnixStr, required File workdirFileEntity, required String hashOfWorkdirFile}) async {
+        // final oldItem = index.getByPathStr(relativePathUnixStr);
+        // if(oldItem == null) {
+        //   return;
+        // }
+
+        final newItem = index.getByPathStr(relativePathUnixStr)
+            ?.copyWith(mTimeMs: (await workdirFileEntity.lastModified()).millisecondsSinceEpoch)
+            ?? (await IndexItem.fromFile(workdirFileEntity, hashOfWorkdirFile));
+
+        if(newItem == null) {
+          // if reached here,
+          // means the file does not exist in index and disk,
+          // maybe deleted
           return;
         }
 
         index.setByPathStr(
           relativePathUnixStr,
-          oldItem.copyWith(mTimeMs: (await workdirFileEntity.lastModified()).millisecondsSinceEpoch),
+          newItem,
           lastContentIdOfIndex,
         );
       }
@@ -4400,6 +4411,7 @@ class Repo {
     final Future<void> Function({
       required String relativePathUnixStr,
       required File workdirFileEntity,
+      required String hashOfWorkdirFile,
     })? unmodifiedHandler,
     required final Future<void> Function({
       required String relativePathUnixStr,
@@ -4680,6 +4692,7 @@ class Repo {
             await unmodifiedHandler?.call(
               relativePathUnixStr: relativePathUnixStr,
               workdirFileEntity: workdirFileEntity,
+              hashOfWorkdirFile: hashOfWorkdirFile
             );
           }
         }else {
