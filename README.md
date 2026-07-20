@@ -56,7 +56,7 @@ E2EE promise data encrypted before leaving your device, but on your local device
 
 
 ### Mac and IOS
-It will support mac and ios when I got them, your [donation](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) can help me got them faster.
+HahaNote will supports mac and ios when I got them, your [donation](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) can help me get them earlier.
 
 
 
