@@ -7,12 +7,10 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- Make the colors in the recent files list clearer in dark theme
-- fix markdown preview video/audio error
-- update bundled certs
-- 让最近文件列表的颜色在暗色模式下更清晰
-- 修复markdown预览视频或音频出错
-- 更新内置证书
+- update text editor
+- add linebreak when copy or cut a line
+- 更新文本编辑器
+- 拷贝或剪切行时添加换行符
 """;
 
 class ChangelogDialog extends StatelessWidget {

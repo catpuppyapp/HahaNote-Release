@@ -1,0 +1,2 @@
+- update text editor
+- add linebreak when copy or cut a line

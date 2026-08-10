@@ -1,5 +1,11 @@
 
 
+1.0.8+9 20260810:
+- update text editor
+- add linebreak when copy or cut a line
+- 更新文本编辑器
+- 拷贝或剪切行时添加换行符
+
 ---
 1.0.7+8 20260709-20260717:
 - Make the colors in the recent files list clearer in dark theme
