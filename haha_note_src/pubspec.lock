@@ -165,11 +165,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "65162edad2fbc29f1639fc71b338f9291f323256"
-      resolved-ref: "65162edad2fbc29f1639fc71b338f9291f323256"
+      ref: "6996d4b87458fb0e965aa85f0f60f102694afb38"
+      resolved-ref: "6996d4b87458fb0e965aa85f0f60f102694afb38"
       url: "https://github.com/Bandeapart1964/code_forge.git"
     source: git
-    version: "10.7.1"
+    version: "10.11.0"
   collection:
     dependency: "direct main"
     description:
@@ -1611,4 +1611,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=3.12.2 <4.0.0"
-  flutter: "3.44.4"
+  flutter: "3.44.9"
