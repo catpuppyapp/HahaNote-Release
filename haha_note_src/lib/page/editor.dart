@@ -556,26 +556,26 @@ class _EditorPageState extends MyPageState<EditorPage> {
     }
 
     if(!isControlDown && !isShiftDown && isAltDown && pressedKey == LogicalKeyboardKey.arrowUp) {
-      // Alt + Up ,move line up
+      // Alt+Up ,move line up
       controller?.moveLineUp();
       return true;
     }
 
     if(!isControlDown && !isShiftDown && isAltDown && pressedKey == LogicalKeyboardKey.arrowDown) {
-      // Alt + Down ,move line down
+      // Alt+Down ,move line down
       controller?.moveLineDown();
       return true;
     }
 
     if(isControlDown && !isShiftDown && !isAltDown && pressedKey == LogicalKeyboardKey.keyX) {
-      // Ctrl + X, cut line
+      // Ctrl+X, cut line
       if(_copyOrCutLine(trueCopyFalseCut: false)) {
         return true;
       }
     }
 
     if(isControlDown && !isShiftDown && !isAltDown && pressedKey == LogicalKeyboardKey.keyC) {
-      // Ctrl + C, copy line
+      // Ctrl+C, copy line
       if(_copyOrCutLine(trueCopyFalseCut: true)) {
         return true;
       }
@@ -616,7 +616,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
       final start = controller.selection.start;
       final lineIdx = controller.getLineAtOffset(start);
       final text = controller.getLineText(lineIdx);
-      copyText(text);
+      copyText(text+"\n");
 
       // if is cut, delete then copy
       if(!trueCopyFalseCut) {
