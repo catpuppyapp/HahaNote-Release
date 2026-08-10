@@ -1,0 +1,3 @@
+更新fork的code_forge代码库对应分支为最新，然后把这里的patch文件拷贝过去，应用即可
+应用补丁的命令：
+git apply rustup_from_env.patch

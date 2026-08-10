@@ -113,11 +113,12 @@ dependencies:
 #  chewie_audio: ^1.5.0 # md html audio play
 #  html: ^0.15.6
   #  code_forge: ^10.7.1
-  # x 添加了 Ctrl+Shift+Z 执行Redo的功能，已发pr，上游已合并，所以可直接用上游了
+  # 因为原版不支持通过环境变量指定rust工具链版本，所以我fork了下，改了下，
+  # pr要发到flutter_rust_bridge，但我没看那个库的代码，日后再说
   code_forge:
     git:
       url: https://github.com/Bandeapart1964/code_forge.git
-      ref: 65162edad2fbc29f1639fc71b338f9291f323256
+      ref: 6996d4b87458fb0e965aa85f0f60f102694afb38
 
 dev_dependencies:
   flutter_test:
