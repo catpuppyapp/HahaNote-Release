@@ -1,0 +1,2 @@
+20260810 更新:
+后来改成修改code_forge代码，支持通过环境变量指定rust工具链版本，不需要这里的文件了，若日后修改rust版本，我的项目里需要修改versions.sh里的RUSTUP_TOOLCHAIN为期望的版本即可。
