@@ -118,20 +118,26 @@ abstract class BaseLayout {
     Key? key,
     Widget? fab,
     required Widget body,
+    VoidCallback? titleOnClick
   }) {
     return ValueListenableBuilder<bool>(
       valueListenable: isLandscapeLayoutNotifier,
       builder: (_, bool isLandscape, __) {
+        final titleWidget = SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Text(
+            title,
+            style: isLandscape
+              ? null
+              : const TextStyle(fontSize: 15)
+          )
+        );
+
         final appBar = AppBar(
           // 若是手机，小点字，不然手机屏幕太小，多数情况下看不到几个字，标题栏就失去了意义
-          title: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SelectableText(
-              title,
-              style: isLandscape
-                ? null
-                : const TextStyle(fontSize: 15)
-            )
+          title: titleOnClick == null ? titleWidget : InkWell(
+            onTap: titleOnClick,
+            child: titleWidget,
           ),
           actions: actions,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,

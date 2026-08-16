@@ -1060,6 +1060,14 @@ class _EditorPageState extends MyPageState<EditorPage> {
     final child = BaseLayout.newScaffold(
       context,
       title: widget.path.name(),
+      titleOnClick: () {
+        Dialogs.showCopyDialog(
+          context,
+          title: t.info,
+          text: "${widget.path.name()}\n\n${widget.path.toString()}",
+          showMsg: showMsg
+        );
+      },
       actions: [
         ValueListenableBuilder<bool>(
           valueListenable: undoNotifier,
