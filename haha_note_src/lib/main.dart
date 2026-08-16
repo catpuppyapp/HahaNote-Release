@@ -47,6 +47,7 @@ import 'package:hahanote_app/util/permission.dart' show showRequestPermissionDia
 import 'package:hahanote_app/util/regex_util.dart' show RegexUtil;
 import 'package:hahanote_app/util/reveal_file.dart';
 import 'package:hahanote_app/util/util.dart';
+import 'package:hahanote_app/widget/app_storages.dart';
 import 'package:hahanote_app/widget/base_layout.dart';
 import 'package:hahanote_app/widget/bottom_bar.dart';
 import 'package:hahanote_app/widget/buttons.dart';
@@ -562,6 +563,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
   Map<String, SortRule> filesPageSortMap = {};
   SortRule filesPageGlobeSort = SortRule.defaultValue;
   final breadcrumbScrollController = ScrollController();
+  final filesGoToTextController = TextEditingController();
   //// END: files page
 
   final openRepoPathController = TextEditingController(text: '');
@@ -614,6 +616,8 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     // 或许大概也许能比mounted更早知道组件被disposed了，然后今早让sync函数知道
     disposed = true;
     repoStatusMap.clear();
+
+    filesGoToTextController.dispose();
 
     try {
       openRepoPathController.dispose();
@@ -2352,6 +2356,8 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
               _copyRepoRelativePath(fullPath);
             }),
             MenuItem(value: "go_to", text: t.goTo, onClick: () async {
+              filesGoToTextController.text = fullPath;
+
               final path = await Dialogs.showInputDialog(
                 context,
                 title: t.goTo,
@@ -2359,6 +2365,13 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                 showMsg: showMsg,
                 showMsgLong: showMsgLong,
                 textInputAction: TextInputAction.go,
+                textController: filesGoToTextController,
+                bottomWidgetOfTextField: AppStorages(
+                  onPathClick: (path) {
+                    filesGoToTextController.text = path;
+                  },
+                  showMsg: showMsg
+                )
               );
 
               App.logger.debug(_TAG, "path to go: $path");

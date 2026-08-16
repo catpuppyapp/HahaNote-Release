@@ -311,5 +311,9 @@
   "displayMode": "Display Mode",
   "landscape": "Landscape",
   "portrait": "Portrait",
-  "play": "Play"
+  "play": "Play",
+  "externalStorageRootPathName": "Shared Storage",
+  "externalDataFilesDirPathName": "App External Storage",
+  "innerDataFilesDirPathName": "App Internal Storage",
+  "storagePathsDesc": "'Shared Storage': Accessible by external applications, will not be deleted when the app is uninstalled\n\n'App External Storage' and 'App Internal Storage': Only accessible by the app, and will be removed during app uninstallation"
 }

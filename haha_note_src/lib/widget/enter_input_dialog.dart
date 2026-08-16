@@ -13,6 +13,8 @@ class EnterInputDialog extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final bool autofocus;
+  final Widget? bottomWidgetOfTextField;
+  final TextEditingController? textController;
 
   const EnterInputDialog({
     super.key,
@@ -26,6 +28,8 @@ class EnterInputDialog extends StatefulWidget {
     this.keyboardType,
     this.textInputAction,
     this.autofocus = true,
+    this.bottomWidgetOfTextField,
+    this.textController,
   });
 
   @override
@@ -39,7 +43,7 @@ class _EnterInputDialogState extends State<EnterInputDialog> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialValue ?? '');
+    _controller = widget.textController == null ? TextEditingController(text: widget.initialValue ?? '') : widget.textController!;
     if(widget.initSelectAll && _controller.text.isNotEmpty) {
       _controller.selection = TextSelection(baseOffset: 0, extentOffset: _controller.text.length);
     }
@@ -52,7 +56,11 @@ class _EnterInputDialogState extends State<EnterInputDialog> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // dispose if is this widget created
+    if(widget.textController == null) {
+      _controller.dispose();
+    }
+
     _focusNode.dispose();
     super.dispose();
   }
@@ -108,6 +116,8 @@ class _EnterInputDialogState extends State<EnterInputDialog> {
               keyboardType: widget.keyboardType,
               onSubmitted: (_) => _submit(), // 按回车后触发提交
             ),
+
+            if(widget.bottomWidgetOfTextField != null) widget.bottomWidgetOfTextField!,
 
             if(notesWidgets.isNotEmpty)
               Flexible(

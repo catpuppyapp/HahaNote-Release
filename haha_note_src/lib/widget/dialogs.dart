@@ -1,4 +1,4 @@
-import 'dart:io' show FileSystemEntityType;
+import 'dart:io' show FileSystemEntityType, Platform;
 import 'dart:math';
 
 import 'package:hahanote_app/bean/bean.dart';
@@ -16,6 +16,7 @@ import '../hahanote_lib_sync/on_off_util.dart';
 import '../hahanote_lib_sync/storage/repo/sync.dart';
 import '../ui/ui.dart';
 import '../util/fs.dart';
+import 'app_storages.dart';
 
 const _TAG = "dialogs.dart";
 
@@ -244,6 +245,7 @@ abstract class Dialogs {
             closeDialog(context);
           },
         ),
+        if(Platform.isAndroid) AppStorages(onPathClick: (path) => pathController.text = path, showMsg: showMsg),
         if(contentOnBottomOfPathChooser != null) contentOnBottomOfPathChooser,
       ],
     );
@@ -366,11 +368,13 @@ abstract class Dialogs {
     required Function(String) showMsg,
     required Function(String) showMsgLong,
     String? initialValue,
+    TextEditingController? textController,
     List<String>? notes,
     bool initSelectAll = true,
     TextInputType? keyboardType,
     TextInputAction? textInputAction,
     String? hintText,
+    Widget? bottomWidgetOfTextField,
   }) async {
     return await showDialog<String>(
       context: context,
@@ -378,12 +382,14 @@ abstract class Dialogs {
         title: title,
         hintText: hintText ?? t.pleaseInput,
         initialValue: initialValue,
+        textController: textController,
         showMsg: showMsg,
         showMsgLong: showMsgLong,
         notes: notes,
         initSelectAll: initSelectAll,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
+        bottomWidgetOfTextField: bottomWidgetOfTextField,
       ),
     );
   }

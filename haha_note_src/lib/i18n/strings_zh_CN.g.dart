@@ -350,6 +350,10 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get landscape => '横屏';
 	@override String get portrait => '竖屏';
 	@override String get play => '播放';
+	@override String get externalStorageRootPathName => '共享存储';
+	@override String get externalDataFilesDirPathName => 'App外部存储';
+	@override String get innerDataFilesDirPathName => 'App内部存储';
+	@override String get storagePathsDesc => '\'共享存储\': 可被外部应用访问，不会随App卸载而删除\n\n\'App外部存储\' 和 \'App内部存储\': 仅可被App访问，随App卸载而删除';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -673,6 +677,10 @@ extension on TranslationsZhCn {
 			'landscape' => '横屏',
 			'portrait' => '竖屏',
 			'play' => '播放',
+			'externalStorageRootPathName' => '共享存储',
+			'externalDataFilesDirPathName' => 'App外部存储',
+			'innerDataFilesDirPathName' => 'App内部存储',
+			'storagePathsDesc' => '\'共享存储\': 可被外部应用访问，不会随App卸载而删除\n\n\'App外部存储\' 和 \'App内部存储\': 仅可被App访问，随App卸载而删除',
 			_ => null,
 		};
 	}

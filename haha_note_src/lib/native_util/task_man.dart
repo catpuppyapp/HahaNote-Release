@@ -4,7 +4,7 @@ import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/native_util/common.dart' show appNativeMethodChannel;
 import 'package:flutter/services.dart';
 
-const _TAG = "TaskMan";
+const _TAG = "task_man.dart";
 
 class TaskMan {
   static Future<void> moveToBackground() async {

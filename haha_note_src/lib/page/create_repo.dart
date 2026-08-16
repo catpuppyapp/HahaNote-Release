@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:hahanote_app/db/db.dart' show Db;
+import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/client/client.dart';
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
@@ -15,22 +18,21 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:hahanote_app/hahanote_lib_sync/sync_config.dart';
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
-import 'package:hahanote_app/db/db.dart' show Db;
-import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/state/my_page_state.dart' show MyPageState;
 import 'package:hahanote_app/ui/ui.dart' show UI;
 import 'package:hahanote_app/util/form_validator.dart' show FormValidator;
 import 'package:hahanote_app/util/fs.dart' show Fs;
 import 'package:hahanote_app/util/util.dart' show launchUrlExt, copyText, openUrlOrShowErrMsg;
+import 'package:hahanote_app/widget/app_storages.dart';
 import 'package:hahanote_app/widget/base_layout.dart';
 import 'package:hahanote_app/widget/dialogs.dart';
 import 'package:hahanote_app/widget/path_chooser.dart';
 import 'package:hahanote_app/widget/radios.dart';
-import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../native_util/task_man.dart';
+import '../widget/icon_buttons.dart';
 import '../widget/my_text_form_field.dart';
 
 const _TAG = "create_repo.dart";
@@ -825,8 +827,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(Platform.isAndroid ? t.gitBackendRequiresPuppyGit : t.gitBackend),
-                  IconButton(
-                    iconSize: 18,
+                  InlineIconButton(
                     onPressed: ()=>openUrlOrShowErrMsg(url: gitBackendTutorialUrl, showMsg: showMsg),
                     icon: Icon(Icons.help)
                   )
@@ -959,6 +960,15 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
             },
           )
         );
+
+        if(Platform.isAndroid) {
+          children.add(AppStorages(
+            onPathClick: (path) {
+              localRepoPath.text = path;
+            },
+            showMsg: showMsg
+          ));
+        }
 
 
         children.add(SizedBox(height: UI.verticalHeight+20));

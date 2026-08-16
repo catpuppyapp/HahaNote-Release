@@ -979,6 +979,18 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Play'
 	String get play => 'Play';
+
+	/// en: 'Shared Storage'
+	String get externalStorageRootPathName => 'Shared Storage';
+
+	/// en: 'App External Storage'
+	String get externalDataFilesDirPathName => 'App External Storage';
+
+	/// en: 'App Internal Storage'
+	String get innerDataFilesDirPathName => 'App Internal Storage';
+
+	/// en: ''Shared Storage': Accessible by external applications, will not be deleted when the app is uninstalled 'App External Storage' and 'App Internal Storage': Only accessible by the app, and will be removed during app uninstallation'
+	String get storagePathsDesc => '\'Shared Storage\': Accessible by external applications, will not be deleted when the app is uninstalled\n\n\'App External Storage\' and \'App Internal Storage\': Only accessible by the app, and will be removed during app uninstallation';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1302,6 +1314,10 @@ extension on Translations {
 			'landscape' => 'Landscape',
 			'portrait' => 'Portrait',
 			'play' => 'Play',
+			'externalStorageRootPathName' => 'Shared Storage',
+			'externalDataFilesDirPathName' => 'App External Storage',
+			'innerDataFilesDirPathName' => 'App Internal Storage',
+			'storagePathsDesc' => '\'Shared Storage\': Accessible by external applications, will not be deleted when the app is uninstalled\n\n\'App External Storage\' and \'App Internal Storage\': Only accessible by the app, and will be removed during app uninstallation',
 			_ => null,
 		};
 	}

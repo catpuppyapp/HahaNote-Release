@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
@@ -32,6 +33,12 @@ class MainActivity: FlutterActivity() {
                 // else work for any Activity
                 moveTaskToBack(true)
                 result.success(null)
+            } else if (call.method == "getExternalStorageRootPath") {
+                result.success(getExternalStorageRootPath())
+            } else if (call.method == "getExternalDataFilesDirPath") {
+                result.success(getExternalDataFilesDirPath(applicationContext))
+            } else if (call.method == "getInnerDataFilesDirPath") {
+                result.success(getInnerDataFilesDirPath(applicationContext))
             } else if (call.method == "startForegroundService") {
                 try {
                     doStartForegroundService()
@@ -256,4 +263,49 @@ class MainActivity: FlutterActivity() {
         val stopIntent = Intent(this, ForegroundService::class.java)
         stopService(stopIntent)
     }
+
+    /**
+     * @return "/storage/emulated/0" or "" if has exception
+     *
+     */
+    fun getExternalStorageRootPath():String{
+        return try {
+            Environment.getExternalStorageDirectory().canonicalPath
+        }catch (_:Exception) {
+            ""
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.FROYO)
+    fun getExternalDataFilesDirPath(context: Context):String {
+        return try {
+            val dir = context.getExternalFilesDir(null) ?: throw RuntimeException("`context.getExternalFilesDir(null)` returned `null`")
+            if(!dir.exists()) {
+                dir.mkdirs()
+            }
+
+            dir.canonicalPath ?: ""
+        }catch (e:Exception) {
+            e.printStackTrace()
+
+            ""
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    fun getInnerDataFilesDirPath(context: Context):String {
+        return try {
+            val filesDir = File(context.dataDir.canonicalPath, "files")
+            if(!filesDir.exists()) {
+                filesDir.mkdirs()
+            }
+
+            filesDir.canonicalPath
+        }catch (e: Exception) {
+            e.printStackTrace()
+
+            ""
+        }
+    }
+
 }

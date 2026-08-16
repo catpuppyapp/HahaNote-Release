@@ -11,7 +11,7 @@ import '../hahanote_lib_sync/storage/files/file_path.dart';
 import '../hahanote_lib_sync/utils.dart';
 import '../ui/app_layout_observer.dart';
 
-const _TAG = "MediaBar";
+const _TAG = "media_bar.dart";
 const _iconSize = 20.0;
 
 class MediaBar extends StatefulWidget {
