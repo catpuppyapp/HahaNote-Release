@@ -1,5 +1,10 @@
 
+---
+1.0.9+10 20260816-:
+- supports create repo in app internal folders on android
+- supports disable open file or dir after creating
 
+---
 1.0.8+9 20260810:
 - update text editor
 - add linebreak when copy or cut a line
