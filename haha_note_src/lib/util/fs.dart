@@ -148,8 +148,11 @@ abstract class Fs {
     final srcPathStr = srcPath.toString();
     final targetDirPathStr = targetDirPath.toString();
 
-    if(targetDirPathStr.startsWith(srcPathStr)) {
-      // 'dirs are the same' or 'targetPath is sub of src'
+    // return if 'dirs are the same' or 'targetPath is sub of src'
+    if(targetDirPathStr == srcPathStr
+        || targetDirPathStr.startsWith(srcPathStr+"/")
+        || targetDirPathStr.startsWith(srcPathStr+"\\")
+    ) {
       return;
     }
 
