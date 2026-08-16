@@ -2568,6 +2568,8 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
         await _createFile(target);
       }
 
+      final appConfig = AppConfig.getConfig();
+
       // 若非搜索模式，刷新页面
       if(filesPageSearchId.isEmpty) {
         // 注意：如果创建的目录末尾有空格，
@@ -2576,10 +2578,10 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
         // 可能移除末尾空格能解决，但没必要为这种罕见情况写特殊代码，所以不改了
 
         // 若是创建目录，打开创建的目录，否则刷新当前页面
-        await _loadFiles(isCreateDir ? target : currentPath);
+        await _loadFiles(isCreateDir && appConfig.openAfterCreatingTheFolder ? target : currentPath);
       }
 
-      if(!isCreateDir) {
+      if(!isCreateDir && appConfig.openAfterCreatingTheFile) {
         await _openWithInternalEditor(target.toString(), mime: mimeTextPlain);
       }
     }catch(e, st) {

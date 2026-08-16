@@ -39,6 +39,8 @@ class AppConfig {
   bool neverShowBlankLinesMayBeIgnoredInDiffView;
 
   bool showRepoDataDirInFiles;
+  bool openAfterCreatingTheFile;
+  bool openAfterCreatingTheFolder;
 
   // pc端使用此变量决定打开editor时是否默认打开预览面板
   bool editorPreviewEnabled;
@@ -64,6 +66,8 @@ class AppConfig {
     this.windowWidth = 1280,
     this.windowHeight = 720,
     this.displayMode = DisplayMode.auto,
+    this.openAfterCreatingTheFile = true,
+    this.openAfterCreatingTheFolder = true,
   }) : syncConfig = syncConfig ?? SyncConfig();
 
 

@@ -237,6 +237,20 @@ class SettingsPageState extends State<SettingsPage> {
     });
   }
 
+  Future<void> updateOpenAfterCreatingTheFile() async {
+    final newValue = !_appConfig.openAfterCreatingTheFile;
+    await updateConfig((config) async {
+      config.openAfterCreatingTheFile = newValue;
+    });
+  }
+
+  Future<void> updateOpenAfterCreatingTheFolder() async {
+    final newValue = !_appConfig.openAfterCreatingTheFolder;
+    await updateConfig((config) async {
+      config.openAfterCreatingTheFolder = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Widget body;
@@ -485,6 +499,28 @@ class SettingsPageState extends State<SettingsPage> {
             }),
             onTap: () async {
               await updateShowRepoDataDirInFiles();
+            },
+          ),
+
+          ListTile(
+            leading: Icon(Icons.text_snippet_outlined),
+            title: getTitle(t.openAfterCreatingTheFile),
+            trailing: Switch(value: _appConfig.openAfterCreatingTheFile, onChanged: (v) async {
+              await updateOpenAfterCreatingTheFile();
+            }),
+            onTap: () async {
+              await updateOpenAfterCreatingTheFile();
+            },
+          ),
+
+          ListTile(
+            leading: Icon(Icons.folder),
+            title: getTitle(t.openAfterCreatingTheFolder),
+            trailing: Switch(value: _appConfig.openAfterCreatingTheFolder, onChanged: (v) async {
+              await updateOpenAfterCreatingTheFolder();
+            }),
+            onTap: () async {
+              await updateOpenAfterCreatingTheFolder();
             },
           ),
 

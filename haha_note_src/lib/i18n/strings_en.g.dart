@@ -991,6 +991,12 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: ''Shared Storage': Accessible by external applications, will not be deleted when the app is uninstalled 'App External Storage' and 'App Internal Storage': Only accessible by the app, and will be removed during app uninstallation'
 	String get storagePathsDesc => '\'Shared Storage\': Accessible by external applications, will not be deleted when the app is uninstalled\n\n\'App External Storage\' and \'App Internal Storage\': Only accessible by the app, and will be removed during app uninstallation';
+
+	/// en: 'Open after creating the file'
+	String get openAfterCreatingTheFile => 'Open after creating the file';
+
+	/// en: 'Open after creating the folder'
+	String get openAfterCreatingTheFolder => 'Open after creating the folder';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1318,6 +1324,8 @@ extension on Translations {
 			'externalDataFilesDirPathName' => 'App External Storage',
 			'innerDataFilesDirPathName' => 'App Internal Storage',
 			'storagePathsDesc' => '\'Shared Storage\': Accessible by external applications, will not be deleted when the app is uninstalled\n\n\'App External Storage\' and \'App Internal Storage\': Only accessible by the app, and will be removed during app uninstallation',
+			'openAfterCreatingTheFile' => 'Open after creating the file',
+			'openAfterCreatingTheFolder' => 'Open after creating the folder',
 			_ => null,
 		};
 	}

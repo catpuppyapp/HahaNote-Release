@@ -27,6 +27,9 @@ AppConfig _$AppConfigFromJson(Map<String, dynamic> json) => AppConfig(
   windowWidth: (json['windowWidth'] as num?)?.toDouble() ?? 1280,
   windowHeight: (json['windowHeight'] as num?)?.toDouble() ?? 720,
   displayMode: (json['displayMode'] as num?)?.toInt() ?? DisplayMode.auto,
+  openAfterCreatingTheFile: json['openAfterCreatingTheFile'] as bool? ?? true,
+  openAfterCreatingTheFolder:
+      json['openAfterCreatingTheFolder'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$AppConfigToJson(AppConfig instance) => <String, dynamic>{
@@ -41,6 +44,8 @@ Map<String, dynamic> _$AppConfigToJson(AppConfig instance) => <String, dynamic>{
   'neverShowBlankLinesMayBeIgnoredInDiffView':
       instance.neverShowBlankLinesMayBeIgnoredInDiffView,
   'showRepoDataDirInFiles': instance.showRepoDataDirInFiles,
+  'openAfterCreatingTheFile': instance.openAfterCreatingTheFile,
+  'openAfterCreatingTheFolder': instance.openAfterCreatingTheFolder,
   'editorPreviewEnabled': instance.editorPreviewEnabled,
   'editorSoftWrapEnabled': instance.editorSoftWrapEnabled,
   'editorLineNumEnabled': instance.editorLineNumEnabled,
