@@ -2366,12 +2366,10 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                 showMsgLong: showMsgLong,
                 textInputAction: TextInputAction.go,
                 textController: filesGoToTextController,
-                bottomWidgetOfTextField: AppStorages(
-                  onPathClick: (path) {
-                    filesGoToTextController.text = path;
-                  },
+                bottomWidgetOfTextField: Platform.isAndroid ? AppStorages(
+                  textController: filesGoToTextController,
                   showMsg: showMsg
-                )
+                ) : null,
               );
 
               App.logger.debug(_TAG, "path to go: $path");

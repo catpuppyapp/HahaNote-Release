@@ -245,7 +245,10 @@ abstract class Dialogs {
             closeDialog(context);
           },
         ),
-        if(Platform.isAndroid) AppStorages(onPathClick: (path) => pathController.text = path, showMsg: showMsg),
+        if(Platform.isAndroid) AppStorages(
+          textController: pathController,
+          showMsg: showMsg
+        ),
         if(contentOnBottomOfPathChooser != null) contentOnBottomOfPathChooser,
       ],
     );

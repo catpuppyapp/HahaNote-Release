@@ -11,7 +11,8 @@ const _TAG = "app_storages.dart";
 const _defaultReposParentName = "haha_repos";
 
 class AppStorages extends StatefulWidget {
-  final void Function(String) onPathClick;
+  final void Function(String)? onPathClick;
+  final TextEditingController? textController;
   final void Function(String) showMsg;
 
   /// if is true, will append [_defaultReposParentName] to the storage path
@@ -19,7 +20,8 @@ class AppStorages extends StatefulWidget {
 
   const AppStorages({
     super.key,
-    required this.onPathClick,
+    this.onPathClick,
+    this.textController,
     required this.showMsg,
     this.isRepoStorage = true,
   });
@@ -47,7 +49,18 @@ class AppStoragesState extends State<AppStorages> {
             children: [
               for(final (idx, path) in AppInfo.storagePaths.indexed) ClickableTextWidget(
                 clickableText: StorageUtil.getStoragePathNameByIdx(idx)+", ",
-                onTapClickable: () => widget.onPathClick(widget.isRepoStorage ? "$path/$_defaultReposParentName" : path),
+                onTapClickable: () {
+                  // 如果是存储仓库的路径，追加上默认的仓库父文件夹名
+                  final path2 = widget.isRepoStorage ? "$path/$_defaultReposParentName" : path;
+                  if(widget.onPathClick == null) {
+                    if(widget.textController != null) {
+                      widget.textController!.text = path2;
+                      widget.textController!.selection = TextSelection(baseOffset: path2.length, extentOffset: path2.length);
+                    }
+                  }else {
+                    widget.onPathClick!(path2);
+                  }
+                },
               )
             ],
           ),
