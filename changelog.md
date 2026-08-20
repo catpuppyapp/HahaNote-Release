@@ -1,8 +1,10 @@
 
 ---
-1.0.9+10 20260816-:
+1.0.9+10 20260816-20260820:
 - supports create repo in app internal folders on android
 - supports disable open file or dir after creating
+- 安卓平台支持在app内部目录创建仓库
+- 支持禁用创建文件或文件夹后的自动打开
 
 ---
 1.0.8+9 20260810:

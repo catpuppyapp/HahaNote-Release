@@ -1,0 +1,2 @@
+- supports create repo in app internal folders on android
+- supports disable open file or dir after creating
