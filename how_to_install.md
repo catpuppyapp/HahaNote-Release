@@ -6,6 +6,6 @@ The portable version stores application data in the directory where the executab
 
 
 ### Tested platforms
-Linux version tested on ubuntu 24.04
-Windows version tested on windows 10
-Android version tested on android 12/13
+- Linux version tested on ubuntu 24.04
+- Windows version tested on windows 10
+- Android version tested on android 12/13
