@@ -96,7 +96,12 @@ const updateUrl = "https://github.com/catpuppyapp/HahaNote-Release/releases";
 const buyVipUrl = "https://github.com/catpuppyapp/HahaNote-Release/blob/main/buy_vip.md";
 const donateUrl = "https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md";
 const gitBackendTutorialUrl = "https://github.com/catpuppyapp/HahaNote-Release/blob/main/git_backend.md";
-const donateUrlKofi = "https://ko-fi.com/bandeapart1964";
+// const donateUrlKofi = "https://ko-fi.com/bandeapart1964";
+
+// donate url after installed or updated for the first time launch (in ChangelogDialog)
+// 安装或更新后首次启动app时显示的捐赠url（在ChangelogDialog）
+const donateUrlOnboard = donateUrl;
+
 bool landscapeLayoutInited = false;
 
 Future<void> main() async {

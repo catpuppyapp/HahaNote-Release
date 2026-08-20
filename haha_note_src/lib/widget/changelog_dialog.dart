@@ -26,7 +26,7 @@ class ChangelogDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextButton(
-              onPressed: () => launchUrlExtByStr(donateUrlKofi),
+              onPressed: () => launchUrlExtByStr(donateUrlOnboard),
               child: Text("♥ ${t.donateWelcomeText} ♥", style: TextStyle(fontSize: 20),)
             ),
             const Divider(height: 24), // 分割线
