@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
 import 'package:hahanote_app/native_util/storage_util.dart';
 import 'package:hahanote_app/util/app_info.dart';
 import 'package:hahanote_app/widget/clickable_text.dart';
@@ -14,6 +15,11 @@ class AppStorages extends StatefulWidget {
   final void Function(String)? onPathClick;
   final TextEditingController? textController;
   final void Function(String) showMsg;
+  /// remote path to get the default name of the path,
+  /// it will append the name of remote path to the storage path (local path),
+  /// e.g. while creating a repo, remote path is "/some_path/my_repo",
+  /// then the local path can be: /storage/emulated/0/haha_repos/my_repo
+  final String Function()? remotePath;
 
   /// if is true, will append [_defaultReposParentName] to the storage path
   final bool isRepoStorage;
@@ -24,6 +30,7 @@ class AppStorages extends StatefulWidget {
     this.textController,
     required this.showMsg,
     this.isRepoStorage = true,
+    this.remotePath,
   });
 
   @override
@@ -51,7 +58,8 @@ class AppStoragesState extends State<AppStorages> {
                 clickableText: StorageUtil.getStoragePathNameByIdx(idx)+", ",
                 onTapClickable: () {
                   // 如果是存储仓库的路径，追加上默认的仓库父文件夹名
-                  final path2 = widget.isRepoStorage ? "$path/$_defaultReposParentName" : path;
+                  final pathPrefix = widget.isRepoStorage ? "$path/$_defaultReposParentName" : path;
+                  final path2 = pathPrefix + (widget.remotePath == null ? "" : "/${FilePath.fromString(widget.remotePath!()).name()}");
                   if(widget.onPathClick == null) {
                     if(widget.textController != null) {
                       widget.textController!.text = path2;

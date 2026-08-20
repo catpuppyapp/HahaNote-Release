@@ -964,7 +964,8 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
         if(Platform.isAndroid) {
           children.add(AppStorages(
             textController: localRepoPath,
-            showMsg: showMsg
+            showMsg: showMsg,
+            remotePath: () => remoteRepoPath.text,
           ));
         }
 

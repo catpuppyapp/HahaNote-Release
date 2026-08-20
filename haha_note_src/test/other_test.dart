@@ -14,7 +14,21 @@ import 'package:path/path.dart' as p;
 
 
 Future<void> main() async {
+  print(p.basename("").isEmpty); // true
+  print(p.basename("/").isEmpty);  // false, it is "/", so is not empty
+  print(p.basename("/")); // output "/"
+  print(p.basename("/abc//")); // output "abc"
+  print(p.basename("/abc/def.name")); // output "def.name"
+  print(FilePath.fromString("/abc//").name()); // "abc"
+  print(FilePath.fromString("/abc.name//def.name").name()); // "def.name"
+  print(FilePath.fromString("//").name().isEmpty);  // true
+  print(FilePath.fromString("/").name().isEmpty);  // true
+  print(FilePath.fromString("//").toUnixPathStr()); // "/"
+  print(FilePath.fromString("/").toUnixPathStr()); // "/"
+
+
   print(p.basename("https://abc/def.txt")); // output: def.txt
+  print(FilePath.fromString("https://abc/def.txt").name()); // output: def.txt
 
   bool? a = null;
   a = false;
