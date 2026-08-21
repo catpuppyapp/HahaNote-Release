@@ -14,8 +14,8 @@ Future<void> main() async {
 // r代表raw字符串，可保留转义字符，例如\、\n等
 // """这种格式代表多行字符串，可保留换行符"""
   final prefixString = r'''
-// 更新于：20260717
-// 证书包发布日期：20260716
+// 更新于：20260821
+// 证书包发布日期：20260813
 // 来源：https://curl.se/docs/caextract.html
 const bundledCertsBytes=[''';
 
