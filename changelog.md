@@ -1,5 +1,9 @@
 
 ---
+1.0.10+11 20260821-:
+- update tls cert
+
+---
 1.0.9+10 20260816-20260820:
 - supports create repo in app internal folders on android
 - supports disable open file or dir after creating
