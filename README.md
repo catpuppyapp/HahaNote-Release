@@ -3,12 +3,9 @@
 
 
 ### Download
-<a href="https://github.com/catpuppyapp/HahaNote-Release/releases" target="_blank">
-    <img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" alt="Get it on GitHub" width=300>
-</a>
-<a href="https://apt.izzysoft.de/fdroid/index/apk/com.catpuppyapp.hahanote" target="_blank">
-    <img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" width=300>
-</a>
+[Github Releases (Android/Linux/Windows)](https://github.com/catpuppyapp/HahaNote-Release/releases)
+[IzzyOnDroid (Android only)](https://apt.izzysoft.de/fdroid/index/apk/com.catpuppyapp.hahanote)
+
 
 
 ### Tutorial
