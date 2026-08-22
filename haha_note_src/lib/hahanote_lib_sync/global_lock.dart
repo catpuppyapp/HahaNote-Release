@@ -34,7 +34,7 @@ class GlobalLock {
 
   static void unlock(String owner) {
     // 没获取到锁，但在finally里调用了unlock，就会为空，noop即可
-    if(owner.isEmpty) {
+    if(owner.isEmpty || _owner.isEmpty) {
       return;
     }
 
@@ -45,5 +45,9 @@ class GlobalLock {
     _owner = "";
     _actName = "";
     _actDesc = "";
+  }
+
+  static bool isLocked() {
+    return _owner.isNotEmpty;
   }
 }

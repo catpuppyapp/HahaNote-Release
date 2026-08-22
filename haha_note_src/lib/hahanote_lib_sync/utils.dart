@@ -3,12 +3,12 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:math';
 
-import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
-import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
-import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:collection/collection.dart' show DeepCollectionEquality;
 import 'package:cryptography/cryptography.dart' show SecureRandom;
 import 'package:cryptography/helpers.dart' show randomBytes;
+import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 
 
 // const randomCharCandidates = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -388,6 +388,29 @@ bool isInvalidPort(int? port) {
 ///任一任务完成则立刻添加下一个任务，任一出错则此函数直接抛出异常
 ///Any task err add next task immediately, any task err throw immediately
 Future<void> futureFunctionPool(
+  List<Future Function()> futuresFunctions, {
+  int max = 5,
+  // if got any error:
+  // when eagerErr is true, throw as soon as possible;
+  // else, throw after all task completed
+  // note: set to true cannot promise throw immediately when got an err,
+  // maybe will delay, e.g. task3 got err,
+  // but error maybe throw after task4 or task5 completed
+  bool eagerError = true,
+  Future<void> Function()? onFinally,
+}) async {
+  try {
+    await _doFutureFunctionPool(
+      futuresFunctions,
+      max: max,
+      eagerError: eagerError,
+    );
+  }finally {
+    await onFinally?.call();
+  }
+}
+
+Future<void> _doFutureFunctionPool(
   List<Future Function()> futuresFunctions, {
   int max = 5,
   // if got any error:

@@ -1,7 +1,18 @@
 import 'dart:io' show Platform, FileSystemEntity, Directory, FileSystemEntityType, File, exit;
 import 'dart:math' show min;
 
+import 'package:code_forge/code_forge.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show LogicalKeyboardKey;
+import 'package:flutter_single_instance/flutter_single_instance.dart';
 import 'package:hahanote_app/bean/bean.dart';
+import 'package:hahanote_app/config/app_config.dart';
+import 'package:hahanote_app/config/portable.dart' show initPortableMode;
+import 'package:hahanote_app/constants/cons.dart';
+import 'package:hahanote_app/db/db.dart' show Db;
+import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/log.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/my_http_overrides.dart';
@@ -14,11 +25,6 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/related_oids.dart';
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
-import 'package:hahanote_app/config/app_config.dart';
-import 'package:hahanote_app/config/portable.dart' show initPortableMode;
-import 'package:hahanote_app/constants/cons.dart';
-import 'package:hahanote_app/db/db.dart' show Db;
-import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/mock/mock.dart' show Mock;
 import 'package:hahanote_app/native_util/open_file.dart';
@@ -61,12 +67,6 @@ import 'package:hahanote_app/widget/line.dart';
 import 'package:hahanote_app/widget/pull_to_refresh_list.dart';
 import 'package:hahanote_app/widget/search_text_field.dart';
 import 'package:hahanote_app/widget/sort_dialog.dart';
-import 'package:code_forge/code_forge.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show LogicalKeyboardKey;
-import 'package:flutter_single_instance/flutter_single_instance.dart';
 import 'package:lifecycle/lifecycle.dart';
 import 'package:path/path.dart' as p;
 import 'package:window_manager/window_manager.dart';
@@ -1041,13 +1041,22 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     repoStatusLoading = true;
     refreshUI();
     var owner = "";
+    final tasks = <Future Function()>[];
 
     try {
       // 先拿全局lock，然后重置 VirtualFile
       owner = GlobalLock.lock(actName: "checkReposStatus", actDesc: "check repos status at repo list");
+      Future<void> unlockGlobalLock() async {
+        try {
+          GlobalLock.unlock(owner);
+        }catch(e, st) {
+          App.logger.debug(_TAG, "unlock global lock err after loading repos status(err code: 11393175): $e\n$st");
+          showMsgLong("unlock global lock err after loading repos status(err code: 11393175): $e");
+        }
+      }
+
       VirtualFile.reset();
 
-      final tasks = <Future Function()>[];
       for(final repoEntity in repos) {
         // 并发执行是ok的
         final curStatus = repoStatusMap[repoEntity.path];
@@ -1078,16 +1087,19 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
       // do not await, else ui can not update instantly
       // eagerError must be false, else if a repo got err, others will not check
-      futureFunctionPool(tasks, max: 3, eagerError: false);
+      futureFunctionPool(tasks, max: 3, eagerError: false, onFinally: unlockGlobalLock);
     }catch(e, st) {
       App.logger.debug(_TAG, "loading repos status err: $e\n$st");
       showMsgLong("loading repos status err: $e");
     }finally {
-      try {
-        GlobalLock.unlock(owner);
-      }catch(e, st) {
-        App.logger.debug(_TAG, "unlock global lock err after loading repos status: $e\n$st");
-        showMsgLong("unlock global lock err after loading repos status: $e");
+      // 无任务执行，直接释放锁
+      if(tasks.isEmpty) {
+        try {
+          GlobalLock.unlock(owner);
+        }catch(e, st) {
+          App.logger.debug(_TAG, "unlock global lock err after loading repos status(err code: 10893958): $e\n$st");
+          showMsgLong("unlock global lock err after loading repos status(err code: 10893958): $e");
+        }
       }
 
       repoStatusLoading = false;
