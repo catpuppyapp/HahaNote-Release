@@ -178,7 +178,7 @@ class GlobalLockUnlockErr extends AppException {
 
   @override
   String toString() {
-    return "Unlock GlobalLock err: currently owner: $owner, actName: $actName, actDesc: $actDesc";
+    return "Unlock GlobalLock err, you can waiting for the lock free by the owner or restart app if it is no response for a long time: currently owner: $owner, actName: $actName, actDesc: $actDesc";
   }
 }
 

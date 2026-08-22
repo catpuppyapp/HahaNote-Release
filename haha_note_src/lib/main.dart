@@ -7,6 +7,7 @@ import 'package:hahanote_app/hahanote_lib_sync/log.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/my_http_overrides.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/virtual_file.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
@@ -1042,7 +1043,10 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     var owner = "";
 
     try {
-      owner = GlobalLock.lock(actName: "checkReposStatus", actDesc: "check repos status at home page");
+      // 先拿全局lock，然后重置 VirtualFile
+      owner = GlobalLock.lock(actName: "checkReposStatus", actDesc: "check repos status at repo list");
+      VirtualFile.reset();
+
       final tasks = <Future Function()>[];
       for(final repoEntity in repos) {
         // 并发执行是ok的
@@ -1079,7 +1083,12 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
       App.logger.debug(_TAG, "loading repos status err: $e\n$st");
       showMsgLong("loading repos status err: $e");
     }finally {
-      GlobalLock.unlock(owner);
+      try {
+        GlobalLock.unlock(owner);
+      }catch(e, st) {
+        App.logger.debug(_TAG, "unlock global lock err after loading repos status: $e\n$st");
+        showMsgLong("unlock global lock err after loading repos status: $e");
+      }
 
       repoStatusLoading = false;
       refreshUI();
