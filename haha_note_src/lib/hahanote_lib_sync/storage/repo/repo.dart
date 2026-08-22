@@ -4964,7 +4964,7 @@ class Repo {
         freeLocalRepoLockByPath(path, localLockToken);
       }
     }finally {
-      // 入参owner若为空，则是当前函数获取的全局锁，则释放，否则不释放
+      // 入参 globalLockOwner 若为空，则是当前函数获取的全局锁，则在此释放，否则由调用者释放
       if(globalLockOwner.isEmpty) {
         GlobalLock.unlock(owner);
       }

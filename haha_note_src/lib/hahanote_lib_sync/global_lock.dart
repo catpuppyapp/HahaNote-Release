@@ -30,9 +30,9 @@ class GlobalLock {
       _actName = actName;
       _actDesc = actDesc;
       return newOwner;
-    }else {
-      throw GlobalLockLockErr(owner: _owner, actName: _actName, actDesc: _actDesc);
     }
+
+    throw GlobalLockLockErr(owner: _owner, actName: _actName, actDesc: _actDesc);
   }
 
   static void unlock(String owner) {
