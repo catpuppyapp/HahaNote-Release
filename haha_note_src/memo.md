@@ -1,6 +1,6 @@
 
 ---
-更新 code_forge 20260822:
+更新code_forge 20260822:
 初次：
 1 克隆我的fork: https://github.com/Bandeapart1964/code_forge.git
 2 切换到分支 support_rustup_toolchain_from_env: git checkout support_rustup_toolchain_from_env
