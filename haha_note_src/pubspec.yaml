@@ -118,7 +118,7 @@ dependencies:
   code_forge:
     git:
       url: https://github.com/Bandeapart1964/code_forge.git
-      ref: 6996d4b87458fb0e965aa85f0f60f102694afb38
+      ref: 8d7bcd5b7f91efcab9536087814e9ecf4588af7e
 
 dev_dependencies:
   flutter_test:
