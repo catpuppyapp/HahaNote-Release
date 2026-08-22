@@ -4297,9 +4297,9 @@ class Repo {
     ThrowIfInterrupted? throwIfInterrupted,
     SyncProgressCb? progressCb,
     required TempDir tempDir,
-    // 检查仓库列表时，则传false，只在总调用处重置一次
+    // 检查仓库列表status时，则传false，只在总调用处重置一次
     bool resetVirtualFile = true,
-    // 检查仓库列表时传true，可在发现仓库dirty后立刻抛异常中止后续检查
+    // 检查仓库列表status时传true，可在发现仓库dirty后立刻抛异常中止后续检查
     bool throwIfDirty = false,
   }) async {
     final String? remote;  // 屏蔽 变量名remote，避免误调用实例同名字段
@@ -5004,9 +5004,9 @@ class Repo {
             throwIfInterrupted: throwIfInterrupted,
             progressCb: null,
             tempDir: tempDir,
-            // 检查仓库列表时，则传false，只在总调用处重置一次
-            resetVirtualFile: false,
-            // 检查仓库列表时传true
+
+            resetVirtualFile: resetVirtualFile,
+            // 检查状态，一旦dirty，直接抛特定异常即可，所以传true
             throwIfDirty: true,
           );
 
