@@ -899,13 +899,7 @@ class Repo {
     ) act,
   }) async {
     // 先获取仓库本地锁，若获取失败，说明仓库正在执行操作，就不用获取远程锁了
-    final localLockToken = LockToken(actName: actName, actDesc: actDesc);
-    final localLocked = lockLocalRepoByPath(path, localLockToken);
-    if(localLocked != null) {
-      throw RepoBusyException(actName: localLocked.actName, actDesc: localLocked.actDesc);
-    }
-
-    try {
+    Future<T> localLockAct() async {
       // 先init再拿锁，其实还有个问题，假如当前有任务正在执行，那我这一刷新，这个仓库的任务的access token就失效了啊！
       // 所以：必须先拿本地锁，若能拿到，再去拿远程锁，这样就能确保本地没冲突了
       // 因为锁也需要访问远程仓库，所以，必须先刷新token，不过如果调用者刚刷新过，就没必要刷了
@@ -1047,9 +1041,13 @@ class Repo {
         mainRp.close();
       }
 
-    }finally {
-      freeLocalRepoLockByPath(path, localLockToken);
     }
+
+    return await doActWithLocalLock(
+      actName: actName,
+      actDesc: actDesc,
+      act: localLockAct,
+    );
 
   }
 
@@ -3182,15 +3180,12 @@ class Repo {
     File? objPfsFileInFetchCacheOfTempDir;
     String? objPfsPathInFetchCacheOfTempDir;
 
+    final actName = "findObjInLocal";
+    final actDesc = "find obj in local";
     // 先只加本地锁，从本地查找，如果找不到再加远程锁，从远程查找
-    final localLockToken = LockToken(actName: "findObjInLocal", actDesc: "find obj in local");
-    final localLocked = lockLocalRepoByPath(path, localLockToken);
-    if(localLocked != null) {
-      throw RepoBusyException(actName: localLocked.actName, actDesc: localLocked.actDesc);
-    }
+    bool shouldReturnResult = false;
 
-
-    try {
+    Future<void> localLockAct() async {
       progressCb?.call(SyncProgressAct.commitLocalSyncCache, 0, 0, "");
 
       // 如果，未提交完，用户返回，是否会导致数据出错？应该不会，因为这个函数调用前有上本地锁，而且提交过程不可interrupt，
@@ -3202,10 +3197,10 @@ class Repo {
       progressCb?.call(SyncProgressAct.checkingCache, 0, 0, "");
 
       downCacheDirPath = getDownCacheDirPath();
-      downCacheDir = Directory(downCacheDirPath);
+      downCacheDir = Directory(downCacheDirPath!);
       // 固定使用 cache/downCache/tempDir 作为tempDir
       tempDirPath = getDownCacheTempDirPath();
-      tempDir = await TempDir.fromDir(Directory(tempDirPath));
+      tempDir = await TempDir.fromDir(Directory(tempDirPath!));
 
 
 
@@ -3217,7 +3212,7 @@ class Repo {
       // 只要当前 tempDir (downCache/tempDir) 的pfs.enc包含对应 obj oid以及关联的 .pack文件，
       // 就会直接从tempDir里的.pack文件提取数据，从而避免联网（因为obj是不可变数据，所以可以这么搞）
       cachedObjPfsContentIdPath = getDownCacheObjPfsIdFilePath();
-      cachedObjPfsContentIdFile = File(cachedObjPfsContentIdPath);
+      cachedObjPfsContentIdFile = File(cachedObjPfsContentIdPath!);
 
 
       remoteDataDirPath = getRemoteDataDirPath();
@@ -3226,17 +3221,17 @@ class Repo {
 
       // 查找文件前，先在缓存的pfs里找，再看对应pack是否已经存在于缓存目录，若在，直接使用本地缓存，否则下载
       // downCache/tempDir/fetchCache/pfs/files/pfs.enc
-      objPfsFileInFetchCacheOfTempDir = await remote.getPfsFileByTypeFromFetchCache(RemoteDataType.objectsPfs, tempDir);
-      objPfsPathInFetchCacheOfTempDir = FilePath.canonicalizePath(objPfsFileInFetchCacheOfTempDir.absolute.path);
+      objPfsFileInFetchCacheOfTempDir = await remote.getPfsFileByTypeFromFetchCache(RemoteDataType.objectsPfs, tempDir!);
+      objPfsPathInFetchCacheOfTempDir = FilePath.canonicalizePath(objPfsFileInFetchCacheOfTempDir!.absolute.path);
 
       ObjPackFileStorage? objPfs;
       try {
-        if(await objPfsFileInFetchCacheOfTempDir.exists()) {
-          objPfs = await ObjPackFileStorage.decrypt(contentKeyData, objPfsFileInFetchCacheOfTempDir);
+        if(await objPfsFileInFetchCacheOfTempDir!.exists()) {
+          objPfs = await ObjPackFileStorage.decrypt(contentKeyData!, objPfsFileInFetchCacheOfTempDir!);
         }
       }catch(e, st) {
         // 可能文件损坏或者怎样，总之本地文件有问题，后面会重新下载
-        App.logger.debug(_TAG, "decrypt objects pfs err, file maybe broken, will re-download it, file path is '${objPfsFileInFetchCacheOfTempDir.absolute.path}'\nerr: $e\n$st");
+        App.logger.debug(_TAG, "decrypt objects pfs err, file maybe broken, will re-download it, file path is '${objPfsFileInFetchCacheOfTempDir!.absolute.path}'\nerr: $e\n$st");
       }
 
       if(objPfs != null) {
@@ -3261,7 +3256,7 @@ class Repo {
           progressCb?.call(SyncProgressAct.searchingCache, allCount, count, oid.value);
 
           // 由于提交了本地syncCache，所以这里说不定有数据了，因此检查下，本地若有，直接使用
-          File? file = await getTypedLocalData(RemoteDataType.objects, oid, remoteDataDirPath, tempDir);
+          File? file = await getTypedLocalData(RemoteDataType.objects, oid, remoteDataDirPath!, tempDir!);
           if(file != null) {
             result[oid.value] = file;
             continue;
@@ -3274,14 +3269,14 @@ class Repo {
           }
 
           // packFile
-          final packFile = await remote.getPackFileByNameFromFetchCache(findResult.packFile!.name, RemoteDataType.objectsPfs, tempDir, pfsFile: objPfsFileInFetchCacheOfTempDir);
+          final packFile = await remote.getPackFileByNameFromFetchCache(findResult.packFile!.name, RemoteDataType.objectsPfs, tempDir!, pfsFile: objPfsFileInFetchCacheOfTempDir);
           if(!await packFile.exists()) {
             needDownloadObjs.add(oid);
             continue;
           }
 
           // 本地pack file存在，直接解压即可
-          var targetFile = await tempDir.createTempFile();
+          var targetFile = await tempDir!.createTempFile();
           await objPfs.extractFromPackFile(packFile, findResult.packItem!, targetFile);
 
           throwIfInterrupted?.call();
@@ -3292,12 +3287,12 @@ class Repo {
           }
 
           if(moveToRemoteDataDirAfterDownload) {
-            final objPathInRemoteDataDir = Repo.getLocalRemoteObjectPathByOidStr(remoteDataDirPath, oid.value);
+            final objPathInRemoteDataDir = Repo.getLocalRemoteObjectPathByOidStr(remoteDataDirPath!, oid.value);
             await getFileAndMakeSureParentDirExist(objPathInRemoteDataDir);
             targetFile = await targetFile.rename(objPathInRemoteDataDir);
           }
 
-          result[oid.value] = await decryptDataByType(remoteDataType, targetFile, tempDir);
+          result[oid.value] = await decryptDataByType(remoteDataType, targetFile, tempDir!);
         }
       }else {
         // 本地objpfs解密失败，要么损坏，要么有问题，要么无文件
@@ -3305,18 +3300,26 @@ class Repo {
         needDownloadObjs = oids;
         // 删掉本地的contentId文件，使缓存无效，后面就会清缓存了
         // 之所以不try catch，而是判断存在再删除，是为了确保如果文件存在，则删除一定成功，若出错，则应抛异常
-        if(await cachedObjPfsContentIdFile.exists()) {
-          await cachedObjPfsContentIdFile.delete();
+        if(await cachedObjPfsContentIdFile!.exists()) {
+          await cachedObjPfsContentIdFile!.delete();
         }
       }
 
       if(needDownloadObjs.isEmpty) {
         App.logger.debug(_TAG, "$funName: all files found in cache, no need download.");
-        return result;
+        shouldReturnResult = true;
       }
 
-    } finally {
-      freeLocalRepoLockByPath(path, localLockToken);
+    }
+
+    await doActWithLocalLock(
+      actName: actName,
+      actDesc: actDesc,
+      act: localLockAct,
+    );
+
+    if(shouldReturnResult) {
+      return result;
     }
 
 
@@ -3327,7 +3330,7 @@ class Repo {
 
     final throwIfInterruptedOuter = throwIfInterrupted;
     return await doActWithLock(
-      contentKeyData,
+      contentKeyData!,
       actName: "fetchDataCached",
       actDesc: "fetch data with cached",
       needInitRemote: true,
@@ -4267,13 +4270,10 @@ class Repo {
     SyncProgressCb? progressCb,
   }) async {
     // 先获取仓库本地锁，若获取失败，说明仓库正在执行操作，就不用获取远程锁了
-    final localLockToken = LockToken(actName: "repoStatus", actDesc: "repo status to show local changes");
-    final localLocked = lockLocalRepoByPath(path, localLockToken);
-    if(localLocked != null) {
-      throw RepoBusyException(actName: localLocked.actName, actDesc: localLocked.actDesc);
-    }
+    final actName = "repoStatus";
+    final actDesc = "repo status to show local changes";
 
-    try {
+    Future<List<StatusItem>> localLockAct() async {
       final tempDir = await createTempDir("status");
       try {
         return await _status(
@@ -4284,9 +4284,13 @@ class Repo {
       }finally {
         await tempDir.clean();
       }
-    }finally {
-      freeLocalRepoLockByPath(path, localLockToken);
     }
+
+    return await doActWithLocalLock(
+      actName: actName,
+      actDesc: actDesc,
+      act: localLockAct,
+    );
   }
 
   Future<List<StatusItem>> _status({
