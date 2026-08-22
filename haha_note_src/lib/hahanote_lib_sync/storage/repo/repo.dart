@@ -3411,7 +3411,7 @@ class Repo {
         final remoteObjPfsContentId = remote.objectsPfs!.contentId;
         if(await cachedObjPfsContentIdFile!.exists()) {
           // 检查本地缓存是否最新，若不是最新则清缓存目录，然后拷贝最新的到缓存目录
-          final localCachedObjPfsContentId = (await cachedObjPfsContentIdFile.readAsString()).trim();
+          final localCachedObjPfsContentId = (await cachedObjPfsContentIdFile!.readAsString()).trim();
           // 比较下缓存的obj pfs文件是否和远程一致即可
           if(localCachedObjPfsContentId != remoteObjPfsContentId) {
             await resetDownCache(latestObjPfsContentId: remoteObjPfsContentId);
@@ -3454,7 +3454,7 @@ class Repo {
               progressCb?.call(SyncProgressAct.downloading, allCount, count, oid.value);
 
               // 由于提交了本地syncCache，所以这里说不定有数据了，因此检查下，本地若有，直接使用
-              File? file = await getTypedLocalData(RemoteDataType.objects, oid, remoteDataDirPath!, tempDir);
+              File? file = await getTypedLocalData(RemoteDataType.objects, oid, remoteDataDirPath!, tempDir!);
               if(file != null) {
                 result[oid.value] = file;
                 continue;
@@ -3463,14 +3463,14 @@ class Repo {
 
               file = await remote.fetchObject(
                 oid,
-                remoteDataDirPath,
-                tempDir,
+                remoteDataDirPath!,
+                tempDir!,
                 moveToRemoteDataDirAfterDownload: moveToRemoteDataDirAfterDownload,
               );
 
               throwIfInterrupted?.call();
 
-              result[oid.value] = await decryptDataByType(remoteDataType, file, tempDir);
+              result[oid.value] = await decryptDataByType(remoteDataType, file, tempDir!);
 
             }catch(e) {
               // 下载错误的条目直接跳过即可，最后返回的时候通过result[oid]是否为null判断某个对象是否下载成功
