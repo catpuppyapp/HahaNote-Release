@@ -149,3 +149,36 @@ class RepoBusyException extends AppException {
   }
 }
 
+class GlobalLockLockErr extends AppException {
+  String owner;
+  String actName;
+  String actDesc;
+
+  GlobalLockLockErr({required this.owner, required this.actName, required this.actDesc}) : super("Lock GlobalLock err");
+
+  @override
+  String selfName() => 'GlobalLockLockErr';
+
+  @override
+  String toString() {
+    return "Lock GlobalLock err: currently owner: $owner, actName: $actName, actDesc: $actDesc";
+  }
+}
+
+
+class GlobalLockUnlockErr extends AppException {
+  String owner;
+  String actName;
+  String actDesc;
+
+  GlobalLockUnlockErr({required this.owner, required this.actName, required this.actDesc}) : super("Unlock GlobalLock err");
+
+  @override
+  String selfName() => 'GlobalLockUnlockErr';
+
+  @override
+  String toString() {
+    return "Unlock GlobalLock err: currently owner: $owner, actName: $actName, actDesc: $actDesc";
+  }
+}
+

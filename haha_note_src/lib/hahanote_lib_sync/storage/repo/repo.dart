@@ -10,6 +10,7 @@ import 'package:hahanote_app/hahanote_lib_sync/crypto/encrypt.dart';
 import 'package:hahanote_app/hahanote_lib_sync/crypto/key_data.dart';
 import 'package:hahanote_app/hahanote_lib_sync/crypto/key_extra_data.dart';
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
+import 'package:hahanote_app/hahanote_lib_sync/global_lock.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/datamap/data_map.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/dropbox.dart';
@@ -84,11 +85,12 @@ class RepoStatus {
 
   static Future<RepoStatus> checkRepoStatus(
     String repoPath, {
+    required String globalLockOwner,
     required ThrowIfInterrupted throwIfInterrupted,
   }) async {
     try {
       final repo = await Repo.open(repoPath);
-      return await repo.checkStatus(throwIfInterrupted: throwIfInterrupted);
+      return await repo.checkStatus(throwIfInterrupted: throwIfInterrupted, globalLockOwner: globalLockOwner);
     }catch(e) {  // 打开仓库有可能出错，所以得捕获下
       return RepoStatus(value: RepoStatusVal.err, msg: e.toString());
     }
@@ -4937,18 +4939,29 @@ class Repo {
     required String actName,
     required String actDesc,
     required Future<T> Function() act,
+
+    String globalLockOwner = "",
   }) async {
-    // 先获取仓库本地锁，若获取失败，说明仓库正在执行操作，就不用获取远程锁了
-    final localLockToken = LockToken(actName: actName, actDesc: actDesc);
-    final localLocked = lockLocalRepoByPath(path, localLockToken);
-    if(localLocked != null) {
-      throw RepoBusyException(actName: localLocked.actName, actDesc: localLocked.actDesc);
-    }
+    final owner = GlobalLock.lock(actName: actName, actDesc: actDesc, owner: globalLockOwner);
 
     try {
-      return await act();
+      // 先获取仓库本地锁，若获取失败，说明仓库正在执行操作，就不用获取远程锁了
+      final localLockToken = LockToken(actName: actName, actDesc: actDesc);
+      final localLocked = lockLocalRepoByPath(path, localLockToken);
+      if(localLocked != null) {
+        throw RepoBusyException(actName: localLocked.actName, actDesc: localLocked.actDesc);
+      }
+
+      try {
+        return await act();
+      }finally {
+        freeLocalRepoLockByPath(path, localLockToken);
+      }
     }finally {
-      freeLocalRepoLockByPath(path, localLockToken);
+      // 入参owner若为空，则是当前函数获取的全局锁，则释放，否则不释放
+      if(globalLockOwner.isEmpty) {
+        GlobalLock.unlock(owner);
+      }
     }
   }
 
@@ -4968,6 +4981,7 @@ class Repo {
   }
 
   Future<RepoStatus> checkStatus({
+    required String globalLockOwner,
     required ThrowIfInterrupted throwIfInterrupted,
   }) async {
     final actName = "checkStatus";
@@ -4978,6 +4992,7 @@ class Repo {
       return await doActWithLocalLock(
         actName: actName,
         actDesc: actDesc,
+        globalLockOwner: globalLockOwner,
         act: () async {
           await _status(
             throwIfInterrupted: throwIfInterrupted,

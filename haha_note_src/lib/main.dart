@@ -71,6 +71,7 @@ import 'package:path/path.dart' as p;
 import 'package:window_manager/window_manager.dart';
 
 import 'hahanote_lib_sync/exception/exception.dart';
+import 'hahanote_lib_sync/global_lock.dart';
 import 'hahanote_lib_sync/isolate_pool/isolate_pool.dart';
 import 'hahanote_lib_sync/sync_config.dart';
 import 'page/markdown_file_preview.dart';
@@ -1038,8 +1039,10 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
     repoStatusLoading = true;
     refreshUI();
+    var owner = "";
 
     try {
+      owner = GlobalLock.lock(actName: "checkReposStatus", actDesc: "check repos status at home page");
       final tasks = <Future Function()>[];
       for(final repoEntity in repos) {
         // 并发执行是ok的
@@ -1051,6 +1054,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
           Future task() async {
             repoStatusMap[repoEntity.path] = await RepoStatus.checkRepoStatus(
+              globalLockOwner: owner,
               repoEntity.path,
               throwIfInterrupted: () {
                 if(openedRepo != null) {
@@ -1075,6 +1079,8 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
       App.logger.debug(_TAG, "loading repos status err: $e\n$st");
       showMsgLong("loading repos status err: $e");
     }finally {
+      GlobalLock.unlock(owner);
+
       repoStatusLoading = false;
       refreshUI();
     }
