@@ -32,8 +32,8 @@ class VirtualFile {
   String workdirFilePath = "";
   int dataLen = 0;
 
-  // main线程应在每次使用VirtualFile前重置此值；子线程若复用，也需要重置此值（计算hash时不用重置）
-  static reset() {
+  // main线程应在每次使用VirtualFile前重置此值；子线程若复用，也需要重置此值（使用子线程计算hash若计算完就销毁子线程，不复用则不需要重置）
+  static void reset() {
     _bufferedDataSize = 0;
   }
 

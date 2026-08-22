@@ -4291,10 +4291,16 @@ class Repo {
     ThrowIfInterrupted? throwIfInterrupted,
     SyncProgressCb? progressCb,
     required TempDir tempDir,
+    // 检查仓库列表时，则传false，只在总调用处重置一次
+    bool resetVirtualFile = true,
+    // 检查仓库列表时传true，可在发现仓库dirty后立刻抛异常中止后续检查
+    bool throwIfDirty = false,
   }) async {
     final String? remote;  // 屏蔽 变量名remote，避免误调用实例同名字段
 
-    VirtualFile.reset();
+    if(resetVirtualFile) {
+      VirtualFile.reset();
+    }
 
     final index = await getIndex();
     final lastContentIdOfIndex = index.contentId;
@@ -4327,6 +4333,10 @@ class Repo {
       },
       createNewNodeForModifiedAndAddedHandler: false,
       modifiedHandler: ({required String relativePathUnixStr, required int sizeInBytes, required File workdirFileEntity, required VersionNode? versionNode, required FileInfo fileInfoWillPush, required VirtualFile virtualFile}) async {
+        if(throwIfDirty) {
+          throw StatusDirtyException();
+        }
+
         if(fileInfoWillPush.curNode().oid.value == VersionOid.deleted.value) {
           statusItems.add(StatusItem.create(type: StatusItemType.added, relativePathUnderWorkdir: relativePathUnixStr, sizeInBytes: sizeInBytes));
         }else {
@@ -4334,11 +4344,19 @@ class Repo {
         }
       },
       addedHandler: ({required String relativePathUnixStr, required int sizeInBytes, required File workdirFileEntity, required VersionNode? versionNode, required VirtualFile virtualFile}) async {
+        if(throwIfDirty) {
+          throw StatusDirtyException();
+        }
+
         statusItems.add(StatusItem.create(type: StatusItemType.added, relativePathUnderWorkdir: relativePathUnixStr, sizeInBytes: sizeInBytes));
       },
 
       // pathOidStr可能用来下载对应的file info文件
       deletedHandler: ({required String path, required String pathOidStr}) async {
+        if(throwIfDirty) {
+          throw StatusDirtyException();
+        }
+
         // 这样其实有点浪费性能，如果在上面启动检测删除的task那个循环里，根据路径把FileInfo先存到map里，
         // 性能会更好，但是，如果平时删除的条目很少，那样有可能会浪费内存，我判断用户应该不会频繁删文件，
         // 所以选择目前这个性能可能比较差但省内存的方案，因为大多数情况下用户不会删文件或者删也不会删很多文件，
@@ -4961,51 +4979,14 @@ class Repo {
         actName: actName,
         actDesc: actDesc,
         act: () async {
-          final contentKeyData = await getContentKey();
-          final index = await getIndex();
-          final localFileMap = await getLocalFilesMap(contentKeyData);
-          await findLocalChanges(
-            index: index, // 此函数不会修改此index
-            lastContentIdOfIndex: index.contentId,
-            newIndex: null,
-            lastContentIdOfNewIndex: null,
-            filesMap: localFileMap,
-            contentKeyData: contentKeyData,
-            workdirBasePath: getWorkdirPath(),
+          await _status(
             throwIfInterrupted: throwIfInterrupted,
             progressCb: null,
             tempDir: tempDir,
-            isPathHandled: null,
-            // 通过文件在仓库workdir下的相对路径计算出来的fileInfoOid
-            getFileInfoForComputeHashTaskContextData: (VersionOid fileInfoOid) async {
-              final fileInfoJsonMap = localFileMap.get(fileInfoOid);
-              return fileInfoJsonMap == null
-                ? null
-                : FileInfo.fromJson(fileInfoJsonMap);
-            },
-            createNewNodeForModifiedAndAddedHandler: false,
-            modifiedHandler: ({
-              required String relativePathUnixStr,
-              required int sizeInBytes,
-              required File workdirFileEntity,
-              required VersionNode? versionNode,
-              required FileInfo fileInfoWillPush,
-              required VirtualFile virtualFile,
-            }) async {
-              throw StatusDirtyException();
-            },
-            addedHandler: ({
-              required String relativePathUnixStr,
-              required int sizeInBytes,
-              required File workdirFileEntity,
-              required VersionNode? versionNode,
-              required VirtualFile virtualFile,
-            }) async {
-              throw StatusDirtyException();
-            },
-            deletedHandler: ({required String path, required String pathOidStr}) async {
-              throw StatusDirtyException();
-            },
+            // 检查仓库列表时，则传false，只在总调用处重置一次
+            resetVirtualFile: false,
+            // 检查仓库列表时传true
+            throwIfDirty: true,
           );
 
           return RepoStatus(value: RepoStatusVal.clean);
