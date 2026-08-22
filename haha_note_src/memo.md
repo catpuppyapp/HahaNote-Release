@@ -1,4 +1,12 @@
 
+
+---
+更新app 20260822：
+更新 pubspec.yaml 中的版本号
+更新 changelog.md 中的更新日志
+更新 chagelog_dialog.dart 中的更新日志
+fastlane下，创建 新版本号.txt，并填入对应语言的更新内容
+
 ---
 更新code_forge 20260822:
 初次：
