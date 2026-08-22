@@ -7,6 +7,7 @@ import 'exception/exception.dart';
 // 所以需要锁来避免一个任务在使用变量时另一个任务被变量值清了等问题，
 // 日后改成每个task一个isolate的话，就不需要这个全局lock了，到时给每个仓库使用各自独立的锁即可（就是创建globalLock前的方案）
 // 简单来说：添加全局锁，是为了避免同时同步多个仓库导致共享变量VirtualFile冲突
+/// 可重入，但只需释放一次
 class GlobalLock {
   static String _owner = "";
   static String _actName = "";
@@ -26,6 +27,8 @@ class GlobalLock {
     if(_owner.isEmpty) {
       final newOwner = randomString(12);
       _owner = newOwner;
+      _actName = actName;
+      _actDesc = actDesc;
       return newOwner;
     }else {
       throw GlobalLockLockErr(owner: _owner, actName: _actName, actDesc: _actDesc);

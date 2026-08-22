@@ -4942,9 +4942,11 @@ class Repo {
 
     String globalLockOwner = "",
   }) async {
-    final owner = GlobalLock.lock(actName: actName, actDesc: actDesc, owner: globalLockOwner);
+    var owner = "";
 
     try {
+      owner = GlobalLock.lock(actName: actName, actDesc: actDesc, owner: globalLockOwner);
+
       // 先获取仓库本地锁，若获取失败，说明仓库正在执行操作，就不用获取远程锁了
       final localLockToken = LockToken(actName: actName, actDesc: actDesc);
       final localLocked = lockLocalRepoByPath(path, localLockToken);

@@ -1040,20 +1040,21 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
     repoStatusLoading = true;
     refreshUI();
-    var owner = "";
     final tasks = <Future Function()>[];
+
+    var owner = "";
+    Future<void> unlockGlobalLock(int errCode) async {
+      try {
+        GlobalLock.unlock(owner);
+      }catch(e, st) {
+        App.logger.debug(_TAG, "unlock global lock err after loading repos status(err code: $errCode): $e\n$st");
+        showMsgLong("unlock global lock err after loading repos status(err code: $errCode): $e");
+      }
+    }
 
     try {
       // 先拿全局lock，然后重置 VirtualFile
       owner = GlobalLock.lock(actName: "checkReposStatus", actDesc: "check repos status at repo list");
-      Future<void> unlockGlobalLock() async {
-        try {
-          GlobalLock.unlock(owner);
-        }catch(e, st) {
-          App.logger.debug(_TAG, "unlock global lock err after loading repos status(err code: 11393175): $e\n$st");
-          showMsgLong("unlock global lock err after loading repos status(err code: 11393175): $e");
-        }
-      }
 
       VirtualFile.reset();
 
@@ -1087,19 +1088,14 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
       // do not await, else ui can not update instantly
       // eagerError must be false, else if a repo got err, others will not check
-      futureFunctionPool(tasks, max: 3, eagerError: false, onFinally: unlockGlobalLock);
+      futureFunctionPool(tasks, max: 3, eagerError: false, onFinally: () => unlockGlobalLock(19849966));
     }catch(e, st) {
       App.logger.debug(_TAG, "loading repos status err: $e\n$st");
       showMsgLong("loading repos status err: $e");
     }finally {
       // 无任务执行，直接释放锁
       if(tasks.isEmpty) {
-        try {
-          GlobalLock.unlock(owner);
-        }catch(e, st) {
-          App.logger.debug(_TAG, "unlock global lock err after loading repos status(err code: 10893958): $e\n$st");
-          showMsgLong("unlock global lock err after loading repos status(err code: 10893958): $e");
-        }
+        unlockGlobalLock(11392371);
       }
 
       repoStatusLoading = false;
