@@ -7,10 +7,10 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- supports create repo in app internal folders on android
-- supports disable open file or dir after creating
-- 安卓平台支持在app内部目录创建仓库
-- 支持禁用创建文件或文件夹后的自动打开
+- update tls cert
+- update editor
+- 更新tls证书
+- 更新文本编辑器
 """;
 
 class ChangelogDialog extends StatelessWidget {
