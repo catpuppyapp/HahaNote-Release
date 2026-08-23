@@ -20,11 +20,15 @@ class VirtualFile {
   // 如果上传文件比计算hash快（消费快于生产），则并不需要这个限制，但是，
   // 实际上计算hash比上传文件快很多，所以若不限制，可能积压内存会上百兆导致app崩溃(电脑一般不会崩，手机会)
   // 单位：字节
-  static const int maxBufSize = 5242880;  // 5MiB，*8=40MiB，所有Isolate最多占用40MiB
+  // N_MiB*1024*1024 = 对应字节数 （若单位是MB则乘两个1000，6个0，百万，MiB则是乘两个1024）
+  // static const int maxBufSize = 5242880;  // 5MiB，*8=40MiB，所有Isolate最多占用40MiB
+  static const int maxBufSize = 8388608;  // 8MiB，*8=64MiB，所有Isolate最多占用64MiB
   // 当前线程已缓存的数据大小，main线程由于此值会复用，所以每次使用VirtualFile前，应重置此值为0，子Isolate一般不会复用，所以无所谓
   static int _bufferedDataSize = 0;
 
-  static const maxElementSize = 4194304;  // 4*1024*1024 = 4MiB，单位：字节
+  // 文件大小小于等于此大小的都往内存放，否则放硬盘，这个值不宜太大，不然把内存空间占了，剩下的小文件就要往硬盘放，硬盘的小文件读写性能很差（4k读写性能）
+  // static const maxElementSize = 4194304;  // 4*1024*1024 = 4MiB，单位：字节
+  static const maxElementSize = 2097152;  // 2*1024*1024 = 2MiB，单位：字节
 
   String? dataFilePath;  //用字符串而不是File，因为字符串更容易跨Isolate传输
   Uint8List? dataBuf;

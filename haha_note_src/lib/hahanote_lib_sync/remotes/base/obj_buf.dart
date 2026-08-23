@@ -20,8 +20,8 @@ class ObjBuf {
 
   // 单元素大小最大2MiB，总大小40MiB，注意，这个只是粗略限制，能保证差不多，但不能保证完全一致，
   // 因为文件流大小无法在读完文件流前得知，所以文件大小是根据压缩并加密前的原文件大小估算的，和压缩后的大小可能会有些差距
-  // ObjBuf({this.elementMaxSize = 2097152, this.capacity = 41943040});  // 单元素最大大小2MiB
-  ObjBuf({this.elementMaxSize = 4194304, this.capacity = 41943040});  // 单元素最大大小4MiB
+  ObjBuf({this.elementMaxSize = 2097152, this.capacity = 41943040});  // 单元素最大大小2MiB，总大小40MiB
+  // ObjBuf({this.elementMaxSize = 4194304, this.capacity = 41943040});  // 单元素最大大小4MiB，总大小40MiB
 
   // 添加成功或集合中已有对应元素，返回true，否则返回false（例如超过容量大小，就会添加失败）
   Future<bool> addStream(
@@ -36,6 +36,14 @@ class ObjBuf {
     // 已添加对应对象，且对象是不可变的，就不用再添加了；若是可变的，则继续添加，新的覆盖旧的
     if(isImmutable && storage[oid.value] != null) {
       return true;
+    }
+
+    // 假设压缩比为 30%，例如：原文件100M，压缩后变30M
+    // 只是假设，不是实际
+    estimateLen = (estimateLen * 0.3).toInt();
+    // 避免小于0，例如一个文件只占1字节，*0.3，再toInt()，就会变成0
+    if(estimateLen < 1) {
+      estimateLen = 1;
     }
 
     // 超过单元素大小了，不存了
