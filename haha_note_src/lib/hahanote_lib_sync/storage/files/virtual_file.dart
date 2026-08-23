@@ -32,7 +32,17 @@ class VirtualFile {
   String workdirFilePath = "";
   int dataLen = 0;
 
+
+  // 重置当前类使用的静态变量
   // main线程应在每次使用VirtualFile前重置此值；子线程若复用，也需要重置此值（使用子线程计算hash若计算完就销毁子线程，不复用则不需要重置）
+  // 调用此函数前应先获取锁，否则可能会在调用实例方法时断言 _bufferedDataSize 出错，
+  // 例如：Isolate a 在执行sync，同时，Isolate b在检查仓库status，
+  // 若不加锁：
+  // 情况1，较坏，发生概率大：Isolate b重置_bufferedDataSize后，假如刚好a执行virtualFile实例的clear函数，
+  // 则会导致_bufferedDataSize变成负数，后续断言失败，不过并不会导致数据出错，重新同步即可
+  // 情况2，一般，发生概率中：若刚好没断言失败，两个任务成功并发执行，则可能会导致 _bufferedDataSize 超过单Isolate的限制，
+  // 比如远程限制一个Isolate最多占用4mb内存，若先用了2mb，然后被清掉，然后又刚好通过了大小检查，那么后续可能会重新往里面存入4mb的数据，
+  // 导致内存中存储的数据变成6mb
   static void reset() {
     _bufferedDataSize = 0;
   }
