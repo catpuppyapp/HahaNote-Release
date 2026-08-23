@@ -85,12 +85,17 @@ class RepoStatus {
 
   static Future<RepoStatus> checkRepoStatus(
     String repoPath, {
-    required String globalLockOwner,
+    String globalLockOwner = "",
+    bool resetVirtualFile = true,
     required ThrowIfInterrupted throwIfInterrupted,
   }) async {
     try {
       final repo = await Repo.open(repoPath);
-      return await repo.checkStatus(throwIfInterrupted: throwIfInterrupted, globalLockOwner: globalLockOwner);
+      return await repo.checkStatus(
+        throwIfInterrupted: throwIfInterrupted,
+        globalLockOwner: globalLockOwner,
+        resetVirtualFile: resetVirtualFile,
+      );
     }catch(e) {  // 打开仓库有可能出错，所以得捕获下
       return RepoStatus(value: RepoStatusVal.err, msg: e.toString());
     }
@@ -4987,7 +4992,18 @@ class Repo {
   }
 
   Future<RepoStatus> checkStatus({
-    required String globalLockOwner,
+    // 若是单独针对一个仓库调用这个传空，由当前函数获取锁即可；
+    // 若是对多个仓库执行status检查，则应由调用者获取全局锁，然后传入获取到的锁owner id，后续调用会凭id重入
+    // if caller already got global lock, pass owner id to here, it will re-entrant
+    String globalLockOwner = "",
+
+    // 若是单独针对一个仓库调用这个传空，由当前函数获取全局锁后调用VirtualFile.reset()即可；
+    // 若是对多个仓库执行status检查，则应由调用者调用VirtualFile.reset()，并传false到此
+    // if call this function by a single task, pass true is ok;
+    // if call this function for check multi repos status,
+    // get global lock and reset the virtual file is the caller's responsibility,
+    // so pass false when that case
+    bool resetVirtualFile = true,
     required ThrowIfInterrupted throwIfInterrupted,
   }) async {
     final actName = "checkStatus";

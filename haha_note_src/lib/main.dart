@@ -1069,6 +1069,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
           Future task() async {
             repoStatusMap[repoEntity.path] = await RepoStatus.checkRepoStatus(
               globalLockOwner: owner,
+              resetVirtualFile: false,
               repoEntity.path,
               throwIfInterrupted: () {
                 if(openedRepo != null) {
