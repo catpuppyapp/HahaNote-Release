@@ -398,4 +398,21 @@ abstract class UI {
   static Color secondaryTextColorInBlackOrWhiteContainer() {
     return UI.isDarkTheme() ? Colors.white38 : Colors.black54;
   }
+
+  static double getPosOfScrollController(ScrollController sc) {
+    if(sc.hasClients) {
+      return sc.position.pixels;
+    }
+    return 0;
+  }
+
+  static void scrollToPixels(double pixels, ScrollController sc) {
+    if(!sc.hasClients) {
+      return;
+    }
+
+    double target = pixels.clamp(0, sc.position.maxScrollExtent);
+    sc.jumpTo(target);
+  }
+
 }

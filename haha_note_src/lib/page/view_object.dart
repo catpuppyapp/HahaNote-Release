@@ -1,5 +1,11 @@
 import 'dart:io' show File;
 
+import 'package:file_selector/file_selector.dart' show getSaveLocation;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hahanote_app/config/app_config.dart';
+import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
@@ -9,9 +15,6 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/temp/temp_dir.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/version.dart';
-import 'package:hahanote_app/config/app_config.dart';
-import 'package:hahanote_app/db/db.dart';
-import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/mock/mock.dart' show Mock;
 import 'package:hahanote_app/state/my_page_state.dart' show MyPageState;
@@ -22,9 +25,6 @@ import 'package:hahanote_app/util/reveal_file.dart';
 import 'package:hahanote_app/widget/base_layout.dart';
 import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
 import 'package:hahanote_app/widget/diff_view.dart';
-import 'package:file_selector/file_selector.dart' show getSaveLocation;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 
 import '../bean/bean.dart';
@@ -85,6 +85,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   DiffData? diffData;
   bool firstTimeClickViewOrDiff = true;
   final GlobalKey<DiffViewState> diffViewStateKey = GlobalKey();
+  final diffViewPreviewScrollController = ScrollController();
+  final diffViewScrollController = ScrollController();
 
 
   void showLineNumAndBlankLinesIgnoredNoteIfNeed(bool diffContentVisible) {
@@ -154,7 +156,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     }
 
     if(pressedKey == LogicalKeyboardKey.f5 && !isControlDown && !isAltDown && !isShiftDown) {
-      _loadDiffText();
+      refresh();
       return true;
     }
 
@@ -523,7 +525,9 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     }
   }
 
-  Future<void> _loadDiffText() async {
+  Future<void> _loadDiffText({
+    Future<void> Function()? onLoaded,
+  }) async {
     if(loadingContent) {
       return;
     }
@@ -552,9 +556,16 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         loadingContent = false;
       });
     }
+
+    // do on loaded if no error
+    if(loadingContentErr.isEmpty) {
+      await onLoaded?.call();
+    }
+
   }
 
-  Widget getDiffWidget(bool preview) {
+  Widget getDiffWidget() {
+    final preview = isPreview();
     final diffData = this.diffData;
     final list = diffData?.getLines(preview: preview) ?? [];
 
@@ -575,6 +586,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         },
         child: DiffView(
           key: diffViewStateKey,
+          previewScrollController: diffViewPreviewScrollController,
+          scrollController: diffViewScrollController,
           preview: preview,
           showMsg: showMsg,
           showLineNum: showLineNum,
@@ -868,6 +881,51 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     return false;
   }
 
+  bool isPreview() {
+    return view && !diff;
+  }
+
+  Future<void> refresh() async {
+    // 用于加载后恢复滚动位置
+    final posPreview = UI.getPosOfScrollController(diffViewPreviewScrollController);
+    final pos = UI.getPosOfScrollController(diffViewScrollController);
+
+    //// test begin
+    // if(posPreview <= 0 ) print("10000000");
+    // if(pos <= 0 ) print("20000000");
+    //// test end
+
+    // 若页面加载出错，则重新初始化，比如仓库可能正在执行同步，占用了锁，这时预览obj就会报错；
+    // 若页面加载没出错，仅重新加载diff文本（文件内容）
+    if(pageErr.isNotEmpty) {
+      view = false;
+      diff = false;
+      await _doInit();
+    }else {
+      if(view || diff) {
+        await _loadDiffText(
+          onLoaded: () async {
+            //// test begin
+            // final sc2 = isPreview() ? diffViewPreviewScrollController : diffViewScrollController;
+            // UI.scrollToPixels(500, sc2);
+            // return;
+            //// test end
+
+            // 尝试恢复滚动位置
+            // 注：如果滚动前的delayed时间内快速点击刷新按钮，可能会恢复失败
+            final scrollTarget = isPreview() ? posPreview : pos;
+            if(scrollTarget <= 0) {
+              return;
+            }
+            final sc = isPreview() ? diffViewPreviewScrollController : diffViewScrollController;
+            await Future.delayed(const Duration(milliseconds: 500));
+            UI.scrollToPixels(scrollTarget, sc);
+          }
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Widget body;
@@ -981,7 +1039,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
               ),
             if(view || diff)
               const Divider(),
-            if(view || diff) getDiffWidget(view && !diff),
+            if(view || diff) getDiffWidget(),
           ],
         ),
       );
@@ -999,15 +1057,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
             icon: Icon(Icons.refresh),
             tooltip: t.refresh,
             onPressed: () async {
-              // 若页面加载出错，则重新初始化，比如仓库可能正在执行同步，占用了锁，这时预览obj就会报错；
-              // 若页面加载没出错，仅重新加载diff文本（文件内容）
-              if(pageErr.isNotEmpty) {
-                await _doInit();
-              }else {
-                if(view || diff) {
-                  await _loadDiffText();
-                }
-              }
+              await refresh();
             },
           ),
         ],
