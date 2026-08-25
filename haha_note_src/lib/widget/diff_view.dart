@@ -25,7 +25,6 @@ class DiffView extends StatefulWidget {
   final List<DiffLine> lines;
   final double oldLineNumWidth;
   final double newLineNumWidth;
-  final ScrollController previewScrollController;
   final ScrollController scrollController;
 
   const DiffView({
@@ -39,7 +38,6 @@ class DiffView extends StatefulWidget {
     required this.lines,
     this.oldLineNumWidth = 0,
     this.newLineNumWidth = 0,
-    required this.previewScrollController,
     required this.scrollController,
   });
 
@@ -118,7 +116,7 @@ class DiffViewState extends State<DiffView> {
       children: [
         ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
-          controller: widget.preview ? widget.previewScrollController : widget.scrollController,
+          controller: widget.scrollController,
           // 这个页面的外部容器已经有页面padding，所以这里只加bottom padding即可，不然就会出现多余padding浪费空间
           padding: UI.listPaddingOnlyBottom,
           itemCount: widget.lines.length,

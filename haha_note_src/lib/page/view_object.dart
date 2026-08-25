@@ -85,7 +85,6 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   DiffData? diffData;
   bool firstTimeClickViewOrDiff = true;
   final GlobalKey<DiffViewState> diffViewStateKey = GlobalKey();
-  final diffViewPreviewScrollController = ScrollController();
   final diffViewScrollController = ScrollController();
 
 
@@ -586,7 +585,6 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         },
         child: DiffView(
           key: diffViewStateKey,
-          previewScrollController: diffViewPreviewScrollController,
           scrollController: diffViewScrollController,
           preview: preview,
           showMsg: showMsg,
@@ -887,7 +885,6 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
   Future<void> refresh() async {
     // 用于加载后恢复滚动位置
-    final posPreview = UI.getPosOfScrollController(diffViewPreviewScrollController);
     final pos = UI.getPosOfScrollController(diffViewScrollController);
 
     //// test begin
@@ -913,13 +910,16 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
             // 尝试恢复滚动位置
             // 注：如果滚动前的delayed时间内快速点击刷新按钮，可能会恢复失败
-            final scrollTarget = isPreview() ? posPreview : pos;
-            if(scrollTarget <= 0) {
-              return;
-            }
-            final sc = isPreview() ? diffViewPreviewScrollController : diffViewScrollController;
+            double before = UI.getPosOfScrollController(diffViewScrollController);
             await Future.delayed(const Duration(milliseconds: 500));
-            UI.scrollToPixels(scrollTarget, sc);
+
+            final now = UI.getPosOfScrollController(diffViewScrollController);
+            // 若相等则代表用户没手动滚动
+            // 若pos等于now则没必要滚动
+            // 所以仅在before等于after且pos不等于after时才滚动
+            if(before == now && pos != now) {
+              UI.scrollToPixels(pos, diffViewScrollController);
+            }
           }
         );
       }
