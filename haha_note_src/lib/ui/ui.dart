@@ -16,7 +16,7 @@ abstract class UI {
   // checkbox 复选框在左边还是右边，默认右边，安卓左边，我感觉左边好，所以改左边
   static const myCheckBoxControlAffinity = ListTileControlAffinity.leading;
 
-  static const double defaultScreenPadding = 16;
+  static const double defaultScreenPadding = 10;
 
   static const verticalDividerWidth1 = VerticalDivider(width: 1, thickness: 1);
 

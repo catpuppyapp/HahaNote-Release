@@ -223,7 +223,7 @@ abstract class BaseLayout {
     required Widget child
   }) {
     return Padding(
-      padding: padding ?? EdgeInsetsGeometry.all(UI.defaultScreenPadding),
+      padding: padding ?? const EdgeInsets.all(UI.defaultScreenPadding),
       child: child,
     );
   }

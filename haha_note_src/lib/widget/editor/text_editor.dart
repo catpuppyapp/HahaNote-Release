@@ -146,7 +146,7 @@ class TextEditor extends StatelessWidget {
       findController: findController,
       undoController: undoController,
       verticalScrollController: verticalScrollController,
-      scrollbarDecoration: const ScrollbarDecoration(thickness: 5),
+      scrollbarDecoration: const ScrollbarDecoration(thickness: 10),
       // filePath: filePath,
       readOnly: readOnly,
       language: _getLanguage(filePath), // 动态匹配语言

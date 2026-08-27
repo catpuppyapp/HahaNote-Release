@@ -964,6 +964,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     }else {
       // 上面四个按钮，下面预览/diff
       body = BaseLayout.defaultScreenPaddingContainer(
+        padding: const EdgeInsets.symmetric(horizontal: UI.defaultScreenPadding),
         child: Column(
           children: [
             // 这里用 Flexible 而不是 Expanded 是因为 Flexible 默认 fit 为 FlexFit.loose，
