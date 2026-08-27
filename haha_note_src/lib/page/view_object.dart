@@ -581,7 +581,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         // 不过正常来说预览模式list不会为空，即使是空文件也会有个空行的
         listEmptyText: !preview && list.isEmpty ? t.contentsAreIdentical : null,
         onRefresh: () async {
-          await _loadDiffText();
+          await refresh();
         },
         child: DiffView(
           key: diffViewStateKey,
