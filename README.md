@@ -76,7 +76,7 @@ HahaNote will supports mac and ios when I got them, your [donation](https://gith
 
 
 ### For Chinese users, Not Supported some Drives（不支持的一些网盘）
-坚果云：并不是HahaNote不支持，而是这个网盘虽然支持WebDav，但是对第三方app有请求数限制，尽管平台声明30分钟600次，但实际比他们声明的更严苛，比如10分钟内100次就可能导致被临时封禁，所以如果你使用坚果云的webdav，那么这个app对你来说基本没法用，建议使用dropbox或其他webdav服务。
+坚果云：并不是HahaNote不支持，而是这个网盘虽然支持WebDav，但是对第三方app有请求数限制，尽管[坚果云官方声明免费账号30分钟可调用WebDAV api 600次](https://web.archive.org/web/20260813085955/https://help.jianguoyun.com/?p=2064)，但实际情况比他们声明的更严苛，比如10分钟内100次就可能导致被临时封禁，所以如果你使用坚果云的webdav，可能会同步失败，建议使用dropbox或其他支持webdav的平台（若你自己有服务器，可用dufs自托管）。
 
 
 
