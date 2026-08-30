@@ -1,5 +1,10 @@
 
 ---
+1.0.11+12 20260830-:
+- supports shift+click multi select items
+- 列表支持shift多选
+
+---
 1.0.10+11 20260821-20260822:
 - update tls cert
 - update editor

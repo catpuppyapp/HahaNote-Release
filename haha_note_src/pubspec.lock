@@ -165,11 +165,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "8d7bcd5b7f91efcab9536087814e9ecf4588af7e"
-      resolved-ref: "8d7bcd5b7f91efcab9536087814e9ecf4588af7e"
+      ref: bf86609a3cb187723a7f78585f66f0d043781461
+      resolved-ref: bf86609a3cb187723a7f78585f66f0d043781461
       url: "https://github.com/Bandeapart1964/code_forge.git"
     source: git
-    version: "10.12.0"
+    version: "10.13.0"
   collection:
     dependency: "direct main"
     description:
@@ -509,10 +509,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: e87d6b9ee934dcd24a128ccb2bd91905d2d5fe5c06245d6a8f5477d4907a437a
+      sha256: ec69331e2335ab4d456c0a9fc700892c2c85b72b9c0cb39df3ecfe8833d5d5c8
       url: "https://pub.dev"
     source: hosted
-    version: "2.12.0"
+    version: "2.13.0"
   flutter_single_instance:
     dependency: "direct main"
     description:
