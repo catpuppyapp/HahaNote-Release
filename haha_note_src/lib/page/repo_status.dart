@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:hahanote_app/bean/bean.dart' show LabelValue, MenuItem;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/status_item.dart';
@@ -8,13 +9,13 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/version.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/native_util/open_file.dart';
 import 'package:hahanote_app/page/base/searchable_page_state.dart';
+import 'package:hahanote_app/util/hardware_key_util.dart';
 import 'package:hahanote_app/util/util.dart';
 import 'package:hahanote_app/widget/custom_list_view.dart';
-import 'package:flutter/material.dart';
 
+import '../constants/cons.dart';
 import '../hahanote_lib_sync/app.dart';
 import '../hahanote_lib_sync/storage/repo/sync.dart';
-import '../constants/cons.dart';
 import '../ui/ui.dart';
 import '../util/fs.dart';
 import '../widget/dialogs.dart';
@@ -316,6 +317,27 @@ class _RepoStatusPageState extends SearchablePageState<RepoStatusPage> {
     // 注：如果是已删除条目，此值应该是空字符串，但如果显示的是非空，说明判定文件为已删除后，
     // 文件又存在了，可能被外部程序创建了之类的，不过一般不会发生
     final lastModifiedTime = _getItemLastModifiedTime(item);
+    void onLongPress() {
+      setState(() {
+        UI.switchSelectSpan(
+          itemIdxOfItemList: index,
+          item: item,
+          selectedItems: selectedItems,
+          itemList: getActuallyList(),
+          equals: equals,
+          switchItemSelected: (it) => UI.switchSelected(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          ),
+          selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          )
+        );
+      });
+    }
 
     return LabelValueTile(
       items: [
@@ -325,13 +347,24 @@ class _RepoStatusPageState extends SearchablePageState<RepoStatusPage> {
         LabelValue(label: t.type, value: statusTypeToString(item.type), icon: Icons.category_outlined, valueColor: valueColor),
         if(lastModifiedTime.isNotEmpty) LabelValue(label: t.lastModifiedTime, value: lastModifiedTime, icon: Icons.access_time_outlined, valueColor: valueColor),
       ],
-      onTap: isSelectionModeOn ? () => setState(() {
-        UI.switchSelected(
-          item: item,
-          selectedItems: selectedItems,
-          equals: equals
-        );
-      }) : () async {
+      onTap: () async {
+        if(HardwareKeyUtil.isShiftPressed()) {
+          onLongPress();
+          return;
+        }
+
+        if(isSelectionModeOn || HardwareKeyUtil.isCtrlPressed()) {
+          setState(() {
+            UI.switchSelected(
+              item: item,
+              selectedItems: selectedItems,
+              equals: equals
+            );
+          });
+
+          return;
+        }
+
         // 点条目主体：
         // 若是新增则编辑
         // 若是修改则跳转到和文件head节点的diff页面
@@ -350,27 +383,7 @@ class _RepoStatusPageState extends SearchablePageState<RepoStatusPage> {
         }
       },
       selected: isItemSelected(item),
-      onLongPress: () {
-        setState(() {
-          UI.switchSelectSpan(
-            itemIdxOfItemList: index,
-            item: item,
-            selectedItems: selectedItems,
-            itemList: getActuallyList(),
-            equals: equals,
-            switchItemSelected: (it) => UI.switchSelected(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            ),
-            selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            )
-          );
-        });
-      },
+      onLongPress: onLongPress,
       menuItems: [
         MenuItem(
           value: "open",

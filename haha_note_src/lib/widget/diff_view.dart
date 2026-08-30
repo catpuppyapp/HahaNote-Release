@@ -1,8 +1,9 @@
-import 'package:hahanote_app/i18n/strings.g.dart';
-import 'package:hahanote_app/ui/ui.dart' show UI;
-import 'package:hahanote_app/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hahanote_app/i18n/strings.g.dart';
+import 'package:hahanote_app/ui/ui.dart' show UI;
+import 'package:hahanote_app/util/hardware_key_util.dart';
+import 'package:hahanote_app/util/util.dart';
 
 import '../db/db.dart';
 import '../util/diff_data.dart';
@@ -46,7 +47,7 @@ class DiffView extends StatefulWidget {
 }
 
 class DiffViewState extends State<DiffView> {
-  final Set<int> _selectedIndices = {};
+  final List<int> _selectedIndices = [];
   int? _lastSelectedIndex;
 
   bool fontSizeAdjusterVisible = false;
@@ -176,38 +177,61 @@ class DiffViewState extends State<DiffView> {
 
             final lineNumWidget = getLineNumberWidget();
 
+            void onLongPress() {
+              HapticFeedback.vibrate();
+
+              if (_lastSelectedIndex != null) {
+                final start = _lastSelectedIndex!;
+                final end = index;
+                if (start <= end) {
+                  for (int i = start; i <= end; i++) {
+                    if(!_selectedIndices.contains(i)) {
+                      _selectedIndices.add(i);
+                    }
+                  }
+                } else {
+                  for (int i = end; i <= start; i++) {
+                    if(!_selectedIndices.contains(i)) {
+                      _selectedIndices.add(i);
+                    }
+                  }
+                }
+              } else {
+                if(!_selectedIndices.contains(index)) {
+                  _selectedIndices.add(index);
+                }
+              }
+
+              _lastSelectedIndex = _selectedIndices.lastOrNull;
+
+              setState(() {});
+            }
+
             return GestureDetector(
               key: ValueKey(index),
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                setState(() {
-                  _selectedIndices.clear();
-                  _selectedIndices.add(index);
-                  _lastSelectedIndex = index;
-                });
-              },
-              onLongPress: () {
-                HapticFeedback.vibrate();
+                if(HardwareKeyUtil.isShiftPressed()) {
+                  onLongPress();
+                  return;
+                }
 
-                setState(() {
-                  if (_lastSelectedIndex != null) {
-                    final start = _lastSelectedIndex!;
-                    final end = index;
-                    if (start <= end) {
-                      for (int i = start; i <= end; i++) {
-                        _selectedIndices.add(i);
-                      }
-                    } else {
-                      for (int i = end; i <= start; i++) {
-                        _selectedIndices.add(i);
-                      }
-                    }
-                  } else {
-                    _selectedIndices.add(index);
-                  }
-                  _lastSelectedIndex = index;
-                });
+                // switch selection for line index
+                if(_selectedIndices.contains(index)) {
+                  _selectedIndices.remove(index);
+                }else {
+                  _selectedIndices.add(index);
+                }
+
+                _lastSelectedIndex = _selectedIndices.lastOrNull;
+
+                if(_selectedIndices.isEmpty) {
+                  quitSelection();
+                }
+
+                setState(() {});
               },
+              onLongPress: onLongPress,
               child: RepaintBoundary(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,  // 让行号在行顶部，比如软换行有3行，在第一行显示行号

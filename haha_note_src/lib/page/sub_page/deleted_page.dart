@@ -1,20 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:hahanote_app/bean/bean.dart' show LabelValue, ActRegion, MenuItem;
+import 'package:hahanote_app/constants/cons.dart' show Cons;
+import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/db/entity/repo_entity.dart';
+import 'package:hahanote_app/ext/state_ext.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_info.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart' show Repo;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/related_oids.dart';
-import 'package:hahanote_app/constants/cons.dart' show Cons;
-import 'package:hahanote_app/db/db.dart';
-import 'package:hahanote_app/db/entity/repo_entity.dart';
-import 'package:hahanote_app/ext/state_ext.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/page/base/searchable_widget_state.dart';
 import 'package:hahanote_app/util/fs.dart';
+import 'package:hahanote_app/util/hardware_key_util.dart';
 import 'package:hahanote_app/util/util.dart' show formatDateTimeHumanFriendly, copyText;
 import 'package:hahanote_app/widget/custom_list_view.dart';
 import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
-import 'package:flutter/material.dart';
 
 import '../../hahanote_lib_sync/storage/files/file_path.dart';
 import '../../ui/ui.dart';
@@ -260,6 +261,28 @@ class DeletedPageState extends SearchableWidgetState<DeletedPage> {
     final filePath = FilePath.fromString(item.path);
     final parentPath = filePath.parent().toUnixPathStr();
 
+    void onLongPress() {
+      setState(() {
+        UI.switchSelectSpan(
+          itemIdxOfItemList: index,
+          item: item,
+          selectedItems: selectedItems,
+          itemList: getActuallyList(),
+          equals: equals,
+          switchItemSelected: (it) => UI.switchSelected(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          ),
+          selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          )
+        );
+      });
+    }
+
     return LabelValueTile(
       items: [
         LabelValue(label: t.name, value: filePath.name(), icon: Icons.insert_drive_file, valueFontWeight: FontWeight.bold),
@@ -272,35 +295,28 @@ class DeletedPageState extends SearchableWidgetState<DeletedPage> {
             icon: Icons.access_time_outlined
         ),
       ],
-      onTap: isSelectionModeOn ? () => setState(() {
-        UI.switchSelected(
-          item: item,
-          selectedItems: selectedItems,
-          equals: equals
-        );
-      }) : () => _view(item),
-      selected: isItemSelected(item),
-      onLongPress: () {
-        setState(() {
-          UI.switchSelectSpan(
-            itemIdxOfItemList: index,
-            item: item,
-            selectedItems: selectedItems,
-            itemList: getActuallyList(),
-            equals: equals,
-            switchItemSelected: (it) => UI.switchSelected(
-              item: it,
+      onTap: () {
+        if(HardwareKeyUtil.isShiftPressed()) {
+          onLongPress();
+          return;
+        }
+
+        if(isSelectionModeOn || HardwareKeyUtil.isCtrlPressed()) {
+          setState(() {
+            UI.switchSelected(
+              item: item,
               selectedItems: selectedItems,
               equals: equals
-            ),
-            selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            )
-          );
-        });
+            );
+          });
+
+          return;
+        }
+
+        _view(item);
       },
+      selected: isItemSelected(item),
+      onLongPress: onLongPress,
       menuItems: [
         MenuItem(
           value: "history",

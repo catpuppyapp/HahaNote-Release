@@ -50,6 +50,7 @@ import 'package:hahanote_app/ui/ui.dart';
 import 'package:hahanote_app/util/app_info.dart';
 import 'package:hahanote_app/util/dir_util.dart';
 import 'package:hahanote_app/util/fs.dart';
+import 'package:hahanote_app/util/hardware_key_util.dart';
 import 'package:hahanote_app/util/permission.dart' show showRequestPermissionDialogIfIsAndroid;
 import 'package:hahanote_app/util/regex_util.dart' show RegexUtil;
 import 'package:hahanote_app/util/reveal_file.dart';
@@ -2690,39 +2691,58 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
               final selected = selectedFileList.any((e) => e.absolute.path == fullPath);
 
+              void iconOnLongPress() {
+                // paste mode，禁用选择，避免修改已选则条目列表
+                if(isPasteModeOn()) {
+                  return;
+                }
+
+                setState(() {
+                  UI.switchSelectSpan(
+                    itemIdxOfItemList: idx,
+                    item: fse,
+                    selectedItems: selectedFileList,
+                    itemList: displayList,
+                    equals: filesItemEquals,
+                    switchItemSelected: (it) => UI.switchSelected(
+                      item: it,
+                      selectedItems: selectedFileList,
+                      equals: filesItemEquals
+                    ),
+                    selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
+                      item: it,
+                      selectedItems: selectedFileList,
+                      equals: filesItemEquals
+                    )
+                  );
+                });
+              }
+
+              void iconOnPressed() {
+                // paste mode，禁用选择，避免修改已选则条目列表
+                if(isPasteModeOn()) {
+                  return;
+                }
+
+                if(HardwareKeyUtil.isShiftPressed()) {
+                  iconOnLongPress();
+                  return;
+                }
+
+                setState(() {
+                  UI.switchSelected(
+                    item: fse,
+                    selectedItems: selectedFileList,
+                    equals: filesItemEquals
+                  );
+                });
+              }
+
               return ListTile(
                 leading: IconButton(
                   icon: Icon(getIconByFileName(p.basename(fse.path), isDir: isDir)),
-                  onPressed: () {
-                    setState(() {
-                      UI.switchSelected(
-                        item: fse,
-                        selectedItems: selectedFileList,
-                        equals: filesItemEquals
-                      );
-                    });
-                  },
-                  onLongPress: () {
-                    setState(() {
-                      UI.switchSelectSpan(
-                        itemIdxOfItemList: idx,
-                        item: fse,
-                        selectedItems: selectedFileList,
-                        itemList: displayList,
-                        equals: filesItemEquals,
-                        switchItemSelected: (it) => UI.switchSelected(
-                          item: it,
-                          selectedItems: selectedFileList,
-                          equals: filesItemEquals
-                        ),
-                        selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
-                          item: it,
-                          selectedItems: selectedFileList,
-                          equals: filesItemEquals
-                        )
-                      );
-                    });
-                  },
+                  onPressed: iconOnPressed,
+                  onLongPress: iconOnLongPress,
                 ),
                 title: Text(name),
                 subtitle: Column(
@@ -2739,7 +2759,17 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                 selected: selected,
                 selectedTileColor: selectedBgColor,
                 onTap: () async {
-                  if(isSelectionModeOn && !isPasteModeOn()) { // 选择模式且不是拷贝或粘贴
+                  if(isPasteModeOn() && HardwareKeyUtil.isCtrlPressed()) {
+                    return;
+                  }
+
+                  if(HardwareKeyUtil.isShiftPressed()) {
+                    iconOnLongPress();
+                    return;
+                  }
+
+                  // 按住ctrl再点条目相当于启用选择模式，所以这两个用"或"判断
+                  if((isSelectionModeOn || HardwareKeyUtil.isCtrlPressed()) && !isPasteModeOn()) { // 选择模式且不是拷贝或粘贴
                     setState(() {
                       UI.switchSelected(
                         item: fse,
@@ -2757,32 +2787,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                     } // else 粘贴模式且点击的条目是文件，则不执行操作
                   }
                 },
-                onLongPress: () {
-                  // paste mode，禁用长按选择，避免修改已选则条目列表
-                  if(isPasteModeOn()) {
-                    return;
-                  }
-
-                  setState(() {
-                    UI.switchSelectSpan(
-                      itemIdxOfItemList: idx,
-                      item: fse,
-                      selectedItems: selectedFileList,
-                      itemList: displayList,
-                      equals: filesItemEquals,
-                      switchItemSelected: (it) => UI.switchSelected(
-                          item: it,
-                          selectedItems: selectedFileList,
-                          equals: filesItemEquals
-                      ),
-                      selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
-                        item: it,
-                        selectedItems: selectedFileList,
-                        equals: filesItemEquals
-                      )
-                    );
-                  });
-                },
+                onLongPress: iconOnLongPress,
                 trailing: PopupMenuButton<String>(
                   onSelected: (v) async {
                     if (v == 'open_in_ext') {

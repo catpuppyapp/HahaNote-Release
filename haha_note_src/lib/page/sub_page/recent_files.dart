@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:hahanote_app/bean/bean.dart' show ContentItem, ActRegion;
 import 'package:hahanote_app/db/db.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/page/base/searchable_widget_state.dart';
+import 'package:hahanote_app/util/hardware_key_util.dart';
 import 'package:hahanote_app/widget/content_item_waterfall.dart';
-import 'package:flutter/material.dart';
 
 import '../../ui/ui.dart';
 import '../../widget/dialogs.dart';
@@ -90,6 +91,28 @@ class RecentFilesState extends SearchableWidgetState<RecentFiles> {
 
   @override
   Widget? getListView() {
+    void onLongPress(int idx, ContentItem item) {
+      setState(() {
+        UI.switchSelectSpan(
+          itemIdxOfItemList: idx,
+          item: item,
+          selectedItems: selectedItems,
+          itemList: getActuallyList(),
+          equals: equals,
+          switchItemSelected: (it) => UI.switchSelected(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          ),
+          selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          )
+        );
+      });
+    }
+
     return ContentItemWaterfall(
       items: getActuallyList().toList().cast(),
 
@@ -100,7 +123,12 @@ class RecentFilesState extends SearchableWidgetState<RecentFiles> {
 
       selected: (idx, item) => isItemSelected(item),
       onClick: (idx, item) async {
-        if(isSelectionModeOn) {
+        if(HardwareKeyUtil.isShiftPressed()) {
+          onLongPress(idx, item);
+          return;
+        }
+
+        if(isSelectionModeOn || HardwareKeyUtil.isCtrlPressed()) {
           setState(() {
             UI.switchSelected(
               item: item,
@@ -108,31 +136,13 @@ class RecentFilesState extends SearchableWidgetState<RecentFiles> {
               equals: equals
             );
           });
-        }else {
-          await widget.openWithInternalEditor(item.fullPath);
+
+          return;
         }
+
+        await widget.openWithInternalEditor(item.fullPath);
       },
-      onLongPress: (idx, item) {
-        setState(() {
-          UI.switchSelectSpan(
-            itemIdxOfItemList: idx,
-            item: item,
-            selectedItems: selectedItems,
-            itemList: getActuallyList(),
-            equals: equals,
-            switchItemSelected: (it) => UI.switchSelected(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            ),
-            selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            )
-          );
-        });
-      },
+      onLongPress: onLongPress,
     );
   }
 

@@ -1,20 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:hahanote_app/bean/bean.dart' show LabelValue, MenuItem, ActRegion;
+import 'package:hahanote_app/constants/cons.dart' show Cons;
+import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/db/entity/repo_entity.dart';
+import 'package:hahanote_app/ext/state_ext.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/pack/obj_pack.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart' show MsgDataConflictTargetType, MsgType, MsgDataConflict, Msg;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/related_oids.dart';
-import 'package:hahanote_app/constants/cons.dart' show Cons;
-import 'package:hahanote_app/db/db.dart';
-import 'package:hahanote_app/db/entity/repo_entity.dart';
-import 'package:hahanote_app/ext/state_ext.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/page/base/searchable_widget_state.dart';
+import 'package:hahanote_app/util/hardware_key_util.dart';
 import 'package:hahanote_app/util/util.dart' show copyText, formatDateTimeHumanFriendly;
 import 'package:hahanote_app/widget/custom_list_view.dart';
 import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
-import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 
 import '../../hahanote_lib_sync/storage/files/file_path.dart';
@@ -217,6 +218,28 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
     final filePath = FilePath.fromString(getItemPath(item));
     final parentPath = filePath.parent().toUnixPathStr();
 
+    void onLongPress() {
+      setState(() {
+        UI.switchSelectSpan(
+          itemIdxOfItemList: index,
+          item: item,
+          selectedItems: selectedItems,
+          itemList: getActuallyList(),
+          equals: equals,
+          switchItemSelected: (it) => UI.switchSelected(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          ),
+          selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
+            item: it,
+            selectedItems: selectedItems,
+            equals: equals
+          )
+        );
+      });
+    }
+
     return LabelValueTile(
       items: [
         LabelValue(label: t.name, value: filePath.name(), icon: Icons.insert_drive_file, valueFontWeight: FontWeight.bold),
@@ -227,40 +250,36 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
         LabelValue(label: t.note, value: ConflictResolveStrategy.genWhoOverwriteWho(itemData), icon: Icons.notes),
       ],
       // 选择模式开，则切换选择；选择模式关则预览被覆盖的版本
-      onTap: isSelectionModeOn ? () => setState(() {
-        UI.switchSelected(
-          item: item,
-          selectedItems: selectedItems,
-          equals: equals
+      onTap: () {
+        if(HardwareKeyUtil.isShiftPressed()) {
+          onLongPress();
+          return;
+        }
+
+        if(isSelectionModeOn || HardwareKeyUtil.isCtrlPressed()) {
+          setState(() {
+            UI.switchSelected(
+              item: item,
+              selectedItems: selectedItems,
+              equals: equals
+            );
+          });
+
+          return;
+        }
+
+        _view(
+          item,
+          // 预览被覆盖的版本：
+          // 如果冲突覆盖策略是workdir覆盖remote，则预览remote；
+          // 如果冲突策略是remote覆盖workdir，则预览被覆盖的workdir文件
+          itemData.resolveStrategy == ConflictResolveStrategy.workdirOverwriteRemote.value
+            ? MsgDataConflictTargetType.remote
+            : MsgDataConflictTargetType.workdir
         );
-      }) : () => _view(item,
-        // 预览被覆盖的版本：
-        // 如果冲突覆盖策略是workdir覆盖remote，则预览remote；
-        // 如果冲突策略是remote覆盖workdir，则预览被覆盖的workdir文件
-        itemData.resolveStrategy == ConflictResolveStrategy.workdirOverwriteRemote.value
-        ? MsgDataConflictTargetType.remote : MsgDataConflictTargetType.workdir),
-      selected: isItemSelected(item),
-      onLongPress: () {
-        setState(() {
-          UI.switchSelectSpan(
-            itemIdxOfItemList: index,
-            item: item,
-            selectedItems: selectedItems,
-            itemList: getActuallyList(),
-            equals: equals,
-            switchItemSelected: (it) => UI.switchSelected(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            ),
-            selectIfNotInSelectedListElseNoop: (it) => UI.selectIfNotInSelectedListElseNoop(
-              item: it,
-              selectedItems: selectedItems,
-              equals: equals
-            )
-          );
-        });
       },
+      selected: isItemSelected(item),
+      onLongPress: onLongPress,
       menuItems: [
         if(!ObjRef.isInvalidOid(remoteOid?.value))
         MenuItem(

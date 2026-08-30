@@ -11,6 +11,8 @@ import 'package:hahanote_app/util/util.dart' show copyText;
 import 'package:hahanote_app/widget/loading.dart' show doActWithLoading;
 import 'package:lifecycle/lifecycle.dart' show LifecycleAware, LifecycleMixin, LifecycleEvent;
 
+import '../util/hardware_key_util.dart';
+
 const _TAG = 'my_page_state.dart';
 // const _refreshTokenIfAccessTokenExpiresTimeLessThanThisInSec = 1800;
 
@@ -22,7 +24,6 @@ class MyPageState<T extends StatefulWidget> extends State<T> with LifecycleAware
   String pageErr = '';
   bool pageErrClosable = false;
   bool userLoading = false;
-  bool isShiftPressed = false;
 
 
   @override
@@ -78,16 +79,14 @@ class MyPageState<T extends StatefulWidget> extends State<T> with LifecycleAware
       return false;
     }
 
-    isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
 
     if(event is! KeyDownEvent) {
       return false;
     }
 
-    final isControlDown = HardwareKeyboard.instance.isControlPressed ||
-        HardwareKeyboard.instance.isMetaPressed;
-    final isAltDown = HardwareKeyboard.instance.isAltPressed;
-    final isShiftDown = HardwareKeyboard.instance.isShiftPressed;
+    final isControlDown = HardwareKeyUtil.isCtrlPressed();
+    final isAltDown = HardwareKeyUtil.isAltPressed();
+    final isShiftDown = HardwareKeyUtil.isShiftPressed();
 
     // 调用子类方法，若处理了，直接返回true
     if(handleKeyPress(event, isControlDown, isAltDown, isShiftDown)) {
