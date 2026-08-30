@@ -165,7 +165,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: bf86609a3cb187723a7f78585f66f0d043781461
+      ref: support_rustup_toolchain_from_env
       resolved-ref: bf86609a3cb187723a7f78585f66f0d043781461
       url: "https://github.com/Bandeapart1964/code_forge.git"
     source: git
