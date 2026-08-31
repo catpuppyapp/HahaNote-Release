@@ -13,7 +13,7 @@ typedef CanceledCallback = bool Function();
 
 
 
-class DirSearchUtil {
+abstract class DirSearchUtil {
   /// 真正的广度优先搜索，一层一层地查找
   static Future<void> realBreadthFirstSearch({
     required Directory dir,

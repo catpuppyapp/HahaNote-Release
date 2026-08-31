@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-class HardwareKeyUtil {
+abstract class HardwareKeyUtil {
   static bool isShiftPressed() {
     return HardwareKeyboard.instance.isShiftPressed;
   }

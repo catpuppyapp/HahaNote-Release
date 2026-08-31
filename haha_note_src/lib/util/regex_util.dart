@@ -2,8 +2,8 @@
 // 说明：保持与原 Kotlin 行为一致，默认字符串比较支持 ignoreCase。
 // 注意：Dart 的 String 没有直接 ignoreCase 参数，使用 toLowerCase() 做不区分大小写比较。
 
-/// TODO 转换完未测试，有时间，检查下
-class RegexUtil {
+/// TODO 转换完未测试，以后测下
+abstract class RegexUtil {
   static const String _extMatchFlag = '*.';
   static const int _extFlagLen = 2; // _extMatchFlag.length
   static const int _extFlagLenSubOne = 1; // _extFlagLen - 1 (保留前导'.')
