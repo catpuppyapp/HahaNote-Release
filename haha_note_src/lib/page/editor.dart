@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show File;
 
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
@@ -249,6 +250,9 @@ class _EditorPageState extends MyPageState<EditorPage> {
     loadingFileContent = true;
     setState(() {});
 
+    final editorPos = UI.getPosOfScrollController(scrollController);
+    final previewPos = UI.getPosOfScrollController(previewScrollController);
+
     try {
       final file = this.file;
       if(file == null) {
@@ -275,17 +279,19 @@ class _EditorPageState extends MyPageState<EditorPage> {
 
         _resetUndoAndNeedSaveState();
 
-        // 重载后恢复上次编辑位置
-        // 必须等一下页面刷新，不然可能报 editor not initialized 错误
-        // 注：就算等了，还是会报disposed错误，原因不明，我明明没dispose滚动controller啊
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          _doGoToPos(lastPos);
-        });
+
       }
 
       editorContentVer = controller.contentVersion;
       fileStat = await FileStat.fromFile(file);
       canSave = true;
+
+      // 重载后恢复上次编辑位置
+      // 必须等一下页面刷新，不然可能报 editor not initialized 错误
+      // 注：就算等了，还是会报disposed错误，原因不明，我明明没dispose滚动controller啊
+      _doGoToPos(lastPos, delay: const Duration(milliseconds: 450), syncScrollPosToPreview: false);
+      UI.restoreScrollPosAfterReloadedIfPosNotChangedAfterDelayed(editorPos, scrollController);
+      UI.restoreScrollPosAfterReloadedIfPosNotChangedAfterDelayed(previewPos, previewScrollController);
     }catch(e) {
       setState(() {
         err = e.toString();
@@ -420,15 +426,27 @@ class _EditorPageState extends MyPageState<EditorPage> {
     await Db.saveFileLastEditPos(FilePath.fromString(pathStr), controller.selection);
   }
 
-  void _goToLineByIndex(int lineIndex, {TextSelection? selection}) {
+  void _goToLineByIndex(
+    int lineIndex, {
+    TextSelection? selection,
+    final bool syncScrollPosToPreview = true,
+  }) {
     try {
-      _goToLineByIndexNoCatch(lineIndex, selection: selection);
+      _goToLineByIndexNoCatch(
+        lineIndex,
+        selection: selection,
+        syncScrollPosToPreview: syncScrollPosToPreview,
+      );
     }catch(e, st) {
       App.logger.debug(_TAG, "go to line by index err: $e\n$st");
     }
   }
 
-  void _goToLineByIndexNoCatch(int lineIndex, {TextSelection? selection}) {
+  void _goToLineByIndexNoCatch(
+    int lineIndex, {
+    TextSelection? selection,
+    final bool syncScrollPosToPreview = true,
+  }) {
     final controller = this.controller;
     if(controller == null) return;
 
@@ -453,7 +471,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
     // if disabled scroll sync,
     // need set force sync scroll once
     // to let preview scroll to the pos of editor
-    if(editorPreviewEnabled && !scrollSyncEnabled) {
+    if(editorPreviewEnabled && !scrollSyncEnabled && syncScrollPosToPreview) {
       delayThenSyncEditorScrollPosToPreviewPanel();
     }
   }
@@ -463,11 +481,23 @@ class _EditorPageState extends MyPageState<EditorPage> {
     _syncSrcScrollPosToMirror(scrollController, previewScrollController);
   }
 
-  void _doGoToPos(FilePos pos) {
+  Future<void> _doGoToPos(
+    FilePos pos, {
+    final Duration? delay,
+    final bool syncScrollPosToPreview = true,
+  }) async {
+    if(delay != null) {
+      await Future.delayed(delay);
+    }
+
     final controller = this.controller;
     if(controller == null) return;
 
-    _goToLineByIndex(controller.getLineAtOffset(pos.index), selection: pos.toSelection());
+    _goToLineByIndex(
+      controller.getLineAtOffset(pos.index),
+      selection: pos.toSelection(),
+      syncScrollPosToPreview: syncScrollPosToPreview,
+    );
   }
 
   void _goToPos(FilePos pos) {

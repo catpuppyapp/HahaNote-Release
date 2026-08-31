@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:path/path.dart' as p;
 
+import '../ui/ui.dart';
 import '../util/util.dart';
 import '../widget/markdown_html_previewer.dart';
 import '../widget/pull_to_refresh_list.dart';
@@ -75,6 +76,8 @@ class MarkdownFilePreviewState extends MyPageState<MarkdownFilePreview> {
     try {
       err = "";
 
+      final pos = scrollToInitPos ? widget.initialScrollOffset : UI.getPosOfScrollController(scrollController);
+
       fileName = p.basename(pathStr);
       file = File(pathStr);
       basePath = file!.parent.absolute.path;
@@ -82,13 +85,9 @@ class MarkdownFilePreviewState extends MyPageState<MarkdownFilePreview> {
       content = myMdToHtml(await Fs.readFileAsStr(file!));
 
 
-      if(scrollToInitPos) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if(scrollController.hasClients) {
-            scrollController.jumpTo(widget.initialScrollOffset);
-          }
-        });
-      }
+      UI.restoreScrollPosAfterReloadedIfPosNotChangedAfterDelayed(pos, scrollController);
+
+
     } catch (e) {
       setState(() {
         err = e.toString();

@@ -902,24 +902,9 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
       if(view || diff) {
         await _loadDiffText(
           onLoaded: () async {
-            //// test begin
-            // final sc2 = isPreview() ? diffViewPreviewScrollController : diffViewScrollController;
-            // UI.scrollToPixels(500, sc2);
-            // return;
-            //// test end
-
-            // 尝试恢复滚动位置
+            // 尝试在重载后恢复滚动位置
             // 注：如果滚动前的delayed时间内快速点击刷新按钮，可能会恢复失败
-            double before = UI.getPosOfScrollController(diffViewScrollController);
-            await Future.delayed(const Duration(milliseconds: 500));
-
-            final now = UI.getPosOfScrollController(diffViewScrollController);
-            // 若相等则代表用户没手动滚动
-            // 若pos等于now则没必要滚动
-            // 所以仅在before等于after且pos不等于after时才滚动
-            if(before == now && pos != now) {
-              UI.scrollToPixels(pos, diffViewScrollController);
-            }
+            UI.restoreScrollPosAfterReloadedIfPosNotChangedAfterDelayed(pos, diffViewScrollController);
           }
         );
       }

@@ -399,20 +399,52 @@ abstract class UI {
     return UI.isDarkTheme() ? Colors.white38 : Colors.black54;
   }
 
-  static double getPosOfScrollController(ScrollController sc) {
-    if(sc.hasClients) {
-      return sc.position.pixels;
+  static double getPosOfScrollController(ScrollController? sc) {
+    if(sc == null || !sc.hasClients) {
+      return 0;
     }
-    return 0;
+
+    return sc.position.pixels;
   }
 
-  static void scrollToPixels(double pixels, ScrollController sc) {
-    if(!sc.hasClients) {
+  static void scrollToPixels(double pixels, ScrollController? sc) {
+    if(sc == null || !sc.hasClients) {
       return;
     }
 
-    double target = pixels.clamp(0, sc.position.maxScrollExtent);
-    sc.jumpTo(target);
+    sc.jumpTo(pixels.clamp(0, sc.position.maxScrollExtent));
+  }
+
+
+  static Future<void> restoreScrollPosAfterReloadedIfPosNotChangedAfterDelayed(
+    double pos,
+    ScrollController? scrollController,
+  ) async {
+    /// 用本函数在重载页面后恢复之前的滚动位置时，[pos]若是0，
+    /// 则执行本函数没任何意义，因为重载后滚动位置要么是0，要么维持原来位置，
+    /// 两者都无需恢复，所以 [allowPos0] 传 false
+    await scrollIfPosNotChangedAfterDelayed(pos, scrollController, allowPos0: false);
+  }
+
+  static Future<void> scrollIfPosNotChangedAfterDelayed(
+    double pos,
+    ScrollController? scrollController, {
+    bool allowPos0 = true,
+  }) async {
+    if(pos < 0 || (!allowPos0 && pos == 0)) {
+      return;
+    }
+
+    // before和after的检测是为了检测用户在延迟期间滚动屏幕，若滚动，则禁用后续的代码，避免覆盖用户手动滚动过的位置
+    double before = UI.getPosOfScrollController(scrollController);
+    await Future.delayed(const Duration(milliseconds: 500));
+    final after = UI.getPosOfScrollController(scrollController);
+    // 若相等则代表用户没手动滚动
+    // 若pos等于after则没必要滚动
+    // 所以仅在before等于after且pos不等于after时才滚动
+    if(before == after && pos != after) {
+      UI.scrollToPixels(pos, scrollController);
+    }
   }
 
 }
