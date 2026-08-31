@@ -1,12 +1,14 @@
-import 'dart:async';
 import 'dart:io' show File;
 
-import 'package:hahanote_app/hahanote_lib_sync/app.dart';
-import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
+import 'package:code_forge/code_forge.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:hahanote_app/config/app_config.dart';
 import 'package:hahanote_app/constants/cons.dart';
 import 'package:hahanote_app/db/db.dart';
 import 'package:hahanote_app/db/entity/repo_entity.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/shortcut/shortcut.dart';
 import 'package:hahanote_app/state/my_page_state.dart' show MyPageState;
@@ -19,9 +21,6 @@ import 'package:hahanote_app/widget/base_layout.dart';
 import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
 import 'package:hahanote_app/widget/editor/text_editor.dart' show TextEditor;
 import 'package:hahanote_app/widget/my_pop_menu_checkbox.dart';
-import 'package:code_forge/code_forge.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:lifecycle/lifecycle.dart' show LifecycleEvent;
 
 import '../bean/bean.dart' show FileStat;
