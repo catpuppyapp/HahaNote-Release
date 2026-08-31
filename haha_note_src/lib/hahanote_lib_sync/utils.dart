@@ -413,12 +413,6 @@ Future<void> futureFunctionPool(
 Future<void> _doFutureFunctionPool(
   List<Future Function()> futuresFunctions, {
   int max = 5,
-  // if got any error:
-  // when eagerErr is true, throw as soon as possible;
-  // else, throw after all task completed
-  // note: set to true cannot promise throw immediately when got an err,
-  // maybe will delay, e.g. task3 got err,
-  // but error maybe throw after task4 or task5 completed
   bool eagerError = true,
 }) async {
   // 参数检测需抛异常的一律放最前面
