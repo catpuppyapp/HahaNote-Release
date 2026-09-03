@@ -192,7 +192,7 @@ Future<bool> openWithInternalEditor(
     App.logger.debug(callerTag, "record last opened file err: $e\n$st");
   }
 
-  // 若平台是安卓，如果选择的是内置编辑器，则不进入此代码块，直接使用默认打开；否则尝试使用外部编辑器打开
+  // 平台是安卓时：如果选择的是内置编辑器，则不进入此代码块，后续使用内置文本编辑器打开；否则尝试使用外部编辑器打开
   if(Platform.isAndroid && AppConfig.getConfig().textEditorPackageNameOnAndroid.isNotEmpty) {
     final textEditorPackageNameOnAndroid = AppConfig.getConfig().textEditorPackageNameOnAndroid;
     try {

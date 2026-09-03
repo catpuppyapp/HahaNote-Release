@@ -99,9 +99,18 @@ class MainActivity: FlutterActivity() {
                     val uri = FileProvider.getUriForFile(this, authority, file)
 
                     // 基本 intent
+                    // 这个ACTION不要用ACTION_EDIT，个人经验，用ACTION_VIEW+URI写权限兼容性更好
+                    // 若用ACTION_EDIT，可能会启动程序的特定Activity，
+                    // 比如你想预览图片，若用ACTION_EDIT可能会启动程序用来编辑图片的Activity
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         setDataAndType(uri, mime)
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        // 可能有部分程序会判断，若uri有写权限，
+                        // 进入编辑模式，否则进入预览模式，
+                        // 若有必要，可仅在mime为text类型时，再加写权限
+                        // 不过根据我的经验，没必要，相比之下ACTIVE用VIEW更重要些，
+                        // 多数程序都是根据ACTION_VIEW或ACTION_EDIT来判断是期望预览文件还是编辑文件，
+                        // 然后启动对应模式的，用uri是否有写权限来判断的比较少
                         addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                         // 否则可能不会启动 activity?？
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -110,28 +119,23 @@ class MainActivity: FlutterActivity() {
                     // 兼容Markor，对别的软件也没冲突，所以统一设置上了
                     intent.putExtra("EXTRA_FILEPATH", file.canonicalPath);
 
-                    if(mime.startsWith("text/")) {
-                        // 若包名非SYSTEM，则设置上，否则使用系统默认程序打开（会弹对应mime的程序选择器，但mime是text时，则弹出可用的文本编辑器供用户选择）
-                        if(packageName != null && packageName.isNotEmpty() && packageName != "SYSTEM") {
-                            intent.setPackage(packageName)
-                        }
-                        startActivity(intent)
-                        result.success(null)
-//                        if (!packageName.isNullOrEmpty()) {
-//                            // 如果调用者指定了包名，不需要我去尝试查找一个包名打开文件了，直接用该包打开
-//                            intent.setPackage(packageName)
-//                            startActivity(intent)
-//                            result.success(null)
-//                        }else {
-//                            // 20260903: 后来改成未指定包名则使用内置text editor了，所以这个废弃了
-//                            // 调用者未指定包名，若是文本文件，则尝试找一个支持的编辑器打开文件
-//                            findEditorToOpenFile(intent, result);
-//                        }
-                    }else {
-                        // 非文本文件
-                        startActivity(intent)
-                        result.success(null)
+                    // 由于本软件是笔记软件，内置的包名都是文本编辑器，只支持编辑文本类型，
+                    // 所以只有text类型才指定打开程序，非text类型一律使用系统默认程序打开（弹对应mime的程序选择器）
+                    // 若不判断mime类型是否text，则会错误使用文本编辑器的包名打开非文本文件，
+                    // 例如：若不判断mime是否是text，就会在包名是PuppyGit，文件是视频类型时，错误地使用PuppyGit打开视频文件
+                    if(mime.startsWith("text/")
+                        && packageName != null
+                        && packageName.isNotEmpty()
+                        && packageName != "SYSTEM"
+                    ) {
+                        // 若包名非SYSTEM，则设置上，将使用指定程序打开文件；
+                        // 否则不设置，将使用系统默认程序打开 （弹对应mime的程序选择器，
+                        // 当mime是text时，则弹出可用的文本编辑器供用户选择）
+                        intent.setPackage(packageName)
                     }
+
+                    startActivity(intent)
+                    result.success(null)
 
                 } catch (e: Exception) {
                     result.error("OPEN_ERR", e.localizedMessage, null)
