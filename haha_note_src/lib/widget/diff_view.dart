@@ -62,10 +62,9 @@ class DiffViewState extends State<DiffView> {
   bool get selectionModeIsOn => _selectedIndices.isNotEmpty;
 
   void quitSelection() {
-    setState(() {
-      _selectedIndices.clear();
-      _lastSelectedIndex = null;
-    });
+    _selectedIndices.clear();
+    _lastSelectedIndex = null;
+    setState(() {});
   }
 
   Future<void> _initFontSize() async {
