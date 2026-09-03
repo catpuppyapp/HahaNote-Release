@@ -193,6 +193,8 @@ Future<bool> openWithInternalEditor(
   }
 
   // 平台是安卓时：如果选择的是内置编辑器，则不进入此代码块，后续使用内置文本编辑器打开；否则尝试使用外部编辑器打开
+  // 注意：如果选中的外部文本编辑器是SYSTEM：
+  // 1. 直接点击非文本文件也会进入此if打开，会弹出对应文件类型的程序选择器
   if(Platform.isAndroid && AppConfig.getConfig().textEditorPackageNameOnAndroid.isNotEmpty) {
     final textEditorPackageNameOnAndroid = AppConfig.getConfig().textEditorPackageNameOnAndroid;
     try {
@@ -247,6 +249,13 @@ Future<bool> openWithInternalEditor(
     return false;
   }
 
+  // 注意：如果选中的外部文本编辑器是SYSTEM：
+  // 1. 若文件非文本类型，即使手动选择“以文本方式打开”，也依然会以系统默认关联程序打开对应文件，
+  //    相当于在pc端，外部文本编辑器选SYSTEM时，“以文本方式打开”就失效了，
+  //    例如打开图片，即使手动选“以文本方式打开”，也依然会使用系统的图片查看器打开文件，
+  //    因为外部文本编辑器设为SYSTEM时，在pc端实际上无法指定文件类型，总是以用外部程序打开函数打开文件，
+  //    这时“以文本方式打开”和“用外部程序打开”，调用的是相同的函数 (btw 安卓端因为能设mime类型，所以即使editor设为SYSTEM，
+  //    以文本方式打开也依然有效，会强制把文件当作文本类型对待，操作系统会弹出可用的文本编辑器)
   if(isPcPlatform() && AppConfig.getConfig().textEditorPackageNameOnPc.isNotEmpty) {
     final textEditorPackageNameOnPc = AppConfig.getConfig().textEditorPackageNameOnPc;
     try {
