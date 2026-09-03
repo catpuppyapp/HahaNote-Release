@@ -111,12 +111,15 @@ dependencies:
 #  chewie: ^1.14.1 # md html video play
 #  video_player: ^2.12.0 # md html video play
 #  chewie_audio: ^1.5.0 # md html audio play
-  # TODO bug 暂时先固定0.15.6，否则flutter_html会报错，修复后再改成 ^0.15.6
+  
+  # TODO BUG: 暂时先固定0.15.6，否则flutter_html会报错，修复后再改成 ^0.15.6
   html: 0.15.6
+  
   #  code_forge: ^10.7.1
   # 因为原版不支持通过环境变量指定rust工具链版本，所以我fork了下，改了下，
   # pr要发到flutter_rust_bridge，但我没看那个库的代码，日后再说
   # ref最好用提交号，若用分支名，有可能pub get不会更新
+  # TODO BUG: 10.14.0 合并了一个修复软换行时滚动性能的 pr #107 之后似乎会在开启soft-wrap后，滚动屏幕再点击输入时白屏或光标位置出错，不确定是否是个例，先回滚 10.13.0 了(ref: bf86609a3cb187723a7f78585f66f0d043781461)
   code_forge:
     git:
       url: https://github.com/Bandeapart1964/code_forge.git
