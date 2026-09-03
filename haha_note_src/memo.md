@@ -26,7 +26,11 @@ fastlane下，创建 新版本号.txt，并填入对应语言的更新内容
 ```
 
 后续更新：
-从第4步开始执行即可
+从第4步开始执行即可。
+若有多个非连续提交需要合并，可用cherry-pick替代rebase，具体流程如下：
+1. 先checkout到 src/main (detached HEAD或创建临时分支都行，建议创建临时分支，合并时用分支名就行，不然还得记提交号)
+2. 再 cherry-pick (可cherry-pick多个提交，例如 `cherry-pick 提交1 提交2 提交4`)
+3. 把support_rustup_toolchain_from_env hard reset到刚才合并完成的提交
 
 ---
 更新tls证书流程 20260822：
