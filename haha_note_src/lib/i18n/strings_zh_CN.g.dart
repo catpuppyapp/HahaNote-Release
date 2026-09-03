@@ -356,6 +356,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get storagePathsDesc => '\'共享存储\': 可被外部应用访问，不会随App卸载而删除\n\n\'App外部存储\' 和 \'App内部存储\': 仅可被App访问，会随App卸载而删除';
 	@override String get openAfterCreatingTheFile => '创建文件后打开';
 	@override String get openAfterCreatingTheFolder => '创建文件夹后打开';
+	@override String get system => '系统';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -685,6 +686,7 @@ extension on TranslationsZhCn {
 			'storagePathsDesc' => '\'共享存储\': 可被外部应用访问，不会随App卸载而删除\n\n\'App外部存储\' 和 \'App内部存储\': 仅可被App访问，会随App卸载而删除',
 			'openAfterCreatingTheFile' => '创建文件后打开',
 			'openAfterCreatingTheFolder' => '创建文件夹后打开',
+			'system' => '系统',
 			_ => null,
 		};
 	}

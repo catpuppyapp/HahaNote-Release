@@ -12,11 +12,23 @@ const mimeTextPlain = "text/plain";
 class NativeOpenFile {
 
   static final supportedPcEditors = [
-    // 自动模式会按这个顺序进行尝试打开
-    AppInfoAndLink(name: "Zed", downLink: "https://zed.dev/download", packageName: "zed"),
-    AppInfoAndLink(name: "VSCodium", downLink: "https://github.com/VSCodium/vscodium/releases", packageName: "codium"),
-    AppInfoAndLink(name: "VSCode", downLink: "https://code.visualstudio.com/Download", packageName: "code"),
-    AppInfoAndLink(name: "Notepad++", downLink: "https://notepad-plus-plus.org/downloads", packageName: "notepad++"),
+    AppInfoAndLink.system,
+    const AppInfoAndLink(name: "Zed", downLink: "https://zed.dev/download", packageName: "zed"),
+    const AppInfoAndLink(name: "VSCodium", downLink: "https://github.com/VSCodium/vscodium/releases", packageName: "codium"),
+    const AppInfoAndLink(name: "VSCode", downLink: "https://code.visualstudio.com/Download", packageName: "code"),
+    const AppInfoAndLink(name: "Notepad++", downLink: "https://notepad-plus-plus.org/downloads", packageName: "notepad++"),
+  ];
+
+
+  static final supportedAndroidEditors = [
+    AppInfoAndLink.system,
+    const AppInfoAndLink(name: "Markor", downLink: "https://github.com/gsantner/markor/releases", packageName: "net.gsantner.markor"),
+    const AppInfoAndLink(name: "PuppyGit", downLink: "https://github.com/catpuppyapp/PuppyGit/releases", packageName: "com.catpuppyapp.puppygit.play.pro"),
+    const AppInfoAndLink(name: "Squircle-CE", downLink: "https://github.com/massivemadness/Squircle-CE/releases", packageName: "com.blacksquircle.ui"),
+    const AppInfoAndLink(name: "QuickEdit Pro", downLink: "https://play.google.com/store/apps/details?id=com.rhmsoft.edit.pro", packageName: "com.rhmsoft.edit.pro"),
+    const AppInfoAndLink(name: "QuickEdit", downLink: "https://play.google.com/store/apps/details?id=com.rhmsoft.edit", packageName: "com.rhmsoft.edit"),
+    const AppInfoAndLink(name: "Acode Paid", downLink: "https://play.google.com/store/apps/details?id=com.foxdebug.acode", packageName: "com.foxdebug.acode"),
+    const AppInfoAndLink(name: "Acode", downLink: "https://github.com/Acode-Foundation/Acode/releases", packageName: "com.foxdebug.acodefree"),
   ];
 
 
@@ -25,16 +37,6 @@ class NativeOpenFile {
     ...supportedPcEditors
   ];
 
-  static final supportedAndroidEditors = [
-    // 自动模式会按这个顺序进行尝试打开
-    AppInfoAndLink(name: "Markor", downLink: "https://github.com/gsantner/markor/releases", packageName: "net.gsantner.markor"),
-    AppInfoAndLink(name: "PuppyGit", downLink: "https://github.com/catpuppyapp/PuppyGit/releases", packageName: "com.catpuppyapp.puppygit.play.pro"),
-    AppInfoAndLink(name: "Squircle-CE", downLink: "https://github.com/massivemadness/Squircle-CE/releases", packageName: "com.blacksquircle.ui"),
-    AppInfoAndLink(name: "QuickEdit Pro", downLink: "https://play.google.com/store/apps/details?id=com.rhmsoft.edit.pro", packageName: "com.rhmsoft.edit.pro"),
-    AppInfoAndLink(name: "QuickEdit", downLink: "https://play.google.com/store/apps/details?id=com.rhmsoft.edit", packageName: "com.rhmsoft.edit"),
-    AppInfoAndLink(name: "Acode Paid", downLink: "https://play.google.com/store/apps/details?id=com.foxdebug.acode", packageName: "com.foxdebug.acode"),
-    AppInfoAndLink(name: "Acode", downLink: "https://github.com/Acode-Foundation/Acode/releases", packageName: "com.foxdebug.acodefree"),
-  ];
 
   static final supportedAndroidEditorsAndBuiltIn = [
     // 默认选中内置，若是内置，直接使用内置打开 (过去空字符串代表"Auto"，会逐个尝试使用支持的外部编辑器打开文件)
@@ -71,9 +73,18 @@ class NativeOpenFile {
   static Future<void> openFileOnPc({
     required String path,
     required String packageName,
+    required String callerTag,
+    required void Function(String) showMsgLong,
   }) async {
     if(!isPcPlatform()) {
       throw AppException("platform is not pc");
+    }
+
+    if(packageName == AppInfoAndLink.system.packageName) {
+      // 若是使用SYSTEM默认关联程序打开，则调用此函数，此函数在pc打开文件会有写权限，
+      // (btw 若在安卓，默认只读权限，所以我在安卓手写的intent添加写权限启动activity)
+      await openFileInExternal(path, showMsgLong: showMsgLong, callerTag: callerTag);
+      return;
     }
 
     await runCmd([packageName, path]);
@@ -83,6 +94,7 @@ class NativeOpenFile {
 
 class AppInfoAndLink {
   static final builtIn = AppInfoAndLink(name: t.builtIn, downLink: "", packageName: "");
+  static final system = AppInfoAndLink(name: t.system, downLink: "", packageName: "SYSTEM");
 
   final String name;
   final String downLink;

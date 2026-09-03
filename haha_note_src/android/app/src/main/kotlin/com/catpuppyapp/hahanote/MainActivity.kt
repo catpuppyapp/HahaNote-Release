@@ -111,15 +111,22 @@ class MainActivity: FlutterActivity() {
                     intent.putExtra("EXTRA_FILEPATH", file.canonicalPath);
 
                     if(mime.startsWith("text/")) {
-                        if (!packageName.isNullOrEmpty()) {
-                            // 如果调用者指定了包名，不需要我去尝试查找一个包名打开文件了，直接用该包打开
+                        // 若包名非SYSTEM，则设置上，否则使用系统默认程序打开（会弹对应mime的程序选择器，但mime是text时，则弹出可用的文本编辑器供用户选择）
+                        if(packageName != null && packageName.isNotEmpty() && packageName != "SYSTEM") {
                             intent.setPackage(packageName)
-                            startActivity(intent)
-                            result.success(null)
-                        }else {
-                            // 调用者未指定包名，若是文本文件，则尝试找一个支持的编辑器打开文件
-                            findEditorToOpenFile(intent, result);
                         }
+                        startActivity(intent)
+                        result.success(null)
+//                        if (!packageName.isNullOrEmpty()) {
+//                            // 如果调用者指定了包名，不需要我去尝试查找一个包名打开文件了，直接用该包打开
+//                            intent.setPackage(packageName)
+//                            startActivity(intent)
+//                            result.success(null)
+//                        }else {
+//                            // 20260903: 后来改成未指定包名则使用内置text editor了，所以这个废弃了
+//                            // 调用者未指定包名，若是文本文件，则尝试找一个支持的编辑器打开文件
+//                            findEditorToOpenFile(intent, result);
+//                        }
                     }else {
                         // 非文本文件
                         startActivity(intent)
@@ -135,6 +142,9 @@ class MainActivity: FlutterActivity() {
         }
     }
 
+    /**
+     * find a supported text editor to open file
+     */
     @TargetApi(Build.VERSION_CODES.DONUT)
     private fun findEditorToOpenFile(intent: Intent, result: MethodChannel.Result) {
         var err: Exception? = null;

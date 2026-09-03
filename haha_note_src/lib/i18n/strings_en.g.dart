@@ -997,6 +997,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Open after creating the folder'
 	String get openAfterCreatingTheFolder => 'Open after creating the folder';
+
+	/// en: 'System'
+	String get system => 'System';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1326,6 +1329,7 @@ extension on Translations {
 			'storagePathsDesc' => '\'Shared Storage\': Accessible by external applications, will not be deleted when the app is uninstalled\n\n\'App External Storage\' and \'App Internal Storage\': Only accessible by the app, and will be removed during app uninstallation',
 			'openAfterCreatingTheFile' => 'Open after creating the file',
 			'openAfterCreatingTheFolder' => 'Open after creating the folder',
+			'system' => 'System',
 			_ => null,
 		};
 	}

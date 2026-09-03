@@ -253,6 +253,8 @@ Future<bool> openWithInternalEditor(
       await NativeOpenFile.openFileOnPc(
         path: path,
         packageName: textEditorPackageNameOnPc,
+        showMsgLong: showMsgLong,
+        callerTag: callerTag,
       );
     }catch(e, st) {
       App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnPc, err code: 14373892, err: $e\n$st");
@@ -264,15 +266,14 @@ Future<bool> openWithInternalEditor(
     return false;
   }
 
-  // 如果是内部文本编辑器不支持的类型，则使用外部程序打开
+  // 如果是内部文本编辑器不支持的类型，则使用外部程序打开 (若在安卓，默认只读uri打开，文本类型在上面特殊处理了，不然外部程序编辑完不能保存)
   if(!isInternalTextEditorSupportedType(p.basename(path), mime: mime)) {
     await openFileInExternal(path, showMsgLong: showMsgLong, callerTag: callerTag);
     return false;
   }
 
-  // 执行到这，非安卓，且是内部文本编辑器支持的类型，使用内部文本编辑器打开
+  // 执行到这，将使用内部文本编辑器打开
 
-  // 非安卓（内置的re-editor在ios可能也有问题，但我的app不支持ios，所以无所谓），跳转到编辑器页面
   if(!context.mounted) return false;
 
   final editorChangedFile = await Navigator.pushNamed(
