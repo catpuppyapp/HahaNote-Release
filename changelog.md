@@ -1,8 +1,10 @@
 
 ---
-1.0.11+12 20260830-:
+1.0.11+12 20260830-20260903:
 - supports shift+click multi select items
+- update text editor
 - 列表支持shift多选
+- 更新文本编辑器
 
 ---
 1.0.10+11 20260821-20260822:

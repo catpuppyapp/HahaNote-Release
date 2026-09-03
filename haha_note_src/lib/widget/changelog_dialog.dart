@@ -7,9 +7,9 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- update tls cert
-- update editor
-- 更新tls证书
+- supports shift+click multi select items
+- update text editor
+- 列表支持shift多选
 - 更新文本编辑器
 """;
 

@@ -1,0 +1,2 @@
+- supports shift+click multi select items
+- update text editor
