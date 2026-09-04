@@ -142,6 +142,11 @@ class TextEditor extends StatelessWidget {
       lineWrap: softWrapEnabled,
       enableGutter: lineNumEnabled,
       enableGutterDivider: lineNumEnabled,
+
+      // set to false can be got better performance?
+      enableFolding: false,
+      enableGuideLines: false,
+
       controller: controller,
       findController: findController,
       undoController: undoController,
