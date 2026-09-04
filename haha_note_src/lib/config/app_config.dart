@@ -9,6 +9,7 @@ import 'package:hahanote_app/db/db.dart';
 import 'package:hahanote_app/ext/iterable_ext.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/native_util/open_file.dart';
+import 'package:hahanote_app/util/util.dart';
 
 import 'display_mode.dart';
 
@@ -26,8 +27,9 @@ const languageAuto = "Auto";
 class AppConfig {
   SyncConfig syncConfig;
 
-  String textEditorPackageNameOnAndroid;
-  String textEditorPackageNameOnPc;
+  String textEditorPackageName;
+  // String textEditorPackageNameOnAndroid;
+  // String textEditorPackageNameOnPc;
 
   String language;
 
@@ -52,8 +54,12 @@ class AppConfig {
 
   AppConfig({
     SyncConfig? syncConfig,
-    this.textEditorPackageNameOnAndroid = "",  //默认值空，之前是自动在支持的编辑器里逐个尝试，后来使用code_forge后，空代表hhnote内置编辑器
-    this.textEditorPackageNameOnPc = "",
+    this.textEditorPackageName = "",  //默认值空，之前是自动在支持的编辑器里逐个尝试，后来使用code_forge后，空代表hhnote内置编辑器
+
+    // 不同平台完全可用同一变量名啊
+    // this.textEditorPackageNameOnAndroid = "",  //默认值空，之前是自动在支持的编辑器里逐个尝试，后来使用code_forge后，空代表hhnote内置编辑器
+    // this.textEditorPackageNameOnPc = "",
+
     this.language = "",  // 空，auto，自动检测设备语言
     this.showLineNumInDiffView = false,
     this.isFirstUse = true,
@@ -123,12 +129,11 @@ class AppConfig {
     return AppConfig.fromJson(jsonDecode(jsonEncode(this)));
   }
 
-  String getTextOfTextEditorPackageNameOnAndroid() {
-    return _getNameOfEditor(NativeOpenFile.supportedAndroidEditors, textEditorPackageNameOnAndroid);
-  }
-
-  String getTextOfTextEditorPackageNameOnPc() {
-    return _getNameOfEditor(NativeOpenFile.supportedPcEditors, textEditorPackageNameOnPc);
+  String getTextOfTextEditorPackageName() {
+    return _getNameOfEditor(
+      isPcPlatform() ? NativeOpenFile.supportedPcEditors : NativeOpenFile.supportedAndroidEditors,
+      textEditorPackageName,
+    );
   }
 
   String _getNameOfEditor(List<AppInfoAndLink> editors, String target) {

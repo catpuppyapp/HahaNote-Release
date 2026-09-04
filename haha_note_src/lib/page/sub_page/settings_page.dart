@@ -353,53 +353,28 @@ class SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          if(Platform.isAndroid)
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: getTitle(t.textEditor),
-              subtitle: getSubtitle(_appConfig.getTextOfTextEditorPackageNameOnAndroid()),
-              onTap: () {
-                Dialogs.showSingleClickablePlainDialog(
-                  context,
-                  NativeOpenFile.supportedAndroidEditorsAndBuiltIn,
-                  selected: (it) => it.packageName == _appConfig.textEditorPackageNameOnAndroid,
-                  itemText: (it) => it.name,
-                  onClick: (it) async {
-                    if(it.packageName == _appConfig.textEditorPackageNameOnAndroid) {
-                      return;
-                    }
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: getTitle(t.textEditor),
+            subtitle: getSubtitle(_appConfig.getTextOfTextEditorPackageName()),
+            onTap: () {
+              Dialogs.showSingleClickablePlainDialog(
+                context,
+                isPcPlatform() ? NativeOpenFile.supportedPcEditorsAndBuiltIn : NativeOpenFile.supportedAndroidEditorsAndBuiltIn,
+                selected: (it) => it.packageName == _appConfig.textEditorPackageName,
+                itemText: (it) => it.name,
+                onClick: (it) async {
+                  if(it.packageName == _appConfig.textEditorPackageName) {
+                    return;
+                  }
 
-                    await updateConfig((config) async {
-                      config.textEditorPackageNameOnAndroid = it.packageName;
-                    });
-                  },
-                );
-              },
-            ),
-
-          if(isPcPlatform())
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: getTitle(t.textEditor),
-              subtitle: getSubtitle(_appConfig.getTextOfTextEditorPackageNameOnPc()),
-              onTap: () {
-                Dialogs.showSingleClickablePlainDialog(
-                  context,
-                  NativeOpenFile.supportedPcEditorsAndBuiltIn,
-                  selected: (it) => it.packageName == _appConfig.textEditorPackageNameOnPc,
-                  itemText: (it) => it.name,
-                  onClick: (it) async {
-                    if(it.packageName == _appConfig.textEditorPackageNameOnPc) {
-                      return;
-                    }
-
-                    await updateConfig((config) async {
-                      config.textEditorPackageNameOnPc = it.packageName;
-                    });
-                  },
-                );
-              },
-            ),
+                  await updateConfig((config) async {
+                    config.textEditorPackageName = it.packageName;
+                  });
+                },
+              );
+            },
+          ),
 
           ListTile(
             leading: Icon(Icons.fingerprint),

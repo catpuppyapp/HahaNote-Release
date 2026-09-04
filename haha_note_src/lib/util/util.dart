@@ -195,13 +195,13 @@ Future<bool> openWithInternalEditor(
   // 平台是安卓时：如果选择的是内置编辑器，则不进入此代码块，后续使用内置文本编辑器打开；否则尝试使用外部编辑器打开
   // 注意：如果选中的外部文本编辑器是SYSTEM：
   // 1. 直接点击非文本文件也会进入此if打开，会弹出对应文件类型的程序选择器
-  if(Platform.isAndroid && AppConfig.getConfig().textEditorPackageNameOnAndroid.isNotEmpty) {
-    final textEditorPackageNameOnAndroid = AppConfig.getConfig().textEditorPackageNameOnAndroid;
+  final textEditorPackageName = AppConfig.getConfig().textEditorPackageName;
+  if(Platform.isAndroid && textEditorPackageName.isNotEmpty) {
     try {
       await NativeOpenFile.openFileOnAndroid(
         path: path,
         mime: mime,
-        packageName: textEditorPackageNameOnAndroid,
+        packageName: textEditorPackageName,
       );
 
       // 安卓调用外部编辑器，无法轻易判断用户什么时候从其他app返回，所以直接当作没修改，需手动刷新
@@ -232,12 +232,12 @@ Future<bool> openWithInternalEditor(
             ),
           );
         }else {
-          App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnAndroid, err code: 11866978, err: $e\n$st");
+          App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageName, err code: 11866978, err: $e\n$st");
           showMsgLong("err: ${e.code}: ${e.message}");
         }
 
       }else {
-        App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnAndroid, err code: 16476550, err: $e\n$st");
+        App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageName, err code: 16476550, err: $e\n$st");
         showMsgLong("err: $e");
       }
 
@@ -256,17 +256,16 @@ Future<bool> openWithInternalEditor(
   //    因为外部文本编辑器设为SYSTEM时，在pc端实际上无法指定文件类型，总是以用外部程序打开函数打开文件，
   //    这时“以文本方式打开”和“用外部程序打开”，调用的是相同的函数 (btw 安卓端因为能设mime类型，所以即使editor设为SYSTEM，
   //    以文本方式打开也依然有效，会强制把文件当作文本类型对待，操作系统会弹出可用的文本编辑器)
-  if(isPcPlatform() && AppConfig.getConfig().textEditorPackageNameOnPc.isNotEmpty) {
-    final textEditorPackageNameOnPc = AppConfig.getConfig().textEditorPackageNameOnPc;
+  if(isPcPlatform() && textEditorPackageName.isNotEmpty) {
     try {
       await NativeOpenFile.openFileOnPc(
         path: path,
-        packageName: textEditorPackageNameOnPc,
+        packageName: textEditorPackageName,
         showMsgLong: showMsgLong,
         callerTag: callerTag,
       );
     }catch(e, st) {
-      App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageNameOnPc, err code: 14373892, err: $e\n$st");
+      App.logger.debug(callerTag, "open file failed, editor: $textEditorPackageName, err code: 14373892, err: $e\n$st");
       showMsgLong("err: $e");
     }
 

@@ -10,9 +10,7 @@ AppConfig _$AppConfigFromJson(Map<String, dynamic> json) => AppConfig(
   syncConfig: json['syncConfig'] == null
       ? null
       : SyncConfig.fromJson(json['syncConfig'] as Map<String, dynamic>),
-  textEditorPackageNameOnAndroid:
-      json['textEditorPackageNameOnAndroid'] as String? ?? "",
-  textEditorPackageNameOnPc: json['textEditorPackageNameOnPc'] as String? ?? "",
+  textEditorPackageName: json['textEditorPackageName'] as String? ?? "",
   language: json['language'] as String? ?? "",
   showLineNumInDiffView: json['showLineNumInDiffView'] as bool? ?? false,
   isFirstUse: json['isFirstUse'] as bool? ?? true,
@@ -34,8 +32,7 @@ AppConfig _$AppConfigFromJson(Map<String, dynamic> json) => AppConfig(
 
 Map<String, dynamic> _$AppConfigToJson(AppConfig instance) => <String, dynamic>{
   'syncConfig': instance.syncConfig.toJson(),
-  'textEditorPackageNameOnAndroid': instance.textEditorPackageNameOnAndroid,
-  'textEditorPackageNameOnPc': instance.textEditorPackageNameOnPc,
+  'textEditorPackageName': instance.textEditorPackageName,
   'language': instance.language,
   'showLineNumInDiffView': instance.showLineNumInDiffView,
   'isFirstUse': instance.isFirstUse,
