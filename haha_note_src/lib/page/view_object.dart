@@ -631,6 +631,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         // 注释此行则默认水平居中
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 3),
           Wrap(
             alignment: WrapAlignment.center,
             crossAxisAlignment: WrapCrossAlignment.center,
