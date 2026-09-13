@@ -1,1 +1,2 @@
 - fix an index out of bound error
+- fix webdav error when have multi auth headers

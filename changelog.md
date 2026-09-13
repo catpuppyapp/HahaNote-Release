@@ -2,7 +2,9 @@
 ---
 1.0.12+13 20260913-20260913:
 - fix an index out of bound error
+- fix webdav error when have multi auth headers
 - 修复索引越界
+- 修复多个认证头时webdav报错
 
 ---
 1.0.11+12 20260830-20260903:

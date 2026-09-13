@@ -8,7 +8,9 @@ import '../util/app_info.dart';
 
 const _changelog = """
 - fix an index out of bound error
+- fix webdav error when have multi auth headers
 - 修复索引越界
+- 修复多个认证头时webdav报错
 """;
 
 class ChangelogDialog extends StatelessWidget {
