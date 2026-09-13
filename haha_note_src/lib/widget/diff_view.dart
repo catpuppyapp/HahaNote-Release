@@ -1,3 +1,5 @@
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
@@ -104,6 +106,35 @@ class DiffViewState extends State<DiffView> {
       onPlus: fontSize >= fontSizeMax ? null : () => _setFontSize(fontSize + UI.diffViewFontSizeAdjustStep),
       onClose: saveAndCloseFontSizeAdjuster,
     );
+  }
+
+  /// 返回升序排序后的索引
+  /// return asc sorted valid indices
+  Set<int> getValidIndices() {
+    final indices = SplayTreeSet<int>();
+    final actuallyLinesCount = widget.lines.length;
+    for(final i in _selectedIndices) {
+      if(i >= 0 && i < actuallyLinesCount) {
+        indices.add(i);
+      }
+    }
+
+    return indices;
+  }
+
+  String getSelectedLines() {
+    final indices = getValidIndices();
+    if(indices.isEmpty) {
+      return "";
+    }
+
+    final sb = StringBuffer();
+    for(final i in indices) {
+      sb.write(widget.lines[i].textAll);
+      sb.write('\n');
+    }
+
+    return sb.toString();
   }
 
   Widget buildContent(BuildContext context) {
@@ -253,9 +284,7 @@ class DiffViewState extends State<DiffView> {
                   heroTag: 'copySelection',
                   mini: true,
                   onPressed: () {
-                    final selected = _selectedIndices.toList()..sort();
-                    final linesText = selected.map((i) => widget.lines[i].textAll).join('\n');
-                    copyText(linesText);
+                    copyText(getSelectedLines());
                     widget.showMsg(t.copied);
                   },
                   tooltip: t.copy,
