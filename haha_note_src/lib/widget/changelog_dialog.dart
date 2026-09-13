@@ -7,10 +7,8 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- supports shift+click multi select items
-- update text editor
-- 列表支持shift多选
-- 更新文本编辑器
+- fix an index out of bound error
+- 修复索引越界
 """;
 
 class ChangelogDialog extends StatelessWidget {

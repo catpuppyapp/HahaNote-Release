@@ -1,5 +1,10 @@
 
 ---
+1.0.12+13 20260913-20260913:
+- fix an index out of bound error
+- 修复索引越界
+
+---
 1.0.11+12 20260830-20260903:
 - supports shift+click multi select items
 - update text editor
