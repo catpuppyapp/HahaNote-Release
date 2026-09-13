@@ -9,6 +9,7 @@ import 'adapter/adapter_stub.dart'
 import 'package:dio/dio.dart';
 
 import 'auth.dart';
+import 'auth_type_value.dart';
 import 'client.dart';
 import 'utils.dart';
 
@@ -92,20 +93,20 @@ class WdDio with DioMixin implements Dio {
     );
 
     if (resp.statusCode == 401) {
-      String? w3AHeader = resp.headers.value('www-authenticate');
-      String? lowerW3AHeader = w3AHeader?.toLowerCase();
+      final authTypeValue = AuthTypeValue.parseFromHeaders(resp.headers);
+      String? w3AHeader = authTypeValue?.value;
 
       // before is noAuth
       if (self.auth.type == AuthType.NoAuth) {
         // Digest
-        if (lowerW3AHeader?.contains('digest') == true) {
+        if (authTypeValue?.isDigest() == true) {
           self.auth = DigestAuth(
               user: self.auth.user,
               pwd: self.auth.pwd,
               dParts: DigestParts(w3AHeader));
         }
         // Basic
-        else if (lowerW3AHeader?.contains('basic') == true) {
+        else if (authTypeValue?.isBasic() == true) {
           self.auth = BasicAuth(user: self.auth.user, pwd: self.auth.pwd);
         }
         // error
@@ -115,7 +116,7 @@ class WdDio with DioMixin implements Dio {
       }
       // before is digest and Nonce Lifetime is out
       else if (self.auth.type == AuthType.DigestAuth &&
-          lowerW3AHeader?.contains('stale=true') == true) {
+          w3AHeader?.toLowerCase().contains('stale=true') == true) {
         self.auth = DigestAuth(
             user: self.auth.user,
             pwd: self.auth.pwd,
