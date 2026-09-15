@@ -23,7 +23,7 @@ class AuthTypeValue {
   static AuthTypeValue? parseFromHeaders(Headers headers) {
     // List<String>?
     final values = headers['www-authenticate'];
-    if(values == null) {
+    if(values == null || values.isEmpty) {
       return null;
     }
 

@@ -98,16 +98,16 @@ class WdDio with DioMixin implements Dio {
 
       // before is noAuth
       if (self.auth.type == AuthType.NoAuth) {
-        // Digest
-        if (authTypeValue?.isDigest() == true) {
-          self.auth = DigestAuth(
-              user: self.auth.user,
-              pwd: self.auth.pwd,
-              dParts: DigestParts(w3AHeader));
-        }
         // Basic
-        else if (authTypeValue?.isBasic() == true) {
+        if (authTypeValue?.isBasic() == true) {
           self.auth = BasicAuth(user: self.auth.user, pwd: self.auth.pwd);
+        }
+        // Digest
+        else if (authTypeValue?.isDigest() == true) {
+          self.auth = DigestAuth(
+            user: self.auth.user,
+            pwd: self.auth.pwd,
+            dParts: DigestParts(w3AHeader));
         }
         // error
         else {
@@ -115,12 +115,13 @@ class WdDio with DioMixin implements Dio {
         }
       }
       // before is digest and Nonce Lifetime is out
-      else if (self.auth.type == AuthType.DigestAuth &&
-          w3AHeader?.toLowerCase().contains('stale=true') == true) {
+      else if (self.auth.type == AuthType.DigestAuth
+        && w3AHeader?.toLowerCase().contains('stale=true') == true
+      ) {
         self.auth = DigestAuth(
-            user: self.auth.user,
-            pwd: self.auth.pwd,
-            dParts: DigestParts(w3AHeader));
+          user: self.auth.user,
+          pwd: self.auth.pwd,
+          dParts: DigestParts(w3AHeader));
       } else {
         throw newResponseError(resp);
       }
