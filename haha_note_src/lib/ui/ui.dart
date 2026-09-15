@@ -61,7 +61,7 @@ abstract class UI {
   static const listPadding = EdgeInsets.only(left: UI.defaultScreenPadding, right: UI.defaultScreenPadding, bottom: bottomBarContainerBottomPadding);
   static const listPaddingOnlyBottom = EdgeInsets.only(bottom: bottomBarContainerBottomPadding);
 
-  static const defaultCheckboxDescPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 16);
+  static const defaultCheckboxDescPadding = EdgeInsets.only(top: 2, bottom: 26, left: 26, right: 26);
   // static Future<void> init() async {
   //   await initTheme();
   //   await initToast();

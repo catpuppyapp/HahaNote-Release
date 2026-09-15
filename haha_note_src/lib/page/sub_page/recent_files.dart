@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:hahanote_app/bean/bean.dart' show ContentItem, ActRegion;
+import 'package:hahanote_app/bean/bean.dart' show ContentItem, ActRegion, TextValueSelected;
 import 'package:hahanote_app/db/db.dart';
+import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/page/base/searchable_widget_state.dart';
 import 'package:hahanote_app/util/hardware_key_util.dart';
@@ -147,15 +150,28 @@ class RecentFilesState extends SearchableWidgetState<RecentFiles> {
   }
 
   Future<void> showDeleteDialog(ActRegion actRegion) async {
-    await Dialogs.showOkOrNoDialog(
+    final keyDelFilesOnDisk = "keyDelFilesOnDisk";
+
+    await Dialogs.showCheckboxDialog(
       context,
       title: actRegion == ActRegion.all ? t.clear : t.delete,
-      text: t.areYouSure,
-      onOk: () => _doDelete(actRegion)
+      options: [
+        TextValueSelected(text: t.deleteFilesOnDisk, value: keyDelFilesOnDisk),
+      ],
+      okText: t.delete,
+      enableOkEvenNoneSelected: true,
+      onOk: (result) async {
+        final deleteFilesOnDisk = result[keyDelFilesOnDisk]!.selected;
+
+        await _doDelete(actRegion, deleteFilesOnDisk: deleteFilesOnDisk);
+      }
     );
   }
 
-  Future<void> _doDelete(ActRegion actRegion) async {
+  Future<void> _doDelete(
+    ActRegion actRegion, {
+    required final bool deleteFilesOnDisk,
+  }) async {
     await doAct(
       actName: "delete",
       actDesc: "delete recent files",
@@ -169,15 +185,39 @@ class RecentFilesState extends SearchableWidgetState<RecentFiles> {
       },
       allowOpenedRepoIsNull: false,
       act: (repo, openedRepo, items) async {
+        final deletedErrOnDisk = <String>[];
         for(final i in items) {
           i as ContentItem;
           openedRepo!.recentFiles.removeWhere((rf) => rf.path == i.fullPath);
+
+          if(deleteFilesOnDisk) {
+            try {
+              await File(i.fullPath).delete();
+            }catch(e) {
+              deletedErrOnDisk.add("path: ${i.fullPath}\nerr: $e");
+              App.logger.debug(_TAG, "delete file on disk err:\nfile path: ${i.fullPath}\nerr: $e");
+            }
+          }
         }
 
         await Db.updateRepo(openedRepo!);
+
+        // if delete files on disk error, throw
+        if(deletedErrOnDisk.isNotEmpty) {
+          final sb = StringBuffer();
+          sb.writeAll(deletedErrOnDisk, "\n\n");
+
+          if(!context.mounted) return;
+
+          await Dialogs.showCopyDialog(
+            context,
+            title: t.error,
+            text: "delete files on disk err:\n\n${sb.toString()}",
+            showMsg: showMsg,
+          );
+        }
       }
     );
-
   }
 
 

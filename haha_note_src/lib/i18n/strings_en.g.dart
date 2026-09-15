@@ -1000,6 +1000,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'System'
 	String get system => 'System';
+
+	/// en: 'Delete files on disk'
+	String get deleteFilesOnDisk => 'Delete files on disk';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1330,6 +1333,7 @@ extension on Translations {
 			'openAfterCreatingTheFile' => 'Open after creating the file',
 			'openAfterCreatingTheFolder' => 'Open after creating the folder',
 			'system' => 'System',
+			'deleteFilesOnDisk' => 'Delete files on disk',
 			_ => null,
 		};
 	}

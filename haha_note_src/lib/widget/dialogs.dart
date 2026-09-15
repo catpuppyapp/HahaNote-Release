@@ -402,16 +402,24 @@ abstract class Dialogs {
     required String title,
     required List<TextValueSelected> options,
     required Future<void> Function(Map<String, TextValueSelected>) onOk,
+    String? okText,
+    bool enableOkEvenNoneSelected = false,
   }) async {
     final result = await showDialog<Map<String, TextValueSelected>>(
       context: context,
       builder: (context) {
         // 返回值是 Map{value: TextValueSelected}
-        return CheckboxDialog(title: title, options: options,);
+        return CheckboxDialog(
+          title: title,
+          options: options,
+          okText: okText,
+          enableOkEvenNoneSelected: enableOkEvenNoneSelected,
+        );
       },
     );
 
     if(result == null) {
+      // user clicked cancel
       return;
     }
 

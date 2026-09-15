@@ -357,6 +357,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get openAfterCreatingTheFile => '创建文件后打开';
 	@override String get openAfterCreatingTheFolder => '创建文件夹后打开';
 	@override String get system => '系统';
+	@override String get deleteFilesOnDisk => '删除硬盘上的文件';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -687,6 +688,7 @@ extension on TranslationsZhCn {
 			'openAfterCreatingTheFile' => '创建文件后打开',
 			'openAfterCreatingTheFolder' => '创建文件夹后打开',
 			'system' => '系统',
+			'deleteFilesOnDisk' => '删除硬盘上的文件',
 			_ => null,
 		};
 	}

@@ -7,7 +7,15 @@ import '../ui/ui.dart';
 class CheckboxDialog extends StatefulWidget {
   final String title;
   final List<TextValueSelected> options;
-  const CheckboxDialog({super.key, required this.title, required this.options});
+  final String? okText;
+  final bool enableOkEvenNoneSelected;
+  const CheckboxDialog({
+    super.key,
+    required this.title,
+    required this.options,
+    this.okText,
+    required this.enableOkEvenNoneSelected
+  });
 
   @override
   State<CheckboxDialog> createState() => _CheckboxDialogState();
@@ -38,7 +46,7 @@ class _CheckboxDialogState extends State<CheckboxDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.title),
+      title: SelectableText(widget.title),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -73,8 +81,8 @@ class _CheckboxDialogState extends State<CheckboxDialog> {
           child: Text(t.cancel),
         ),
         TextButton(
-          onPressed: hasSelectedAny() ? () => Navigator.of(context).pop(optionsBuf) : null,
-          child: Text(t.ok),
+          onPressed: widget.enableOkEvenNoneSelected || hasSelectedAny() ? () => Navigator.of(context).pop(optionsBuf) : null,
+          child: Text(widget.okText ?? t.ok),
         ),
       ],
     );
