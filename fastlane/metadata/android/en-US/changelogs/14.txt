@@ -1,0 +1,1 @@
+- recent files: support delete files on disk

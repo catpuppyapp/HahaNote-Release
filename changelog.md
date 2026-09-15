@@ -1,5 +1,10 @@
 
 ---
+1.0.13+14 20260915-20260915:
+- recent files: support delete files on disk
+- 最近文件列表：支持删除硬盘上的文件
+
+---
 1.0.12+13 20260913-20260913:
 - fix an index out of bound error
 - fix webdav error when have multi auth headers
