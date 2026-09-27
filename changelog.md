@@ -1,5 +1,10 @@
 
 ---
+1.0.14+15 20260927:
+- fix a bug of ui
+- 修复一个界面bug
+
+---
 1.0.13+14 20260915-20260915:
 - recent files: support delete files on disk
 - 最近文件列表：支持删除硬盘上的文件
