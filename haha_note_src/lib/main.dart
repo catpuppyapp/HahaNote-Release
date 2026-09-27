@@ -1113,6 +1113,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     // fix: files 搜索列表非空时，切换仓库，进入文件页面，列表没刷新
     _clearSearch();
 
+    currentPage = Cons.homePageCodeHome;
     await loadHome();
   }
 
@@ -3516,7 +3517,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
   Widget _getDrawerFooter() {
     // 没有打开的仓库(用openedRepo == null来判断)，或者打开仓库出错，则不显示同步按钮
     if(openedRepo == null || openRepoErr()) {
-      return SizedBox(width: 1,);
+      return SizedBox.shrink();
     }
 
     return SafeArea(
@@ -3559,23 +3560,18 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     List<Widget> actions = [];
     // 若没打开任何仓库，则显示home页面
     // 否则恢复上次打开的页面
-    if(openedRepo == null) {
+    if(currentPage == Cons.homePageCodeHome) {
       children = getPageHome(context);
-
       // 如果是在主页（仓库列表），则显示刷新按钮，点击可检查仓库是否有本地修改
-      if(currentPage == Cons.homePageCodeHome) {
-        actions = [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            tooltip: t.refresh,
-            onPressed: () async {
-              await loadHome();
-            },
-          ),
-        ];
-      }
-    }else if(currentPage == Cons.homePageCodeHome) {
-      children = getPageHome(context);
+      actions = [
+        IconButton(
+          icon: Icon(Icons.refresh),
+          tooltip: t.refresh,
+          onPressed: () async {
+            await loadHome();
+          },
+        ),
+      ];
     }else if(currentPage == Cons.homePageCodeRepo) {
       children = getPageRepo(context);
       actions = [
