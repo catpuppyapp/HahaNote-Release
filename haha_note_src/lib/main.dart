@@ -3561,15 +3561,19 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     // 否则恢复上次打开的页面
     if(openedRepo == null) {
       children = getPageHome(context);
-      actions = [
-        IconButton(
-          icon: Icon(Icons.refresh),
-          tooltip: t.refresh,
-          onPressed: () async {
-            await loadHome();
-          },
-        ),
-      ];
+
+      // 如果是在主页（仓库列表），则显示刷新按钮，点击可检查仓库是否有本地修改
+      if(currentPage == Cons.homePageCodeHome) {
+        actions = [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            tooltip: t.refresh,
+            onPressed: () async {
+              await loadHome();
+            },
+          ),
+        ];
+      }
     }else if(currentPage == Cons.homePageCodeHome) {
       children = getPageHome(context);
     }else if(currentPage == Cons.homePageCodeRepo) {
