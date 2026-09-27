@@ -58,7 +58,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
   @override
   void initBase() {
     super.showScaffold = widget.showScaffold;
-    super.title = t.conflict;
+    super.title = t.conflicts;
   }
 
 

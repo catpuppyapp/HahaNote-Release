@@ -319,5 +319,6 @@
   "openAfterCreatingTheFile": "Open after creating the file",
   "openAfterCreatingTheFolder": "Open after creating the folder",
   "system": "System",
-  "deleteFilesOnDisk": "Delete files on disk"
+  "deleteFilesOnDisk": "Delete files on disk",
+  "conflicts": "Conflicts"
 }

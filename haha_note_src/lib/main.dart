@@ -3094,7 +3094,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
         ListTile(
           selected: currentPage == Cons.homePageCodeConflict,
           leading: Icon(Icons.difference),
-          title: Text(t.conflict),
+          title: Text(t.conflicts),
           selectedTileColor: selectedBgColor,
           onTap: () async {
             await drawerOnClick(Cons.homePageCodeConflict);
@@ -3394,7 +3394,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     if(ask_0_skip_1_overwrite_2_merge_3 == 0 && targetExistsListWhenPaste.isNotEmpty) {
       await Dialogs.showOkOrNoDialog(
         context,
-        title: t.conflict,
+        title: t.conflicts,
         text: t.askMergeDirsAndFiles,
         onOk: () {
           _doPaste(ask_0_skip_1_overwrite_2_merge_3: 3);
@@ -3410,7 +3410,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     if(currentPage == Cons.homePageCodeFiles) {
       return currentPath.name();
     }else if(currentPage == Cons.homePageCodeConflict) {
-      return t.conflict;
+      return t.conflicts;
     }else if(currentPage == Cons.homePageCodeDeleted) {
       return t.deleted;
     }else if(currentPage == Cons.homePageCodeAbout) {

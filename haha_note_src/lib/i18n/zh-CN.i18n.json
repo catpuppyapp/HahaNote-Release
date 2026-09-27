@@ -319,5 +319,6 @@
   "openAfterCreatingTheFile": "创建文件后打开",
   "openAfterCreatingTheFolder": "创建文件夹后打开",
   "system": "系统",
-  "deleteFilesOnDisk": "删除硬盘上的文件"
+  "deleteFilesOnDisk": "删除硬盘上的文件",
+  "conflicts": "冲突"
 }
