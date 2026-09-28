@@ -933,11 +933,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () async {
-                      try {
-                        await Db.setOpenedRepo(path);
-                      }finally {
-                        await loadHome();
-                      }
+                      await openRepo(path);
                     },
                     child: doubleScrollableLine(
                       "",
@@ -1106,14 +1102,29 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
   }
 
   Future<void> closeRepo() async {
-    await Db.delOpenedRepo();
-    await Db.setFilesLastPath(null);
-    await Db.setLastOpenedPage(Cons.homePageCodeHome);
+    try {
+      await Db.delOpenedRepo();
+      await Db.setFilesLastPath(null);
+      await Db.setLastOpenedPage(Cons.homePageCodeHome);
 
-    // fix: files 搜索列表非空时，切换仓库，进入文件页面，列表没刷新
-    _clearSearch();
+      // fix: files 搜索列表非空时，切换仓库，进入文件页面，列表没刷新
+      _clearSearch();
+    }finally {
+      await loadHome();
+    }
+  }
 
-    await loadHome();
+  Future<void> openRepo(String repoPath) async {
+    try {
+      await Db.setOpenedRepo(repoPath);
+      await Db.setFilesLastPath(null);
+      await Db.setLastOpenedPage(Cons.homePageCodeRepo);
+
+      // fix: files 搜索列表非空时，切换仓库，进入文件页面，列表没刷新
+      _clearSearch();
+    }finally {
+      await loadHome();
+    }
   }
 
   Future<void> _cancelSync() async {
@@ -2973,15 +2984,15 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
         final tempRepo = await Repo.open(repoEntity.path);
         final tempRepoConfig = await tempRepo.getConfig();
         final lastSyncInfo = await tempRepo.getLastSyncInfo();
-        setState(() {
-          if(lastSyncInfo.time.utcMs > 0) {
-            lastSyncedAt = lastSyncInfo.lastSyncAtStr();
-          }
 
-          repo = tempRepo;
-          repoConfig = tempRepoConfig;
-          syncedFilesCount = lastSyncInfo.syncedFilesCount;
-        });
+        if(lastSyncInfo.time.utcMs > 0) {
+          lastSyncedAt = lastSyncInfo.lastSyncAtStr();
+        }
+
+        repo = tempRepo;
+        repoConfig = tempRepoConfig;
+        syncedFilesCount = lastSyncInfo.syncedFilesCount;
+        setState(() {});
 
         // if(tempRepoConfig.remoteConfig.type == RemoteType.dropbox.value) {
         //   final dropbox = tempRepo.remote as Dropbox;
