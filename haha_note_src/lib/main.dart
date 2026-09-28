@@ -1108,12 +1108,11 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
   Future<void> closeRepo() async {
     await Db.delOpenedRepo();
     await Db.setFilesLastPath(null);
-    await Db.setLastOpenedPage(null);
+    await Db.setLastOpenedPage(Cons.homePageCodeHome);
 
     // fix: files 搜索列表非空时，切换仓库，进入文件页面，列表没刷新
     _clearSearch();
 
-    currentPage = Cons.homePageCodeHome;
     await loadHome();
   }
 
@@ -2951,22 +2950,24 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
     openedRepo = repoEntity;
     setState(() {});
 
+    final lastOpenedPage = await Db.getLastOpenedPage();
     if(repoEntity == null) { // home page (repo list)
+      // 未打开仓库，显示仓库列表
       final repos = await Db.getRepos(sortByDate: true);
-      setState(() {
-        this.repos = repos;
-        currentPage = Cons.homePageCodeHome;
-      });
+      this.repos = repos;
+      currentPage = lastOpenedPage ?? Cons.homePageCodeHome;
+      setState(() {});
 
-      _checkRepoStatus();
+      if(currentPage == Cons.homePageCodeHome) {
+        _checkRepoStatus();
+      }
     }else {  // repo page
-      final lastOpened = await Db.getLastOpenedPage();
-      setState(() {
-        currentPath = FilePath.fromString(repoEntity.path);
-        currentPage = lastOpened;
-        // 先清错误信息，后面打开若有错误会设置
-        openRepoErrMsg = '';
-      });
+      // 已打开仓库，显示仓库页面
+      currentPath = FilePath.fromString(repoEntity.path);
+      currentPage = lastOpenedPage ?? Cons.homePageCodeRepo;
+      // 先清错误信息，后面打开若有错误会设置
+      openRepoErrMsg = '';
+      setState(() {});
 
       try {
         final tempRepo = await Repo.open(repoEntity.path);
@@ -3046,6 +3047,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
           selectedTileColor: selectedBgColor,
           onTap: () async {
             await drawerOnClick(Cons.homePageCodeHome);
+            await loadHome();
           },
         ),
       ];

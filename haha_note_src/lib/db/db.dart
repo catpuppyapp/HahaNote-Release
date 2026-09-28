@@ -306,9 +306,9 @@ abstract class Db {
     }
   }
 
-  static Future<int> getLastOpenedPage() async {
+  static Future<int?> getLastOpenedPage() async {
     final box = await _getBox();
-    return box.get(_keyLastHomePage) ?? Cons.homePageCodeRepo;
+    return box.get(_keyLastHomePage);
   }
 
   static String _themeModeToStr(ThemeMode themeMode) {
