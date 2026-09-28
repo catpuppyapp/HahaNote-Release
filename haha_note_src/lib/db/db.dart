@@ -145,16 +145,14 @@ abstract class Db {
     return getRepoByPath(repoPath);
   }
 
-  static Future<void> setOpenedRepo(String path,{required bool setLastOpenedPageToRepo}) async {
+  static Future<void> setOpenedRepoThenTouchAndUpdateLastOpenedPageToRepo(String path) async {
     final box = await _getBox();
     // 存的时候一律unix style
     await box.put(_keyOpenedRepo, FilePath.fromString(path).toUnixPathStr());
     await touchRepoByPath(path);
 
-    if(setLastOpenedPageToRepo) {
-      // 设置完仓库后，把初始启动页设为仓库页面 (fix 打开仓库后没显示仓库页面，而是停留在新建仓库和仓库列表页面）
-      await setLastOpenedPage(Cons.homePageCodeRepo);
-    }
+    // 设置完仓库后，把初始启动页设为仓库页面 (fix 打开仓库后没显示仓库页面，而是停留在新建仓库和仓库列表页面）
+    await setLastOpenedPage(Cons.homePageCodeRepo);
   }
 
   static Future<void> touchRepoByPath(String path) async {
@@ -383,7 +381,7 @@ abstract class Db {
       throwIfPathAlreadyExists: throwIfPathAlreadyExists
     );
 
-    await setOpenedRepo(repo.path, setLastOpenedPageToRepo: true);
+    await setOpenedRepoThenTouchAndUpdateLastOpenedPageToRepo(repo.path);
   }
 
   static Future<void> setFilesLastPath(String? path) async {

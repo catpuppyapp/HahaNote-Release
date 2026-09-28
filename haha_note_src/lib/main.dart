@@ -1116,7 +1116,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
 
   Future<void> openRepo(String repoPath) async {
     try {
-      await Db.setOpenedRepo(repoPath, setLastOpenedPageToRepo: true);
+      await Db.setOpenedRepoThenTouchAndUpdateLastOpenedPageToRepo(repoPath);
       await Db.setFilesLastPath(null);
 
       // fix: files 搜索列表非空时，切换仓库，进入文件页面，列表没刷新
