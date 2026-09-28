@@ -145,7 +145,7 @@ abstract class Db {
     return getRepoByPath(repoPath);
   }
 
-  static Future<void> setOpenedRepo(String path,{bool setLastOpenedPageToRepo = true}) async {
+  static Future<void> setOpenedRepo(String path,{required bool setLastOpenedPageToRepo}) async {
     final box = await _getBox();
     // 存的时候一律unix style
     await box.put(_keyOpenedRepo, FilePath.fromString(path).toUnixPathStr());
@@ -383,7 +383,7 @@ abstract class Db {
       throwIfPathAlreadyExists: throwIfPathAlreadyExists
     );
 
-    await setOpenedRepo(repo.path);
+    await setOpenedRepo(repo.path, setLastOpenedPageToRepo: true);
   }
 
   static Future<void> setFilesLastPath(String? path) async {
