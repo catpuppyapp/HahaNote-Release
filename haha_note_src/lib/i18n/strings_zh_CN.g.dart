@@ -359,6 +359,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get system => '系统';
 	@override String get deleteFilesOnDisk => '删除硬盘上的文件';
 	@override String get conflicts => '冲突';
+	@override String get exportToHtml => '导出到Html';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -691,6 +692,7 @@ extension on TranslationsZhCn {
 			'system' => '系统',
 			'deleteFilesOnDisk' => '删除硬盘上的文件',
 			'conflicts' => '冲突',
+			'exportToHtml' => '导出到Html',
 			_ => null,
 		};
 	}

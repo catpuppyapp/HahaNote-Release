@@ -846,7 +846,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
           context,
           title: t.open,
           pathController: openRepoPathController,
-          textFiledLabel: t.path,
+          textFieldLabel: t.path,
           showMsg: showMsg,
           showMsgLong: showMsgLong,
           refreshUI: refreshUI,

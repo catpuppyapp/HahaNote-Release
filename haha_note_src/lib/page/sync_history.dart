@@ -106,7 +106,7 @@ class _SyncHistoryPageState extends SearchablePageState<SyncHistoryPage> {
               context,
               title: t.export,
               pathController: exportPath,
-              textFiledLabel: t.path,
+              textFieldLabel: t.path,
               showMsg: showMsg,
               showMsgLong: showMsgLong,
               refreshUI: refreshUI,

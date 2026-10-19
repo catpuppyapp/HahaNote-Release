@@ -320,5 +320,6 @@
   "openAfterCreatingTheFolder": "创建文件夹后打开",
   "system": "系统",
   "deleteFilesOnDisk": "删除硬盘上的文件",
-  "conflicts": "冲突"
+  "conflicts": "冲突",
+  "exportToHtml": "导出到Html"
 }

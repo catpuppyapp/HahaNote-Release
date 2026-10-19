@@ -197,7 +197,7 @@ abstract class Dialogs {
     BuildContext context,{
     required String title,
     required TextEditingController pathController,
-    required String textFiledLabel,
+    required String textFieldLabel,
     required void Function(String) showMsg,
     required void Function(String) showMsgLong,
     required void Function() refreshUI,
@@ -230,7 +230,7 @@ abstract class Dialogs {
         if(contentOnTopOfPathChooser != null) contentOnTopOfPathChooser,
         PathChooser(
           path: pathController,
-          textFileLabel: textFiledLabel,
+          textFieldLabel: textFieldLabel,
           showMsg: showMsg,
           showMsgLong: showMsgLong,
           refreshUI: refreshUI,

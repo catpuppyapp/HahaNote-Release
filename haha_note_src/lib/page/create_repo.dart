@@ -795,7 +795,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
         children.add(
           PathChooser(
             path: remoteRepoPath,
-            textFileLabel: t.remotePath,
+            textFieldLabel: t.remotePath,
             showMsg: showMsg,
             showMsgLong: showMsgLong,
             refreshUI: refreshUI,
@@ -913,7 +913,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
         children.add(
           PathChooser(
             path: localRepoPath,
-            textFileLabel: t.localPath,
+            textFieldLabel: t.localPath,
             showMsg: showMsg,
             showMsgLong: showMsgLong,
             refreshUI: refreshUI,

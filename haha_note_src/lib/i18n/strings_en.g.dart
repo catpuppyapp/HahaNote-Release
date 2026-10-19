@@ -1006,6 +1006,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Conflicts'
 	String get conflicts => 'Conflicts';
+
+	/// en: 'Export to Html'
+	String get exportToHtml => 'Export to Html';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1338,6 +1341,7 @@ extension on Translations {
 			'system' => 'System',
 			'deleteFilesOnDisk' => 'Delete files on disk',
 			'conflicts' => 'Conflicts',
+			'exportToHtml' => 'Export to Html',
 			_ => null,
 		};
 	}

@@ -234,92 +234,6 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   }
 
 
-  Future<void> _export() async {
-    // 优先使用系统的save as，若不支持，显示导出弹窗，可手动输入路径
-    try {
-      await _exportWithSaveAsDialog();
-    }catch(e, st) {
-      App.logger.debug(_TAG, "export err1: $e\n$st");
-
-      try {
-        await _exportDialog();
-      }catch(e, st) {
-        App.logger.debug(_TAG, "export err2: $e\n$st");
-        showMsgLong("err: $e");
-      }
-    }
-  }
-
-  Future<void> _exportWithSaveAsDialog() async {
-    // obj为null，无文件可导出，返回
-    final objFile = this.objFile;
-    if(objFile == null) {
-      showMsg("object file is null");
-      return;
-    }
-
-    // for save
-    var suggestedName = workdirFileName;
-    // 不一定会被应用，比如我设置的 路径是  C:/abc_1，可能显示 C:/abc
-    var initDirPath = File(workdirFilePath).absolute.parent.absolute.path;
-
-    App.logger.debug(_TAG, "init save location info(maybe platform didn't use it): suggestedName: $suggestedName, initDirPath: $initDirPath");
-    
-    // 注：若文件存在，windows会提示是否替换文件，所以就不需要我再提示了，其他平台没测试，不过无所谓了，用户如果选了，就代表他想替换，我就直接替换就行了，不问了
-
-    // 弹文件选择器，让用户选个文件夹，然后创建“文件名(段oid).文件后缀”
-    // 由于有短oid，会和其他文件重复的概率几乎为0，若重复，覆盖
-    final saveLocation = await getSaveLocation(
-      suggestedName: suggestedName,
-      initialDirectory: initDirPath
-    );
-
-    if(saveLocation == null) {
-      // user canceled
-      return;
-    }
-
-    App.logger.debug(_TAG, "saveLocation: $saveLocation");
-
-    // e.g. export to userSelectedDir/abc (ver abcdef123).txt
-    await _restoreToPath(saveLocation.path, trueIsRestoreFalseIsExport: false);
-  }
-
-  Future<void> _exportDialog() async {
-    // 生成文件名，默认在workdirFile的相同路径下，带 (ver 版本号)
-    final String directoryPath = File(workdirFilePath).parent.absolute.path;
-
-    // 取出 ext，带.
-    final nameWithoutExt = p.basenameWithoutExtension(path);
-    final ext = p.extension(path);
-    final initFilePath = FilePath.canonicalizePath(p.join(directoryPath, '$nameWithoutExt (ver $shortOid)$ext'));
-    exportPath.text = initFilePath;
-
-    await Dialogs.choosePathDialog(
-      context,
-      title: t.export,
-      pathController: exportPath,
-      textFiledLabel: t.path,
-      showMsg: showMsg,
-      showMsgLong: showMsgLong,
-      refreshUI: refreshUI,
-      trueDirFalseFile: false,
-      trueExistErrFalseNoExistErrNullNoCheckExist: true,
-      errIfPathEmpty: true,
-      errIfPathNotAbsOrInvalid: true,
-      errIfCallerConsideredPathInvalid: null,
-      showFileChooserButton: false,
-      onOk: (filePath) async {
-        if(filePath.isEmpty) {
-          return;
-        }
-
-        // 若文件存在，会覆盖
-        await _restoreToPath(filePath, trueIsRestoreFalseIsExport: false);
-      }
-    );
-  }
-
   // @Deprecated("导出的是文件，但这个是让选文件夹的路径，反直觉，弃用")
   // Future<void> _exportDialogSelectDir() async {
   //   // android or other
@@ -340,6 +254,38 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   //   );
   // }
 
+
+  Future<void> _export() async {
+    final directoryPath = File(workdirFilePath).parent.absolute.path;
+
+    // 取出 ext，带.
+    final nameWithoutExt = p.basenameWithoutExtension(path);
+    final ext = p.extension(path);
+    final initFilePath = FilePath.canonicalizePath(p.join(directoryPath, '$nameWithoutExt (ver $shortOid)$ext'));
+
+    await exportToFile(
+      callerTag: _TAG,
+      showMsg: showMsg,
+      showMsgLong: showMsgLong,
+      objFile: objFile,
+      // for save
+      suggestedName: workdirFileName,
+      // 不一定会被应用，比如我设置的 路径是  C:/abc_1，可能显示 C:/abc
+      initDirPath: directoryPath,
+
+      context: context,
+      // 生成文件名，默认在workdirFile的相同路径下，带 (ver 版本号)
+      directoryPath: directoryPath,
+      initFilePath: initFilePath,
+      exportPath: exportPath,
+      refreshUI: refresh,
+      doExport: (destPath) async {
+        // e.g. export to userSelectedDir/abc (ver abcdef123).txt
+        // 若文件存在，会覆盖
+        await _restoreToPath(destPath, trueIsRestoreFalseIsExport: false);
+      }
+    );
+  }
 
   Future<void> _restore() async {
     if(workdirFilePath.isEmpty) {

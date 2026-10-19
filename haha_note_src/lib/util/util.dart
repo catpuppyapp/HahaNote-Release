@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_selector/file_selector.dart' show getSaveLocation;
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/status_item.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
@@ -417,5 +418,132 @@ String myMdToHtml(String content) {
   return md.markdownToHtml(
     content,
     extensionSet: md.ExtensionSet.gitHubWeb,  // gitHubWeb 比 gitHubFlavored支持更多特性
+  );
+}
+
+
+Future<void> exportToFile({
+  // common params
+  required final String callerTag,
+  required void Function(String) showMsg,
+  required void Function(String) showMsgLong,
+
+  // params for save as dialog
+  required File? objFile,
+  required String suggestedName,
+  required String initDirPath,
+
+  // params for export dialog
+  required final BuildContext context,
+  required final String directoryPath,
+  required final String initFilePath,
+  required final TextEditingController exportPath,
+  required void Function() refreshUI,
+  required Future<void> Function(String destPath) doExport,
+}) async {
+  // 优先使用系统的save as，若不支持，显示导出弹窗，可手动输入路径
+  try {
+    await _exportWithSaveAsDialog(
+      callerTag: callerTag,
+      showMsg: showMsg,
+      showMsgLong: showMsgLong,
+      objFile: objFile,
+      suggestedName: suggestedName,
+      initDirPath: initDirPath,
+      doExport: doExport,
+    );
+  }catch(e, st) {
+    App.logger.debug(callerTag, "export err1: $e\n$st");
+
+    if(!context.mounted) return;
+
+    try {
+      await _exportDialog(
+        context: context,
+        directoryPath: directoryPath,
+        initFilePath: initFilePath,
+        exportPath: exportPath,
+        refreshUI: refreshUI,
+        showMsg: showMsg,
+        showMsgLong: showMsgLong,
+        doExport: doExport,
+      );
+    }catch(e, st) {
+      App.logger.debug(callerTag, "export err2: $e\n$st");
+      showMsgLong("err: $e");
+    }
+  }
+}
+
+Future<void> _exportWithSaveAsDialog({
+  required final String callerTag,
+  required void Function(String) showMsg,
+  required void Function(String) showMsgLong,
+  required File? objFile,
+  required String suggestedName,
+  required String initDirPath,
+  required Future<void> Function(String destPath) doExport,
+}) async {
+  // obj为null，无文件可导出，返回
+  if(objFile == null) {
+    showMsg("object file is null");
+    return;
+  }
+
+
+  App.logger.debug(callerTag, "init save location info(maybe platform didn't use it): suggestedName: $suggestedName, initDirPath: $initDirPath");
+
+  // 注：若文件存在，windows会提示是否替换文件，所以就不需要我再提示了，其他平台没测试，不过无所谓了，用户如果选了，就代表他想替换，我就直接替换就行了，不问了
+
+  // 弹文件选择器，让用户选个文件夹，然后创建“文件名(段oid).文件后缀”
+  // 由于有短oid，会和其他文件重复的概率几乎为0，若重复，覆盖
+  final saveLocation = await getSaveLocation(
+      suggestedName: suggestedName,
+      initialDirectory: initDirPath
+  );
+
+  if(saveLocation == null) {
+    // user canceled
+    return;
+  }
+
+  App.logger.debug(callerTag, "saveLocation: $saveLocation");
+
+  await doExport(saveLocation.path);
+}
+
+Future<void> _exportDialog({
+  required final BuildContext context,
+  required final String directoryPath,
+  required final String initFilePath,
+  required final TextEditingController exportPath,
+  required void Function(String) showMsg,
+  required void Function(String) showMsgLong,
+  required void Function() refreshUI,
+  required Future<void> Function(String destPath) doExport,
+}) async {
+  exportPath.text = initFilePath;
+
+  await Dialogs.choosePathDialog(
+      context,
+      title: t.export,
+      pathController: exportPath,
+      textFieldLabel: t.path,
+      showMsg: showMsg,
+      showMsgLong: showMsgLong,
+      refreshUI: refreshUI,
+      trueDirFalseFile: false,
+      trueExistErrFalseNoExistErrNullNoCheckExist: true,
+      errIfPathEmpty: true,
+      errIfPathNotAbsOrInvalid: true,
+      errIfCallerConsideredPathInvalid: null,
+      showFileChooserButton: false,
+      onOk: (filePath) async {
+        if(filePath.isEmpty) {
+          return;
+        }
+
+        await doExport(filePath);
+      }
   );
 }

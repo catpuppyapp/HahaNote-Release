@@ -14,7 +14,7 @@ const _TAG = "path_chooser.dart";
 
 class PathChooser extends StatelessWidget {
   final TextEditingController path;
-  final String textFileLabel;
+  final String textFieldLabel;
   final void Function(String) showMsg;
   final void Function(String) showMsgLong;
   final void Function() refreshUI;
@@ -29,7 +29,7 @@ class PathChooser extends StatelessWidget {
   const PathChooser({
     super.key,
     required this.path,
-    required this.textFileLabel,
+    required this.textFieldLabel,
     required this.showMsg,
     required this.showMsgLong,
     required this.refreshUI,
@@ -53,7 +53,7 @@ class PathChooser extends StatelessWidget {
             controller: path,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: textFileLabel,
+              labelText: textFieldLabel,
               // 打开文件夹选择器，选择路径
               suffixIcon: showFileChooserButton ? IconButton(
                 onPressed: () async {

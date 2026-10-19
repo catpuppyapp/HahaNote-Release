@@ -320,5 +320,6 @@
   "openAfterCreatingTheFolder": "Open after creating the folder",
   "system": "System",
   "deleteFilesOnDisk": "Delete files on disk",
-  "conflicts": "Conflicts"
+  "conflicts": "Conflicts",
+  "exportToHtml": "Export to Html"
 }

@@ -1008,6 +1008,10 @@ class _EditorPageState extends MyPageState<EditorPage> {
     await AppConfig.update((config) async => config.editorLineNumEnabled = it);
   }
 
+  Future<void> _exportToHtml() async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final Widget body;
@@ -1165,6 +1169,8 @@ class _EditorPageState extends MyPageState<EditorPage> {
               _switchSoftWrap();
             }else if(value == 'lineNum') {
               _switchLinNum();
+            }else if(value == 'exportToHtml') {
+              _exportToHtml();
             }
           },
           itemBuilder: (context) {
@@ -1236,6 +1242,11 @@ class _EditorPageState extends MyPageState<EditorPage> {
               PopupMenuItem<String>(
                 value: 'history',
                 child: TextAndShortcut(text: t.history, shortcut: "Ctrl+H"),
+              ),
+
+              PopupMenuItem<String>(
+                value: 'exportToHtml',
+                child: TextAndShortcut(text: t.exportToHtml),
               ),
 
             ];

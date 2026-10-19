@@ -57,7 +57,7 @@ class _TlsCertManageState extends SearchablePageState<TlsCertManage> {
       context,
       title: t.import,
       pathController: importPath,
-      textFiledLabel: t.path,
+      textFieldLabel: t.path,
       showMsg: showMsg,
       showMsgLong: showMsgLong,
       refreshUI: refreshUI,
