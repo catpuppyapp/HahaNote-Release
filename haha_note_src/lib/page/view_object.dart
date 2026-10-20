@@ -1,6 +1,5 @@
 import 'dart:io' show File;
 
-import 'package:file_selector/file_selector.dart' show getSaveLocation;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hahanote_app/config/app_config.dart';
@@ -58,6 +57,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   TempDir? tempDir;
   // 执行操作出错，设置这个字段，若文件加载出错，所有操作不可用，设置的是super.pageErr
   String err = '';
+  // widget.path，文件在仓库下的相对路径
   late final String path;
   late final VersionOid oid;
   late final String shortOid;
@@ -65,6 +65,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   late final String shortOidRight;
   File? objFile;
   File? fileInWorkdir;
+  // 仓库路径加相对路径widget.path，拼接成的绝对路径
   String workdirFilePath = '';
   bool menuVisible = true;
   bool view = false;
@@ -256,20 +257,26 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
 
   Future<void> _export() async {
+    // objFile为null，无文件可导出，返回
+    if(objFile == null) {
+      showMsg("obj file is null");
+      return;
+    }
+
     final directoryPath = File(workdirFilePath).parent.absolute.path;
 
-    // 取出 ext，带.
-    final nameWithoutExt = p.basenameWithoutExtension(path);
-    final ext = p.extension(path);
-    final initFilePath = FilePath.canonicalizePath(p.join(directoryPath, '$nameWithoutExt (ver $shortOid)$ext'));
+    final nameWithoutExt = p.basenameWithoutExtension(workdirFilePath);
+    // 取出 ext，带.，例如 abc.txt，ext为.txt
+    final ext = p.extension(workdirFilePath);
+    final suggestedName = '$nameWithoutExt (ver $shortOid)$ext';
+    final initFilePath = FilePath.canonicalizePath(p.join(directoryPath, suggestedName));
 
     await exportToFile(
       callerTag: _TAG,
       showMsg: showMsg,
       showMsgLong: showMsgLong,
-      objFile: objFile,
       // for save
-      suggestedName: workdirFileName,
+      suggestedName: suggestedName,
       // 不一定会被应用，比如我设置的 路径是  C:/abc_1，可能显示 C:/abc
       initDirPath: directoryPath,
 
@@ -279,9 +286,29 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
       initFilePath: initFilePath,
       exportPath: exportPath,
       refreshUI: refresh,
-      doExport: (destPath) async {
+      doExport: (destPath, trueSaveAsFalseExport) async {
         // e.g. export to userSelectedDir/abc (ver abcdef123).txt
-        // 若文件存在，会覆盖
+        // 若文件存在，会询问是否覆盖
+
+        // if is save as, system dialog will show overwrite ask dialog when file exists
+        // if is export, need show that ask by ourself
+        bool canceled = false;
+        if(!trueSaveAsFalseExport && File(destPath).existsSync()) {
+          bool isOk = await Dialogs.showOkOrNoDialog(
+            context,
+            title: t.overwrite,
+            text: t.fileAlreadyExistsOverwriteAsk,
+            onOk: (){}
+          );
+
+          canceled = !isOk;
+        }
+
+        // 询问若存在是否覆盖，用户选择取消
+        if(canceled) {
+          return;
+        }
+
         await _restoreToPath(destPath, trueIsRestoreFalseIsExport: false);
       }
     );

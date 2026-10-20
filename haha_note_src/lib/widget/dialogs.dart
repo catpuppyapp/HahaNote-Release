@@ -21,29 +21,36 @@ import 'app_storages.dart';
 const _TAG = "dialogs.dart";
 
 abstract class Dialogs {
-  static Future<void> showOkOrNoDialog(
-  BuildContext context,{
-  required String title,
-  required String text,
-  // 可以传异步函数，但不会await，只会触发
-  required VoidCallback onOk,
-  VoidCallback? onCancel,
-  bool showCancel = true,
-  String? okText,
-  String? cancelText,
-  Widget? textContent,
-}) async {
-  await showWidgetContentOkOrNoDialog(
-    context,
-    title: SelectableText(title),
-    content: textContent ?? SelectableText(text),
-    onOk: onOk,
-    onCancel: onCancel,
-    showCancel: showCancel,
-    okText: okText,
-    cancelText: cancelText,
-  );
-}
+  static Future<bool> showOkOrNoDialog(
+    BuildContext context, {
+    required String title,
+    required String text,
+    // 可以传异步函数，但不会await，只会触发
+    required VoidCallback onOk,
+    VoidCallback? onCancel,
+    bool showCancel = true,
+    String? okText,
+    String? cancelText,
+    Widget? textContent,
+  }) async {
+    bool isOk = false;
+
+    await showWidgetContentOkOrNoDialog(
+      context,
+      title: SelectableText(title),
+      content: textContent ?? SelectableText(text),
+      onOk: () {
+        isOk = true;
+        onOk();
+      },
+      onCancel: onCancel,
+      showCancel: showCancel,
+      okText: okText,
+      cancelText: cancelText,
+    );
+
+    return isOk;
+  }
 
 
   static Future<void> showWidgetContentOkOrNoDialog(

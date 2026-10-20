@@ -22,6 +22,7 @@ import 'package:hahanote_app/widget/dialogs.dart' show Dialogs;
 import 'package:hahanote_app/widget/editor/text_editor.dart' show TextEditor;
 import 'package:hahanote_app/widget/my_pop_menu_checkbox.dart';
 import 'package:lifecycle/lifecycle.dart' show LifecycleEvent;
+import 'package:path/path.dart' as p;
 
 import '../bean/bean.dart' show FileStat;
 import '../ext/state_ext.dart';
@@ -997,6 +998,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
     });
     await AppConfig.update((config) async => config.editorSoftWrapEnabled = it);
   }
+  TextEditingController exportPath = TextEditingController(text: "");
 
   Future<void> _switchLinNum({bool? value}) async {
     final it = value ?? !lineNumEnabled;
@@ -1009,7 +1011,65 @@ class _EditorPageState extends MyPageState<EditorPage> {
   }
 
   Future<void> _exportToHtml() async {
+    final file = this.file;
+    // 源文件为null，可能还没加载完毕？
+    if(file == null) {
+      showMsgLong("file is null");
+      return;
+    }
 
+    final directoryPath = file.parent.absolute.path;
+    final path = file.absolute.path;
+
+    final suggestedName = '${p.basenameWithoutExtension(path)}.html';
+    final initFilePath = FilePath.canonicalizePath(p.join(directoryPath, suggestedName));
+
+    await exportToFile(
+      callerTag: _TAG,
+      showMsg: showMsg,
+      showMsgLong: showMsgLong,
+      // for save
+      suggestedName: suggestedName,
+      // 不一定会被应用，比如我设置的 路径是  C:/abc_1，可能显示 C:/abc
+      initDirPath: directoryPath,
+
+      context: context,
+      // 生成文件名，默认在workdirFile的相同路径下，带 (ver 版本号)
+      directoryPath: directoryPath,
+      initFilePath: initFilePath,
+      exportPath: exportPath,
+      refreshUI: () => setStateSafe((){}),
+      doExport: (destPath, trueSaveAsFalseExport) async {
+        if(!destPath.endsWith(".html")) {
+          destPath = "$destPath.html";
+        }
+
+        final destFile = File(destPath);
+        // if is save as, system dialog will show overwrite ask dialog when file exists
+        // if is export, need show that ask by ourself
+        bool canceled = false;
+        if(!trueSaveAsFalseExport && destFile.existsSync()) {
+          bool isOk = await Dialogs.showOkOrNoDialog(
+            context,
+            title: t.overwrite,
+            text: t.fileAlreadyExistsOverwriteAsk,
+            onOk: (){}
+          );
+
+          canceled = !isOk;
+        }
+
+        // 询问若存在是否覆盖，用户选择取消
+        if(canceled) {
+          return;
+        }
+
+        final htmlContent = myMdToHtml(controller?.text ?? "");
+        destFile.writeAsStringSync(htmlContent);
+
+        showMsgLong("${t.success}: $destPath");
+      }
+    );
   }
 
   @override

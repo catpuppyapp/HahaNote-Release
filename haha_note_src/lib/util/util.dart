@@ -429,7 +429,6 @@ Future<void> exportToFile({
   required void Function(String) showMsgLong,
 
   // params for save as dialog
-  required File? objFile,
   required String suggestedName,
   required String initDirPath,
 
@@ -439,7 +438,7 @@ Future<void> exportToFile({
   required final String initFilePath,
   required final TextEditingController exportPath,
   required void Function() refreshUI,
-  required Future<void> Function(String destPath) doExport,
+  required Future<void> Function(String destPath, bool trueSaveAsFalseExport) doExport,
 }) async {
   // 优先使用系统的save as，若不支持，显示导出弹窗，可手动输入路径
   try {
@@ -447,7 +446,6 @@ Future<void> exportToFile({
       callerTag: callerTag,
       showMsg: showMsg,
       showMsgLong: showMsgLong,
-      objFile: objFile,
       suggestedName: suggestedName,
       initDirPath: initDirPath,
       doExport: doExport,
@@ -479,17 +477,10 @@ Future<void> _exportWithSaveAsDialog({
   required final String callerTag,
   required void Function(String) showMsg,
   required void Function(String) showMsgLong,
-  required File? objFile,
   required String suggestedName,
   required String initDirPath,
-  required Future<void> Function(String destPath) doExport,
+  required Future<void> Function(String destPath, bool trueSaveAsFalseExport) doExport,
 }) async {
-  // obj为null，无文件可导出，返回
-  if(objFile == null) {
-    showMsg("object file is null");
-    return;
-  }
-
 
   App.logger.debug(callerTag, "init save location info(maybe platform didn't use it): suggestedName: $suggestedName, initDirPath: $initDirPath");
 
@@ -509,7 +500,7 @@ Future<void> _exportWithSaveAsDialog({
 
   App.logger.debug(callerTag, "saveLocation: $saveLocation");
 
-  await doExport(saveLocation.path);
+  await doExport(saveLocation.path, true);
 }
 
 Future<void> _exportDialog({
@@ -520,7 +511,7 @@ Future<void> _exportDialog({
   required void Function(String) showMsg,
   required void Function(String) showMsgLong,
   required void Function() refreshUI,
-  required Future<void> Function(String destPath) doExport,
+  required Future<void> Function(String destPath, bool trueSaveAsFalseExport) doExport,
 }) async {
   exportPath.text = initFilePath;
 
@@ -533,7 +524,8 @@ Future<void> _exportDialog({
       showMsgLong: showMsgLong,
       refreshUI: refreshUI,
       trueDirFalseFile: false,
-      trueExistErrFalseNoExistErrNullNoCheckExist: true,
+      // do not check dest file exist at here, let callback take it
+      trueExistErrFalseNoExistErrNullNoCheckExist: null,
       errIfPathEmpty: true,
       errIfPathNotAbsOrInvalid: true,
       errIfCallerConsideredPathInvalid: null,
@@ -543,7 +535,7 @@ Future<void> _exportDialog({
           return;
         }
 
-        await doExport(filePath);
+        await doExport(filePath, false);
       }
   );
 }
