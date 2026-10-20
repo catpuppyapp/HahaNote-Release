@@ -7,8 +7,8 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- fix a bug of ui
-- 修复一个界面bug
+- support export md to html
+- 支持导出md为html
 """;
 
 class ChangelogDialog extends StatelessWidget {

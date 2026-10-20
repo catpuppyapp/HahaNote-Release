@@ -1,5 +1,10 @@
 
 ---
+1.0.15+16 20261020:
+- support export md to html
+- 支持导出md为html
+
+---
 1.0.14+15 20260927:
 - fix a bug of ui
 - 修复一个界面bug
