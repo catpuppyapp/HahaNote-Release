@@ -234,7 +234,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
       return file;
     }
 
-    return await tempDir!.createTempFile();
+    return await addFileNameExtIfNeeded(await tempDir!.createTempFile());
   }
 
   Future<void> initTempDir() async {
@@ -443,7 +443,10 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   }
 
   Future<File> _getOrFetchObj(VersionOid oid) async {
-    final file = await _doGetOrFetchObj(oid);
+    return await addFileNameExtIfNeeded(await _doGetOrFetchObj(oid));
+  }
+
+  Future<File> addFileNameExtIfNeeded(File file) async {
     final ext = p.extension(workdirFileName);
     // 若文件以.结尾，后缀名就会是.，这样的后缀没什么意义，所以放弃
     if(ext.isNotEmpty && ext != ".") {
