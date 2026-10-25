@@ -72,10 +72,10 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   bool showLineNum = false;
   bool neverShowLineNumIncorrectNote = AppConfig.getConfig().neverShowLineNumIncorrectNoteInDiffView;
   bool neverShowBlankLinesMayBeIgnored = AppConfig.getConfig().neverShowBlankLinesMayBeIgnoredInDiffView;
-  String? objFileTextRight;
   String? objFileText;
-  FileStat objFileStatRight = FileStat();
+  String? objFileTextRight;
   FileStat objFileStat = FileStat();
+  FileStat objFileStatRight = FileStat();
   bool workdirFileExists = false;
   String objFileSize = "";
   String objFileSizeRight = "";
