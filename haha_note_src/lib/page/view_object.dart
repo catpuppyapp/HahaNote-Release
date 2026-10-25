@@ -15,7 +15,6 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/temp/temp_dir.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/version.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
-import 'package:hahanote_app/mock/mock.dart' show Mock;
 import 'package:hahanote_app/state/my_page_state.dart' show MyPageState;
 import 'package:hahanote_app/ui/ui.dart' show UI;
 import 'package:hahanote_app/util/diff_data.dart';
@@ -80,6 +79,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   bool workdirFileExists = false;
   String objFileSize = "";
   String objFileRightSize = "";
+  String objFilePath = "";
+  String objFileRightPath = "";
   String workdirFileName = "";
   bool loadingContent = false;
   String loadingContentErr = "";
@@ -211,9 +212,11 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         if(isLeft) {
           objFile = objectFile;
           objFileSize = Fs.readableSize(await objectFile.length());
+          objFilePath = FilePath.canonicalizePath(objectFile.absolute.path);
         }else {
           objFileRight = objectFile;
           objFileRightSize = Fs.readableSize(await objectFile.length());
+          objFileRightPath = FilePath.canonicalizePath(objectFile.absolute.path);
         }
 
       }
@@ -388,8 +391,9 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         pageLoading = false;
       });
 
-      // 如果恢复或导出到工作目录对应的文件，则需要重载diff文本
-      if(canonicalFullPath == FilePath.canonicalizePath(workdirFilePath)) {
+      // 如果恢复或导出到正在对比的文件路径，则需要重载diff文本
+      if(canonicalFullPath == objFilePath
+        || canonicalFullPath == objFileRightPath) {
         await _loadDiffText();
       }
     }
@@ -564,20 +568,18 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   }
 
   Future<void> _externalDiff(
-    List<String> Function(String objFilePath, String workdirFilePath) genCmd,
+    List<String> Function(String objFilePath, String objFileRightPath) genCmd,
   ) async {
     try {
-      final objFilePath = objFile?.absolute.path ?? "";
       if(objFilePath.isEmpty) {
-        throw "obj path is empty";
+        throw "left obj path is empty";
       }
 
-      final workdirFilePath = this.workdirFilePath;
-      if(workdirFilePath.isEmpty) {
-        throw "workdir file path is empty";
+      if(objFileRightPath.isEmpty) {
+        throw "right obj path is empty";
       }
 
-      final cmd = genCmd(objFilePath, workdirFilePath);
+      final cmd = genCmd(objFilePath, objFileRightPath);
 
       App.logger.debug(_TAG, "will call external diff tool, cmd: $cmd");
 
@@ -608,41 +610,41 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
               PopupMenuButton<String>(
                 onSelected: (action) async {
                   if(action == "copyObjectPath") {
-                    copyTextThenShowMsg(objFile?.absolute.path ?? "");
-                  }else if (action == "copyWorkdirPath") {
-                    copyTextThenShowMsg(workdirFilePath);
+                    copyTextThenShowMsg(objFilePath);
+                  }else if (action == "copyObjectRightPath") {
+                    copyTextThenShowMsg(objFileRightPath);
                   }else if (action == "winMerge") {
                     final cmdName = "winmergeu";
-                    await _externalDiff((objFilePath, workdirFilePath) {
+                    await _externalDiff((objFilePath, objFileRightPath) {
                       // -e 按一次esc就可关闭窗口，使其行为表现的像Dialog
                       // -u 阻止添加文件到winmerge的最近文件列表
                       // 参见: https://manual.winmerge.org/en/Command_line.html
                       // ps. 这两个参数从.gitconfig里偷来的，应该是TortoiseGit加的这个配置
-                      return [cmdName, "-e", "-u", objFilePath, workdirFilePath];
+                      return [cmdName, "-e", "-u", objFilePath, objFileRightPath];
                     });
                   }else if (action == "meld") {
                     // 命令必须小写，不然linux不认，windows倒是无所谓大小写
                     final cmdName = "meld";
-                    await _externalDiff((objFilePath, workdirFilePath) {
-                      return [cmdName, objFilePath, workdirFilePath];
+                    await _externalDiff((objFilePath, objFileRightPath) {
+                      return [cmdName, objFilePath, objFileRightPath];
                     });
                   }else if (action == "kDiff3") {
                     final cmdName = "kdiff3";
-                    await _externalDiff((objFilePath, workdirFilePath) {
-                      return [cmdName, objFilePath, workdirFilePath];
+                    await _externalDiff((objFilePath, objFileRightPath) {
+                      return [cmdName, objFilePath, objFileRightPath];
                     });
                   }else if (action == "revealObj") {
-                    revealFile(objFile?.path ?? "", showMsgLong: showMsgLong);
-                  }else if (action == "revealWorkdirFile") {
-                    revealFile(workdirFilePath, showMsgLong: showMsgLong);
+                    revealFile(objFilePath, showMsgLong: showMsgLong);
+                  }else if (action == "revealObjRight") {
+                    revealFile(objFileRightPath, showMsgLong: showMsgLong);
                   }else if (action == "openObjAsText") {
-                    _openWithInternalEditor(objFile?.path ?? "", mime: mimeTextPlain);
-                  }else if (action == "openWorkdirFileAsText") {
-                    _openWithInternalEditor(workdirFilePath, mime: mimeTextPlain);
+                    _openWithInternalEditor(objFilePath, mime: mimeTextPlain);
+                  }else if (action == "openObjRightAsText") {
+                    _openWithInternalEditor(objFileRightPath, mime: mimeTextPlain);
                   }else if (action == "openObjInExt") {
-                    _openFileInExternal(objFile?.path ?? "");
-                  }else if (action == "openWorkdirFileInExt") {
-                    _openFileInExternal(workdirFilePath);
+                    _openFileInExternal(objFilePath);
+                  }else if (action == "openObjRightInExt") {
+                    _openFileInExternal(objFileRightPath);
                   }
                 },
                 icon: Icon(Icons.more_vert, size: 18,), // 垂直三点图标
@@ -665,20 +667,20 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                   // 一般来说，rightOid，会比较可能是用户想要编辑的文件，
                   // 因为目标可能是workdir的最新版本内容，所以把rightOid放上面
                   PopupMenuItem<String>(
-                    value: "openWorkdirFileAsText",
+                    value: "openObjRightAsText",
                     child: Text("${t.openAsText} [$shortOidRight]"),
                   ),
 
                   PopupMenuItem<String>(
-                    value: "openWorkdirFileInExt",
+                    value: "openObjRightInExt",
                     child: Text("${t.openInExt} [$shortOidRight]"),
                   ),
                   PopupMenuItem<String>(
-                    value: "revealWorkdirFile",
+                    value: "revealObjRight",
                     child: Text("${t.revealInFileExplorer} [$shortOidRight]"),
                   ),
                   PopupMenuItem<String>(
-                    value: "copyWorkdirPath",
+                    value: "copyObjectRightPath",
                     child: Text("${t.copyPath} [$shortOidRight]"),
                   ),
                   const PopupMenuDivider(),
