@@ -20,7 +20,7 @@ version: 1.0.16+17
 
 environment:
   sdk: ^3.11.0
-  flutter: 3.47.2
+  flutter: 3.47.8
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -115,15 +115,15 @@ dependencies:
   # TODO BUG: 暂时先固定0.15.6，否则flutter_html会报错，修复后再改成 ^0.15.6
   html: 0.15.6
   
-  #  code_forge: ^10.7.1
+  code_forge: ^11.3.0
   # 因为原版不支持通过环境变量指定rust工具链版本，所以我fork了下，改了下，
   # pr要发到flutter_rust_bridge，但我没看那个库的代码，日后再说
   # ref最好用提交号，若用分支名，有可能pub get不会更新
   # TODO BUG: 10.14.0 合并了一个修复软换行时滚动性能的 pr #107 之后似乎会在开启soft-wrap后，滚动屏幕再点击输入时白屏或光标位置出错，不确定是否是个例，先回滚 10.13.0 了(ref: bf86609a3cb187723a7f78585f66f0d043781461)
-  code_forge:
-    git:
-      url: https://github.com/Bandeapart1964/code_forge.git
-      ref: bf86609a3cb187723a7f78585f66f0d043781461
+#  code_forge:
+#    git:
+#      url: https://github.com/Bandeapart1964/code_forge.git
+#      ref: bf86609a3cb187723a7f78585f66f0d043781461
 
 dev_dependencies:
   flutter_test:

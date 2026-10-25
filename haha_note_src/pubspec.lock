@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.7"
-  build_cli_annotations:
-    dependency: transitive
-    description:
-      name: build_cli_annotations
-      sha256: e563c2e01de8974566a1998410d3f6f03521788160a02503b0b1f1a46c7b3d95
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   build_config:
     dependency: transitive
     description:
@@ -164,12 +156,11 @@ packages:
   code_forge:
     dependency: "direct main"
     description:
-      path: "."
-      ref: bf86609a3cb187723a7f78585f66f0d043781461
-      resolved-ref: bf86609a3cb187723a7f78585f66f0d043781461
-      url: "https://github.com/Bandeapart1964/code_forge.git"
-    source: git
-    version: "10.13.0"
+      name: code_forge
+      sha256: "2202bfd2e3c9c2857c241d771ceb1b20e3acbac17665a2835347c2e077401551"
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.3.0"
   collection:
     dependency: "direct main"
     description:
@@ -505,14 +496,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.4"
-  flutter_rust_bridge:
-    dependency: transitive
-    description:
-      name: flutter_rust_bridge
-      sha256: ec69331e2335ab4d456c0a9fc700892c2c85b72b9c0cb39df3ecfe8833d5d5c8
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.13.0"
   flutter_single_instance:
     dependency: "direct main"
     description:
@@ -1402,6 +1385,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  universal_io:
+    dependency: transitive
+    description:
+      name: universal_io
+      sha256: f63cbc48103236abf48e345e07a03ce5757ea86285ed313a6a032596ed9301e2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1618,5 +1609,5 @@ packages:
     source: hosted
     version: "3.1.4"
 sdks:
-  dart: ">=3.13.1 <4.0.0"
-  flutter: "3.47.2"
+  dart: ">=3.13.5 <4.0.0"
+  flutter: "3.47.8"

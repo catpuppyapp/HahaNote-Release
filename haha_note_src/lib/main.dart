@@ -1,7 +1,6 @@
 import 'dart:io' show Platform, FileSystemEntity, Directory, FileSystemEntityType, File, exit;
 import 'dart:math' show min;
 
-import 'package:code_forge/code_forge.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +124,7 @@ Future<void> main() async {
   // END: avoid multi instance on win/mac/linux
 
   // BEGIN: init
-  await RustLib.init();
+  // await RustLib.init();
   initPortableMode();
   // 先初始化一下，让Logger能用，config初始化后会再次初始化logger为配置文件中的日志等级
   await initSyncLibAndLog();
