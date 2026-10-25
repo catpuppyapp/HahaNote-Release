@@ -4,8 +4,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:collection/collection.dart' show DeepCollectionEquality;
-import 'package:cryptography/cryptography.dart' show SecureRandom;
-import 'package:cryptography/helpers.dart' show randomBytes;
+import 'package:cryptography_plus/cryptography_plus.dart' show SecureRandom;
+import 'package:cryptography_plus/helpers.dart' show randomBytes;
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart';
@@ -117,9 +117,10 @@ List<int> randomBytesSafe(int length) {
     throw AppException("length must greater than 0, err code: 13187993");
   }
 
-  // return randomBytes(length, random: SecureRandom.safe);
   // 之前是safe，后来safe被标为弃用了，库里注释建议使用defaultRandom
-  return randomBytes(length, random: SecureRandom.defaultRandom);
+  // cryptography 的继任库 cryptography_plus 只有safe，所以后来又改成safe了
+  return randomBytes(length, random: SecureRandom.safe);
+  // return randomBytes(length, random: SecureRandom.defaultRandom);
 }
 
 // List<int> randomBytes(int length) {

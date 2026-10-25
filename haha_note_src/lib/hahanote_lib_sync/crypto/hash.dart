@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:hahanote_app/hahanote_lib_sync/crypto/key_data.dart';
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show bytesToHex, concatStream;
-import 'package:cryptography/cryptography.dart' show Sha256, Sha1;
+import 'package:cryptography_plus/cryptography_plus.dart' show Sha256, Sha1;
 
 import '../storage/repo/sync.dart';
 

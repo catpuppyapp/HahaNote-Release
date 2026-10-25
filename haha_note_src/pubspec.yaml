@@ -72,11 +72,16 @@ dependencies:
 
 
   collection: ^1.19.1
-#  es_compression: ^2.0.15  # android must copy so libs
-  cryptography: ^2.9.0
+#  es_compression: ^2.0.15  # android must copy so libs，压缩库，后来用dart自带的zlib了，兼容性最好，省事
+
   # 调用平台api，优点是性能好，缺点是更容易被逆向工程（通过监控系统调用）
   # 参见 Cons 部分： https://pub.dev/packages/cryptography_flutter
-  cryptography_flutter: ^2.3.4
+#  cryptography_flutter: ^2.3.4  # 停止维护了
+#  cryptography: ^2.9.0 # 停止维护了
+  # cryptography 继任
+  cryptography_flutter_plus: ^3.2.0
+  cryptography_plus: ^3.0.0
+
   freezed_annotation: ^3.1.0
   http: ^1.6.0
 

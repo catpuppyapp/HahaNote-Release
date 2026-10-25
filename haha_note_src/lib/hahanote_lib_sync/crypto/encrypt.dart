@@ -2,6 +2,7 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/crypto/compress.dart' show CompressedData;
 import 'package:hahanote_app/hahanote_lib_sync/crypto/key_data.dart';
@@ -9,7 +10,7 @@ import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart' show St
 import 'package:hahanote_app/hahanote_lib_sync/serialization/stream.dart' show WriteToFile, ByteStream, ByteStreamExt;
 import 'package:hahanote_app/hahanote_lib_sync/storage/utils.dart' show writeStreamToFile;
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show intToBytes, bytesEquals, bytesListToHexStrList, intFromBytes;
-import 'package:cryptography/cryptography.dart';
+
 
 const _TAG = "encrypt.dart";
 

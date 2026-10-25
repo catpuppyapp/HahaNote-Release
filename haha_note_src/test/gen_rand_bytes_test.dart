@@ -1,5 +1,5 @@
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart';
-import 'package:cryptography/helpers.dart';
+import 'package:cryptography_plus/helpers.dart';
 
 // generate random bytes
 Future<void> main() async {

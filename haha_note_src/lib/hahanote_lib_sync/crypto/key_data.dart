@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:hahanote_app/hahanote_lib_sync/crypto/encrypt.dart';
 import 'package:hahanote_app/hahanote_lib_sync/crypto/key_extra_data.dart' show KeyExtraData, KeyExtraDataV1;
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart' show AppException;
 import 'package:hahanote_app/hahanote_lib_sync/serialization/byte_reader.dart' show ByteReader;
 import 'package:hahanote_app/hahanote_lib_sync/serialization/stream.dart' show ByteStream;
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show bytesEquals, bytesListToHexStrList, intToBytes, randomSalt, randomBytesSafe, intFromBytes;
-import 'package:cryptography/cryptography.dart';
+
 
 const _currentKeyDataVersion = 1;
 const _contentKeyLen = xxx20KeyLen; // 字节, xchacha20固定32字节长度密钥
