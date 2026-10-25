@@ -1009,6 +1009,15 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Export to Html'
 	String get exportToHtml => 'Export to Html';
+
+	/// en: 'Changes from $a to $b'
+	String changesFromAToB({required Object a, required Object b}) => 'Changes from ${a} to ${b}';
+
+	/// en: 'Compare to workdir'
+	String get compareToWorkdir => 'Compare to workdir';
+
+	/// en: 'Compare to previous'
+	String get compareToPrevious => 'Compare to previous';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1342,6 +1351,9 @@ extension on Translations {
 			'deleteFilesOnDisk' => 'Delete files on disk',
 			'conflicts' => 'Conflicts',
 			'exportToHtml' => 'Export to Html',
+			'changesFromAToB' => ({required Object a, required Object b}) => 'Changes from ${a} to ${b}',
+			'compareToWorkdir' => 'Compare to workdir',
+			'compareToPrevious' => 'Compare to previous',
 			_ => null,
 		};
 	}

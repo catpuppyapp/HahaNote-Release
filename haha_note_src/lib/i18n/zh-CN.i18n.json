@@ -321,5 +321,8 @@
   "system": "系统",
   "deleteFilesOnDisk": "删除硬盘上的文件",
   "conflicts": "冲突",
-  "exportToHtml": "导出到Html"
+  "exportToHtml": "导出到Html",
+  "changesFromAToB": "$a 到 $b 的修改",
+  "compareToWorkdir": "和工作目录比较",
+  "compareToPrevious": "和上一版本比较"
 }

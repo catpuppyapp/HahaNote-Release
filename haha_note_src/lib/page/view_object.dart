@@ -997,6 +997,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                   ),
                 ],
               ),
+            if(diff)
+              SelectableText(t.changesFromAToB(a: shortOid, b: shortOidRight)),
             if(view || diff)
               const Divider(),
             if(view || diff) getDiffWidget(),

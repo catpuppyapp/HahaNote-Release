@@ -1,4 +1,4 @@
-import 'package:hahanote_app/bean/bean.dart' show LabelValue;
+import 'package:hahanote_app/bean/bean.dart' show LabelValue, MenuItem;
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_info.dart';
@@ -137,7 +137,14 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
       onTap: () {
         _view(item.oid);
       },
-      menuItems: [],
+      menuItems: [
+        MenuItem(value: "compare_to_workdir", text: t.compareToWorkdir, onClick: () async {
+          _view(item.oid);
+        }),
+        MenuItem(value: "compare_to_previous", text: t.compareToPrevious, onClick: () async {
+          // 需要检查是否有上一版本
+        }),
+      ],
     );
   }
 

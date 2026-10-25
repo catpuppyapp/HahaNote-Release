@@ -360,6 +360,9 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get deleteFilesOnDisk => '删除硬盘上的文件';
 	@override String get conflicts => '冲突';
 	@override String get exportToHtml => '导出到Html';
+	@override String changesFromAToB({required Object a, required Object b}) => '${a} 到 ${b} 的修改';
+	@override String get compareToWorkdir => '和工作目录比较';
+	@override String get compareToPrevious => '和上一版本比较';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -693,6 +696,9 @@ extension on TranslationsZhCn {
 			'deleteFilesOnDisk' => '删除硬盘上的文件',
 			'conflicts' => '冲突',
 			'exportToHtml' => '导出到Html',
+			'changesFromAToB' => ({required Object a, required Object b}) => '${a} 到 ${b} 的修改',
+			'compareToWorkdir' => '和工作目录比较',
+			'compareToPrevious' => '和上一版本比较',
 			_ => null,
 		};
 	}

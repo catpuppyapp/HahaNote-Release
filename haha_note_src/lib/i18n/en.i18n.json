@@ -321,5 +321,8 @@
   "system": "System",
   "deleteFilesOnDisk": "Delete files on disk",
   "conflicts": "Conflicts",
-  "exportToHtml": "Export to Html"
+  "exportToHtml": "Export to Html",
+  "changesFromAToB": "Changes from $a to $b",
+  "compareToWorkdir": "Compare to workdir",
+  "compareToPrevious": "Compare to previous"
 }
