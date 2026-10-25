@@ -5,7 +5,7 @@ import 'package:hahanote_app/db/db.dart';
 import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/ext/state_ext.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
-import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart' show MsgDataConflictTargetType, MsgType, MsgDataConflict, Msg;
+import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart' show MsgType, MsgDataConflict, Msg;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/related_oids.dart';
@@ -62,46 +62,31 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
   }
 
 
-  Future<void> _view(Msg msg, String targetType, {String? oidRight}) async {
-    if(oidRight == null) {
-      oidRight = VersionOid.specialOidValueWorkdir;
-    }
-
-    if(!mounted) return;
-
-    final repo = this.repo;
-    if(repo == null) {
-      widget.showMsg("repo is null");
+  Future<void> _view(
+    Msg msg, {
+    required String path,
+    required String? oid,
+    String? oidRight
+  }) async {
+    if(oid == null || oid.isEmpty) {
+      showMsgLong("left oid is null or empty");
       return;
     }
 
+    if(repo == null) {
+      showMsgLong("repo is null");
+      return;
+    }
 
     if(msg.type != MsgType.conflict) {
-      widget.showMsg("msg type is not conflict");
+      showMsgLong("msg type is not conflict");
       return;
     }
 
-    final msgExtra = MsgDataConflict.fromJson(msg.data);
-
-    final String oid;
-    if(targetType == MsgDataConflictTargetType.local) {
-      oid = msgExtra.localOid?.value ?? "";
-    }else if(targetType == MsgDataConflictTargetType.workdir) {
-      oid = msgExtra.workdirOid?.value ?? "";
-    }else {
-      oid = msgExtra.remoteOid?.value ?? "";
-    }
-
-    if(oid.isEmpty) {
-      showMsg("invalid oid");
-      return;
-    }
-
-    if(!mounted) return;
     Navigator.pushNamed(
       context,
       Cons.routeViewObject,
-      arguments: {"path": msgExtra.path, "oid": oid, "oidRight": oidRight}
+      arguments: {"path": path, "oid": oid, "oidRight": oidRight ?? VersionOid.specialOidValueWorkdir}
     );
   }
 
@@ -219,7 +204,8 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
     final remoteOid = itemData.remoteOid;
     final localOid = itemData.localOid;
     final workdirOid = itemData.workdirOid;
-    final filePath = FilePath.fromString(getItemPath(item));
+    final itemPath = getItemPath(item);
+    final filePath = FilePath.fromString(itemPath);
     final parentPath = filePath.parent().toUnixPathStr();
     final resolveStrategyIsWorkdirOverwriteRemote = itemData.resolveStrategy == ConflictResolveStrategy.workdirOverwriteRemote.value;
 
@@ -255,12 +241,11 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
     Future<void> compareOverwrittenToOverwriter() async {
       _view(
           item,
+          path: itemPath,
           // 被覆盖的版本：
           // 如果冲突覆盖策略是workdir覆盖remote，则remote；
           // 如果冲突策略是remote覆盖workdir，则workdir
-          resolveStrategyIsWorkdirOverwriteRemote
-              ? MsgDataConflictTargetType.remote
-              : MsgDataConflictTargetType.workdir,
+          oid: getOverwritten()?.value,
 
           // 覆盖的版本
           oidRight: getOverwriter()?.value
@@ -305,7 +290,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           value: "remote",
           text: t.remote + ": " + remoteOid.shortValue(),
           onClick: () async {
-            _view(item, MsgDataConflictTargetType.remote);
+            _view(item, path: itemPath, oid: remoteOid.value);
           },
         ),
         if(localOid != null)
@@ -313,7 +298,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           value: "local",
           text: t.local + ": " + localOid.shortValue(),
           onClick: () async {
-            _view(item, MsgDataConflictTargetType.local);
+            _view(item, path: itemPath, oid: localOid.value);
           },
         ),
         if(workdirOid != null)
@@ -321,7 +306,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           value: "workdir",
           text: t.workdir + ": " + workdirOid.shortValue(),
           onClick: () async {
-            _view(item, MsgDataConflictTargetType.workdir);
+            _view(item, path: itemPath, oid: workdirOid.value);
           },
         ),
 
@@ -345,7 +330,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           value: "compareLocalToWorkdir",
           text: t.aToBArrowRight(a: localOid.shortValue(), b: workdirOid.shortValue()),
           onClick: () async {
-            _view(item, MsgDataConflictTargetType.local, oidRight: workdirOid.value);
+            _view(item, path: itemPath, oid: localOid.value, oidRight: workdirOid.value);
           },
         ),
         MenuItem.divider,
