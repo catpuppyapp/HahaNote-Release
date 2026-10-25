@@ -78,7 +78,7 @@ class RecentFilesState extends SearchableWidgetState<RecentFiles> {
   }
 
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     // 这个页面用的自定义listview，所以不需要这个，这个是build list的item的
     throw UnimplementedError();
   }

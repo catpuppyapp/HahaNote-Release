@@ -33,14 +33,15 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
   late final String path;
   String currentClientId = "";
 
-  Future<void> _view(VersionOid oid) async {
+  Future<void> _view(VersionOid oid, {VersionOid? oidRight}) async {
     if(!mounted) return;
 
     Navigator.pushNamed(
       context,
       Cons.routeViewObject,
       // 解密过的obj的2进制文件
-      arguments: {"path": path, "oid": oid.value}
+      // 若不指定right则和workdir比较
+      arguments: {"path": path, "oid": oid.value, "oidRight": oidRight?.value ?? VersionOid.specialOidValueWorkdir}
     );
   }
 
@@ -121,8 +122,13 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
   }
 
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     item as VersionNode;
+    final lastIndex = items.length - 1;
+
+    Future<void> compareToPrevious() async {
+      await _view(index >= lastIndex ? VersionOid.deleted.value : items[index+1], oidRight: item.oid);
+    }
 
     return LabelValueTile(
       items: [
@@ -135,14 +141,15 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
         if(item.note.isNotEmpty) LabelValue(label: t.note, value: item.note, icon: Icons.notes),
       ], 
       onTap: () {
-        _view(item.oid);
+        // 20261025 改成了默认和上一版比较，之前默认和workdir比较
+        compareToPrevious();
       },
       menuItems: [
+        MenuItem(value: "compare_to_previous", text: t.compareToPrevious, onClick: () async {
+          compareToPrevious();
+        }),
         MenuItem(value: "compare_to_workdir", text: t.compareToWorkdir, onClick: () async {
           _view(item.oid);
-        }),
-        MenuItem(value: "compare_to_previous", text: t.compareToPrevious, onClick: () async {
-          // 需要检查是否有上一版本
         }),
       ],
     );

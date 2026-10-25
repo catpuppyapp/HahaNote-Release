@@ -59,7 +59,7 @@ abstract class SearchableWidgetState<T extends StatefulWidget> extends State<T> 
   void showMsg(String msg);
   void showMsgLong(String msg);
   Future<void> doLoadItems();
-  Widget itemBuilder<ITEM_T>(BuildContext context, int index, ITEM_T item);
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items);
 
   // top bar的actions
   List<Widget> getActions();

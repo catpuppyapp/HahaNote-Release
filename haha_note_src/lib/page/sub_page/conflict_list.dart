@@ -209,7 +209,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
   }
 
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     item as Msg;
     final itemData = MsgDataConflict.fromJson(item.data);
     final remoteOid = itemData.remoteOid;

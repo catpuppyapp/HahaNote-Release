@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 
 import 'line.dart';
 
-typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, int index, T item);
+typedef ItemWidgetBuilder = Widget Function(BuildContext context, int index, dynamic item, List items);
 typedef ItemTapCallback<T> = void Function(int index, T item);
 typedef RefreshCallback = Future<void> Function();
 
 class CustomListView<T> extends StatelessWidget {
   final List<T> items;
-  final ItemWidgetBuilder<T> itemBuilder;
+  final ItemWidgetBuilder itemBuilder;
   final bool showDivider;
   final EdgeInsetsGeometry? padding;
   final RefreshCallback? onRefresh;
@@ -44,7 +44,7 @@ class CustomListView<T> extends StatelessWidget {
       showDivider ? const Divider(height: 1) : const SizedBox.shrink(),
       itemBuilder: (context, index) {
         final item = items[index];
-        final child = itemBuilder(context, index, item);
+        final child = itemBuilder(context, index, item, items);
         return child;
       },
     );

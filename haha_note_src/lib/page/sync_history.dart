@@ -76,7 +76,7 @@ class _SyncHistoryPageState extends SearchablePageState<SyncHistoryPage> {
   }
 
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     item as SyncHistoryNode;
 
     return LabelValueTile(

@@ -188,7 +188,7 @@ class _TlsCertManageState extends SearchablePageState<TlsCertManage> {
   }
   
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     item as String;
 
     return LabelValueTile(

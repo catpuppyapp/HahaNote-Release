@@ -311,7 +311,7 @@ class _RepoStatusPageState extends SearchablePageState<RepoStatusPage> {
   }
 
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     item as StatusItem;
     final valueColor = statusTypeToColor(item.type);
     // 注：如果是已删除条目，此值应该是空字符串，但如果显示的是非空，说明判定文件为已删除后，

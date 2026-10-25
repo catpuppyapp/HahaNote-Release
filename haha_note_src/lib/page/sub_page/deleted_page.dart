@@ -252,7 +252,7 @@ class DeletedPageState extends SearchableWidgetState<DeletedPage> {
   }
 
   @override
-  Widget itemBuilder<T>(BuildContext context, int index, T item) {
+  Widget itemBuilder(BuildContext context, int index, dynamic item, List items) {
     item as FileInfo;
 
     final lastNode = item.lastNode();

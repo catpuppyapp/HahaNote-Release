@@ -473,7 +473,8 @@ class MyAppState extends State<MyApp> {
               final args = ModalRoute.of(bc)!.settings.arguments as Map;
               return ViewObjectPage(
                 path: args['path'],
-                oid: args['oid']
+                oid: args['oid'],
+                oidRight: args['oidRight'],
               );
             },
 
