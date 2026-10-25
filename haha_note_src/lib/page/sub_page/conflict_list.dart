@@ -73,6 +73,13 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
       return;
     }
 
+    // 若 oidRight is null，后面会替换为 workdir，代表和workdir比较
+    // 所以这里只需检查非null时是否为空字符串即可
+    if(oidRight != null && oidRight.isEmpty) {
+      showMsgLong("right oid is empty");
+      return;
+    }
+
     if(repo == null) {
       showMsgLong("repo is null");
       return;
