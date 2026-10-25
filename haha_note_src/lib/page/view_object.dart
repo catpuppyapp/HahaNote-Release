@@ -557,7 +557,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         final diffData = DiffData();
         diffData.oldText = objFileText ?? '';
         diffData.newText = objFileTextRight ?? '';
-        diffData.init();
+        diffData.init(previewOld: oidRight.isWorkdir());
 
         this.diffData = diffData;
       }

@@ -7,7 +7,7 @@ import '../ui/ui.dart';
 class DiffData {
   String oldText = "";
   String newText = "";
-  int contextLines = 3; // 上下文行数（前/后）
+  int contextLinesCount = 3; // 上下文行数（前/后）
   double fontSize = 16;
   double lineNumFontSize = 12;
   List<DiffLine>? diffLines;
@@ -17,15 +17,15 @@ class DiffData {
   double diffOldLineNumWidth = 0;
   double diffNewLineNumWidth = 0;
 
-  void init() {
+  void init({required bool previewOld}) {
     if(previewLines != null && diffLines != null) {
       return;
     }
 
 
     if(previewLines == null) {
-      final allLines = _buildPreviewLines(oldText);
-      previewLines = _extractHunksWithContext(allLines, contextLines);
+      final allLines = _buildPreviewLines(previewOld ? oldText : newText);
+      previewLines = _extractHunksWithContext(allLines, contextLinesCount);
     }
 
     if(diffLines == null) {
@@ -37,8 +37,8 @@ class DiffData {
         allLines = _buildLines(diffs);
       }
 
-      // 按 hunk 分组并仅保留每个 hunk 的前后 contextLines 行（合并相邻修改为一个 hunk）
-      diffLines = _extractHunksWithContext(allLines, contextLines);
+      // 按 hunk 分组并仅保留每个 hunk 的前后 contextLinesCount 行（合并相邻修改为一个 hunk）
+      diffLines = _extractHunksWithContext(allLines, contextLinesCount);
     }
 
 
