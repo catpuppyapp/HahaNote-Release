@@ -127,7 +127,7 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
     final lastIndex = items.length - 1;
 
     Future<void> compareToPrevious() async {
-      await _view(index >= lastIndex ? VersionOid.deleted.value : items[index+1], oidRight: item.oid);
+      await _view(index >= lastIndex ? VersionOid.deleted : items[index+1].oid, oidRight: item.oid);
     }
 
     return LabelValueTile(

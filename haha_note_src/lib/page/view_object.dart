@@ -64,7 +64,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   late final VersionOid oidRight;
   late final String shortOidRight;
   File? objFile;
-  File? fileInWorkdir;
+  File? objFileRight;
   // 仓库路径加相对路径widget.path，拼接成的绝对路径
   String workdirFilePath = '';
   bool menuVisible = true;
@@ -73,12 +73,13 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   bool showLineNum = false;
   bool neverShowLineNumIncorrectNote = AppConfig.getConfig().neverShowLineNumIncorrectNoteInDiffView;
   bool neverShowBlankLinesMayBeIgnored = AppConfig.getConfig().neverShowBlankLinesMayBeIgnoredInDiffView;
-  String? workdirFileText;
+  String? objFileRightText;
   String? objFileText;
-  FileStat workdirFileStat = FileStat();
+  FileStat objFileRightStat = FileStat();
   FileStat objFileStat = FileStat();
   bool workdirFileExists = false;
-  String fileSize = "";
+  String objFileSize = "";
+  String objFileRightSize = "";
   String workdirFileName = "";
   bool loadingContent = false;
   String loadingContentErr = "";
@@ -124,11 +125,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     shortOidRight = oidRight.shortValue();
     showLineNum = AppConfig.getConfig().showLineNumInDiffView;
 
-    if(Mock.enable) {
-      _loadMockItems();
-    }else {
-      _doInit();
-    }
+    _doInit();
+
   }
 
   @override
@@ -164,38 +162,18 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   }
 
   Future<void> _doInit() async {
-    await _loadObjFile();
+    await _loadObjFile(oid, isLeft: true);
+    await _loadObjFile(oidRight, isLeft: false);
   }
 
-  Future<void> _loadMockItems() async {
-    // 若文件加载出错，所有操作不可用，设置的是super.pageErr
-    // 不直接使用pageErr，因为每次调用 doActWithPageLoading()，pageErr都会重置
-    await doActWithPageLoading(
-        actName: "load object file (mock)",
-        act: () async {
-          final repoFromDb = RepoEntity(id:"mock", path: "mockTest/data/repo");
-          openedRepo = repoFromDb;
 
+  Future<void> _loadObjFile(VersionOid oid, {required bool isLeft}) async {
+    final leftOrRight = getLeftOrRightText(isLeft);
 
-          objFile = File('mockTest/data/temp/abc.txt');
-
-          // 获取obj成功，才设置下面的
-          workdirFilePath = FilePath.canonicalizePath(p.join(repoFromDb.path, path));
-          fileInWorkdir = File(workdirFilePath);
-          workdirFileExists = true;
-          objFileText = r'final repoddddoEntity(id:"mock", path: "mockTest/data/repo");';
-          workdirFileText = r'final repoFromDb = RepoEntity(id:"mock", path: "mockffffTest/data/repo");';
-        }
-    );
-
-    refreshUI();
-  }
-
-  Future<void> _loadObjFile() async {
     // 排除deleted，把deleted当空文件处理
     if(oid.value != VersionOid.deleted.value && ObjRef.isInvalidOid(oid.value)) {
       setState(() {
-        pageErr = "invalid oid: ${oid.value}";
+        pageErr = "invalid $leftOrRight oid: ${oid.value}";
       });
 
       return;
@@ -215,23 +193,54 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
           return;
         }
 
-        final objectFile = await _getOrFetchObj();
-        if(!await objectFile.exists()) {
-          throw AppException("get object failed, file doesn't exist, err code: 16760530");
+        // 设置workdir文件信息
+        if(workdirFilePath.isEmpty) {
+          workdirFilePath = FilePath.canonicalizePath(p.join(repoFromDb.path, path));
+          workdirFileExists = await File(workdirFilePath).exists();
         }
 
-        fileSize = Fs.readableSize(await objectFile.length());
-        objFile = objectFile;
+        // initTempDir
+        await initTempDir();
 
+        // fetch obj of the oid
+        final objectFile = oid.isWorkdir() ? (await getWorkdirFile()) : (await _getOrFetchObj(oid));
+        if(!await objectFile.exists()) {
+          throw AppException("get $leftOrRight object failed, file doesn't exist, err code: 16760530");
+        }
 
-        // 获取obj成功，才设置下面的
-        workdirFilePath = FilePath.canonicalizePath(p.join(repoFromDb.path, path));
-        fileInWorkdir = File(workdirFilePath);
-        workdirFileExists = await fileInWorkdir?.exists() ?? false;
+        if(isLeft) {
+          objFile = objectFile;
+          objFileSize = Fs.readableSize(await objectFile.length());
+        }else {
+          objFileRight = objectFile;
+          objFileRightSize = Fs.readableSize(await objectFile.length());
+        }
+
       }
     );
 
     refreshUI();
+  }
+
+  // 若文件存在，返回，若不存在，创建空的临时文件替代
+  // 用空文件替代 deleted oid和workdir文件不存在的情况，以简化逻辑
+  // 注：当workdir文件存在时，此函数返回的是workdir对应文件的本体，不是拷贝
+  Future<File> getWorkdirFile() async {
+    final file = File(workdirFilePath);
+    if(await file.exists()) {
+      return file;
+    }
+
+    return await tempDir!.createTempFile();
+  }
+
+  Future<void> initTempDir() async {
+    final repo = await Repo.open(openedRepo!.path);
+    var tempDir = this.tempDir;
+    if(tempDir == null) {
+      tempDir = await repo.createTempDir("localObj");
+      this.tempDir = tempDir;
+    }
   }
 
 
@@ -386,8 +395,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     }
   }
 
-  Future<File> _getOrFetchObj() async {
-    final file = await _doGetOrFetchObj();
+  Future<File> _getOrFetchObj(VersionOid oid) async {
+    final file = await _doGetOrFetchObj(oid);
     final ext = p.extension(workdirFileName);
     // 若文件以.结尾，后缀名就会是.，这样的后缀没什么意义，所以放弃
     if(ext.isNotEmpty && ext != ".") {
@@ -400,13 +409,9 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
   // 若返回空文件，则对应oid关联的内容本来就为空 或者 oid无效（例如oid为Deleted）
   // 若对应obj不存在，抛异常
-  Future<File> _doGetOrFetchObj() async {
+  Future<File> _doGetOrFetchObj(VersionOid oid) async {
     final repo = await Repo.open(openedRepo!.path);
-    var tempDir = this.tempDir;
-    if(tempDir == null) {
-      tempDir = await repo.createTempDir("localObj");
-      this.tempDir = tempDir;
-    }
+    var tempDir = this.tempDir!;
 
     // 无效oid，创建个空文件即可
     if(ObjRef.isInvalidOid(oid.value)) {
@@ -445,47 +450,35 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     return await file.rename((await tempDir.createTempFile()).absolute.path);
   }
 
+  String getLeftOrRightText(bool isLeft) => isLeft ? "left" : "right";
+
   // 若内容未修改，返回false；否则返回true
-  Future<bool> initTextOfObjFile() async {
-    final objFile = this.objFile;
+  Future<bool> initTextOfObjFile({required bool isLeft}) async {
+    final objFile = isLeft ? this.objFile : objFileRight;
 
     if(objFile == null) {
-      showMsg("err: obj file is null");
+      showMsg("err: ${getLeftOrRightText(isLeft)} obj file is null");
       return false;
     }
 
+    // use file stat to detect file loaded and not modified, if it is, then skip load text of the file
+    // 用文件状态检测文件是否已加载且没被修改过，若是则跳过加载
     if(objFileStat == await FileStat.fromFile(objFile)) {
       return false;
     }
 
-    // when reach here, file modified, maybe
-    final text2 = await Fs.readFileAsStr(objFile, returnEmptyIfFileDeleted: true);
-    objFileText = text2;
-    objFileStat = await FileStat.fromFile(objFile);
-    return true;
-  }
-
-  // 获取当前文件workdir版本的数据
-  // 若内容未修改，返回false；否则返回true
-  Future<bool> initTextOfWorkdirFile() async {
-    final fileInWorkdir = this.fileInWorkdir;
-
-    if(fileInWorkdir == null) {
-      showMsg("err: workdir file is null");
-      return false;
+    // when reach here, file modified or first time loading
+    final text = await Fs.readFileAsStr(objFile, returnEmptyIfFileDeleted: true);
+    if(isLeft) {
+      objFileText = text;
+      objFileStat = await FileStat.fromFile(objFile);
+    }else {
+      objFileRightText = text;
+      objFileRightStat = await FileStat.fromFile(objFile);
     }
 
-    if(workdirFileStat == await FileStat.fromFile(fileInWorkdir)) {
-      return false;
-    }
-
-    // when reach here, file modified, maybe
-    final text2 = await Fs.readFileAsStr(fileInWorkdir, returnEmptyIfFileDeleted: true);
-    workdirFileText = text2;
-    workdirFileStat = await FileStat.fromFile(fileInWorkdir);
     return true;
   }
-
 
   Widget getViewWidget() {
     return Expanded(child: SingleChildScrollView(child: SelectableText(objFileText ?? '', style: TextStyle(fontSize: UI.editorFontSizeDefault),),));
@@ -511,12 +504,12 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     setState(() {});
 
     try {
-      final workdirFileChanged = await initTextOfWorkdirFile();
-      final objFileChanged = await initTextOfObjFile();
-      if(workdirFileChanged || objFileChanged) {
+      final objFileChanged = await initTextOfObjFile(isLeft: true);
+      final objFileRightChanged = await initTextOfObjFile(isLeft: false);
+      if(objFileChanged || objFileRightChanged) {
         final diffData = DiffData();
         diffData.oldText = objFileText ?? '';
-        diffData.newText = workdirFileText ?? '';
+        diffData.newText = objFileRightText ?? '';
         diffData.init();
 
         this.diffData = diffData;
@@ -716,7 +709,10 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text("${t.size}: "),
-              SelectableText(fileSize, style: TextStyle(fontWeight: FontWeight.w500))
+              // this size always expect show file size that clicked in file history page
+              // if compare obj to workdir, show obj file size; (the left obj file is the clicked item)
+              // if compare obj1 to obj2, show obj2 file size.  (the right obj file is the clicked item)
+              SelectableText(oidRight.isWorkdir() ? objFileSize : objFileRightSize, style: TextStyle(fontWeight: FontWeight.w500))
             ],
           ),
           const SizedBox(height: 5),

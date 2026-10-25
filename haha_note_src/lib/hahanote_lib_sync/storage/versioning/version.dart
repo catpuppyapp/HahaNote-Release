@@ -75,6 +75,8 @@ class VersionOid {
     return VersionOid(value: value);
   }
 
+  bool isWorkdir() => value == specialOidValueWorkdir;
+
   // 特殊oid，用来代表文件已不存在。
 
   // x 废弃：如果一个文件没提交过，版本历史应该为空，否则为其第一版的hash，不需要这个条目
