@@ -363,6 +363,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String changesFromAToB({required Object a, required Object b}) => '${a} 到 ${b} 的修改';
 	@override String get compareToWorkdir => '和工作目录比较';
 	@override String get compareToPrevious => '和上一版本比较';
+	@override String aToBArrowRight({required Object a, required Object b}) => '${a} -> ${b}';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -699,6 +700,7 @@ extension on TranslationsZhCn {
 			'changesFromAToB' => ({required Object a, required Object b}) => '${a} 到 ${b} 的修改',
 			'compareToWorkdir' => '和工作目录比较',
 			'compareToPrevious' => '和上一版本比较',
+			'aToBArrowRight' => ({required Object a, required Object b}) => '${a} -> ${b}',
 			_ => null,
 		};
 	}

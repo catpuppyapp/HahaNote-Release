@@ -324,5 +324,6 @@
   "exportToHtml": "Export to Html",
   "changesFromAToB": "Changes from $a to $b",
   "compareToWorkdir": "Compare to workdir",
-  "compareToPrevious": "Compare to previous"
+  "compareToPrevious": "Compare to previous",
+  "aToBArrowRight": "$a -> $b"
 }

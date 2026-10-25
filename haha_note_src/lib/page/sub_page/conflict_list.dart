@@ -5,7 +5,6 @@ import 'package:hahanote_app/db/db.dart';
 import 'package:hahanote_app/db/entity/repo_entity.dart';
 import 'package:hahanote_app/ext/state_ext.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
-import 'package:hahanote_app/hahanote_lib_sync/remotes/pack/obj_pack.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart' show MsgDataConflictTargetType, MsgType, MsgDataConflict, Msg;
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
@@ -246,6 +245,11 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
       });
     }
 
+
+    VersionOid? getOverwritten() => resolveStrategyIsWorkdirOverwriteRemote ? remoteOid : workdirOid;
+    VersionOid? getOverwriter() => resolveStrategyIsWorkdirOverwriteRemote ? workdirOid : remoteOid;
+
+
     // 预览被覆盖的版本和覆盖它的版本的区别，
     // 例如，本地workdir覆盖了远程最新节点，则预览 远程最新节点 to workdir 的 changes
     Future<void> compareOverwrittenToOverwriter() async {
@@ -259,7 +263,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
               : MsgDataConflictTargetType.workdir,
 
           // 覆盖的版本
-          oidRight: resolveStrategyIsWorkdirOverwriteRemote ? workdirOid?.value : remoteOid?.value
+          oidRight: getOverwriter()?.value
       );
     }
 
@@ -296,28 +300,52 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
       selected: isItemSelected(item),
       onLongPress: onLongPress,
       menuItems: [
-        if(!ObjRef.isInvalidOid(remoteOid?.value))
+        if(remoteOid != null)
         MenuItem(
           value: "remote",
-          text: t.remote + ": " + remoteOid!.shortValue(),
+          text: t.remote + ": " + remoteOid.shortValue(),
           onClick: () async {
             _view(item, MsgDataConflictTargetType.remote);
           },
         ),
-        if(!ObjRef.isInvalidOid(localOid?.value))
+        if(localOid != null)
         MenuItem(
           value: "local",
-          text: t.local + ": " + localOid!.shortValue(),
+          text: t.local + ": " + localOid.shortValue(),
           onClick: () async {
             _view(item, MsgDataConflictTargetType.local);
           },
         ),
-        if(!ObjRef.isInvalidOid(workdirOid?.value))
+        if(workdirOid != null)
         MenuItem(
           value: "workdir",
-          text: t.workdir + ": " + workdirOid!.shortValue(),
+          text: t.workdir + ": " + workdirOid.shortValue(),
           onClick: () async {
             _view(item, MsgDataConflictTargetType.workdir);
+          },
+        ),
+
+        // 对比存在覆盖关系的版本：
+        // 1. 被覆盖的版本和覆盖它的版本的区别（点击条目时的默认行为，默认是workdir覆盖remote，日后可能提供相反的选项，但没必要，所以大概率不会提供）
+        // 2. 冲突发生时，本地files map最新节点oid和workdir版本的区别（若无冲突，workdir将覆盖本地最新节点）
+        if((remoteOid != null && workdirOid != null)
+            || (localOid != null && workdirOid != null))
+        MenuItem.divider,
+        if(remoteOid != null && workdirOid != null)
+        MenuItem(
+          value: "compareOverwrittenToOverwriter",
+          // can assert not null due to 上面判断了 remoteOid != null 和 workdirOid != null
+          text: t.aToBArrowRight(a: getOverwritten()!.shortValue(), b: getOverwriter()!.shortValue()),
+          onClick: () async {
+            compareOverwrittenToOverwriter();
+          },
+        ),
+        if(localOid != null && workdirOid != null)
+        MenuItem(
+          value: "compareLocalToWorkdir",
+          text: t.aToBArrowRight(a: localOid.shortValue(), b: workdirOid.shortValue()),
+          onClick: () async {
+            _view(item, MsgDataConflictTargetType.local, oidRight: workdirOid.value);
           },
         ),
         MenuItem.divider,

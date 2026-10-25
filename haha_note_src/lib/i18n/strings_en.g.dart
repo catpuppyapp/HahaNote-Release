@@ -1018,6 +1018,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Compare to previous'
 	String get compareToPrevious => 'Compare to previous';
+
+	/// en: '$a -> $b'
+	String aToBArrowRight({required Object a, required Object b}) => '${a} -> ${b}';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1354,6 +1357,7 @@ extension on Translations {
 			'changesFromAToB' => ({required Object a, required Object b}) => 'Changes from ${a} to ${b}',
 			'compareToWorkdir' => 'Compare to workdir',
 			'compareToPrevious' => 'Compare to previous',
+			'aToBArrowRight' => ({required Object a, required Object b}) => '${a} -> ${b}',
 			_ => null,
 		};
 	}
