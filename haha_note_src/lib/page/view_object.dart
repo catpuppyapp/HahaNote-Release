@@ -72,15 +72,15 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   bool showLineNum = false;
   bool neverShowLineNumIncorrectNote = AppConfig.getConfig().neverShowLineNumIncorrectNoteInDiffView;
   bool neverShowBlankLinesMayBeIgnored = AppConfig.getConfig().neverShowBlankLinesMayBeIgnoredInDiffView;
-  String? objFileRightText;
+  String? objFileTextRight;
   String? objFileText;
-  FileStat objFileRightStat = FileStat();
+  FileStat objFileStatRight = FileStat();
   FileStat objFileStat = FileStat();
   bool workdirFileExists = false;
   String objFileSize = "";
-  String objFileRightSize = "";
+  String objFileSizeRight = "";
   String objFilePath = "";
-  String objFileRightPath = "";
+  String objFilePathRight = "";
   String workdirFileName = "";
   bool loadingContent = false;
   String loadingContentErr = "";
@@ -215,8 +215,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
           objFilePath = FilePath.canonicalizePath(objectFile.absolute.path);
         }else {
           objFileRight = objectFile;
-          objFileRightSize = Fs.readableSize(await objectFile.length());
-          objFileRightPath = FilePath.canonicalizePath(objectFile.absolute.path);
+          objFileSizeRight = Fs.readableSize(await objectFile.length());
+          objFilePathRight = FilePath.canonicalizePath(objectFile.absolute.path);
         }
 
       }
@@ -239,10 +239,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
   Future<void> initTempDir() async {
     final repo = await Repo.open(openedRepo!.path);
-    var tempDir = this.tempDir;
     if(tempDir == null) {
       tempDir = await repo.createTempDir("localObj");
-      this.tempDir = tempDir;
     }
   }
 
@@ -278,8 +276,13 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   }
 
   String getExpectedFilePath() {
-    return oidRight.isWorkdir() ? objFilePath : objFileRightPath;
+    return oidRight.isWorkdir() ? objFilePath : objFilePathRight;
   }
+
+  // this size always expect show file size that clicked in file history page
+  // if compare obj to workdir, show obj file size; (the left obj file is the clicked item)
+  // if compare obj1 to obj2, show obj2 file size.  (the right obj file is the clicked item)
+  String getExpectedFileSize() => oidRight.isWorkdir() ? objFileSize : objFileSizeRight;
 
   // export to specified path
   Future<void> _export() async {
@@ -433,7 +436,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
       // 如果恢复或导出到正在对比的文件路径，则需要重载diff文本
       if(destCanonicalFullPath == objFilePath
-        || destCanonicalFullPath == objFileRightPath) {
+        || destCanonicalFullPath == objFilePathRight) {
         await _loadDiffText();
       }
     }
@@ -517,8 +520,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
       objFileText = text;
       objFileStat = await FileStat.fromFile(objFile);
     }else {
-      objFileRightText = text;
-      objFileRightStat = await FileStat.fromFile(objFile);
+      objFileTextRight = text;
+      objFileStatRight = await FileStat.fromFile(objFile);
     }
 
     return true;
@@ -549,11 +552,11 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
     try {
       final objFileChanged = await initTextOfObjFile(isLeft: true);
-      final objFileRightChanged = await initTextOfObjFile(isLeft: false);
-      if(objFileChanged || objFileRightChanged) {
+      final objFileChangedRight = await initTextOfObjFile(isLeft: false);
+      if(objFileChanged || objFileChangedRight) {
         final diffData = DiffData();
         diffData.oldText = objFileText ?? '';
-        diffData.newText = objFileRightText ?? '';
+        diffData.newText = objFileTextRight ?? '';
         diffData.init();
 
         this.diffData = diffData;
@@ -615,11 +618,11 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         throw "left obj path is empty";
       }
 
-      if(objFileRightPath.isEmpty) {
+      if(objFilePathRight.isEmpty) {
         throw "right obj path is empty";
       }
 
-      final cmd = genCmd(objFilePath, objFileRightPath);
+      final cmd = genCmd(objFilePath, objFilePathRight);
 
       App.logger.debug(_TAG, "will call external diff tool, cmd: $cmd");
 
@@ -651,8 +654,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                 onSelected: (action) async {
                   if(action == "copyObjectPath") {
                     copyTextThenShowMsg(objFilePath);
-                  }else if (action == "copyObjectRightPath") {
-                    copyTextThenShowMsg(objFileRightPath);
+                  }else if (action == "copyObjPathRight") {
+                    copyTextThenShowMsg(objFilePathRight);
                   }else if (action == "winMerge") {
                     final cmdName = "winmergeu";
                     await _externalDiff((objFilePath, objFileRightPath) {
@@ -676,15 +679,15 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                   }else if (action == "revealObj") {
                     revealFile(objFilePath, showMsgLong: showMsgLong);
                   }else if (action == "revealObjRight") {
-                    revealFile(objFileRightPath, showMsgLong: showMsgLong);
+                    revealFile(objFilePathRight, showMsgLong: showMsgLong);
                   }else if (action == "openObjAsText") {
                     _openWithInternalEditor(objFilePath, mime: mimeTextPlain);
-                  }else if (action == "openObjRightAsText") {
-                    _openWithInternalEditor(objFileRightPath, mime: mimeTextPlain);
+                  }else if (action == "openObjAsTextRight") {
+                    _openWithInternalEditor(objFilePathRight, mime: mimeTextPlain);
                   }else if (action == "openObjInExt") {
                     _openFileInExternal(objFilePath);
-                  }else if (action == "openObjRightInExt") {
-                    _openFileInExternal(objFileRightPath);
+                  }else if (action == "openObjInExtRight") {
+                    _openFileInExternal(objFilePathRight);
                   }
                 },
                 icon: Icon(Icons.more_vert, size: 18,), // 垂直三点图标
@@ -707,12 +710,12 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                   // 一般来说，rightOid，会比较可能是用户想要编辑的文件，
                   // 因为目标可能是workdir的最新版本内容，所以把rightOid放上面
                   PopupMenuItem<String>(
-                    value: "openObjRightAsText",
+                    value: "openObjAsTextRight",
                     child: Text("${t.openAsText} [$shortOidRight]"),
                   ),
 
                   PopupMenuItem<String>(
-                    value: "openObjRightInExt",
+                    value: "openObjInExtRight",
                     child: Text("${t.openInExt} [$shortOidRight]"),
                   ),
                   PopupMenuItem<String>(
@@ -720,7 +723,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                     child: Text("${t.revealInFileExplorer} [$shortOidRight]"),
                   ),
                   PopupMenuItem<String>(
-                    value: "copyObjectRightPath",
+                    value: "copyObjPathRight",
                     child: Text("${t.copyPath} [$shortOidRight]"),
                   ),
                   const PopupMenuDivider(),
@@ -751,10 +754,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text("${t.size}: "),
-              // this size always expect show file size that clicked in file history page
-              // if compare obj to workdir, show obj file size; (the left obj file is the clicked item)
-              // if compare obj1 to obj2, show obj2 file size.  (the right obj file is the clicked item)
-              SelectableText(oidRight.isWorkdir() ? objFileSize : objFileRightSize, style: TextStyle(fontWeight: FontWeight.w500))
+              SelectableText(getExpectedFileSize(), style: TextStyle(fontWeight: FontWeight.w500))
             ],
           ),
           const SizedBox(height: 5),
@@ -763,7 +763,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text("${t.oid}: "),
-              SelectableText(shortOid, style: TextStyle(fontWeight: FontWeight.w500))
+              SelectableText(getExpectedOid().shortValue(), style: TextStyle(fontWeight: FontWeight.w500))
             ],
           ),
         ],
@@ -809,8 +809,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
                 Text(t.view),
               ],
             ),
-            // 只有工作目录文件存在才显示diff按钮
-            if(workdirFileExists)
+            // 新逻辑修改为：若工作目录文件不存在且右oid是workdir，则会和空文件比较，所以diff按钮依然可以显示
+            // if(workdirFileExists)  // 废弃逻辑：只有工作目录文件存在才显示diff按钮
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
