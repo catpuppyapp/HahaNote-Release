@@ -267,16 +267,30 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   //   );
   // }
 
+  // if compare a to b, return b; (clicked from file history compare to previous)
+  // if compare a to workdir, return a. (clicked from file history compare to workdir)
+  File? getExpectedFile() {
+    return oidRight.isWorkdir() ? objFile : objFileRight;
+  }
 
+  VersionOid getExpectedOid() {
+    return oidRight.isWorkdir() ? oid : oidRight;
+  }
+
+  String getExpectedFilePath() {
+    return oidRight.isWorkdir() ? objFilePath : objFileRightPath;
+  }
+
+  // export to specified path
   Future<void> _export() async {
-    // objFile为null，无文件可导出，返回
-    if(objFile == null) {
-      showMsg("obj file is null");
+    final srcFile = getExpectedFile();
+    // srcFile为null，无文件可导出，返回
+    if(srcFile == null) {
+      showMsgLong("src file is null");
       return;
     }
 
     final directoryPath = File(workdirFilePath).parent.absolute.path;
-
     final nameWithoutExt = p.basenameWithoutExtension(workdirFilePath);
     // 取出 ext，带.，例如 abc.txt，ext为.txt
     final ext = p.extension(workdirFilePath);
@@ -305,7 +319,7 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
         // if is save as, system dialog will show overwrite ask dialog when file exists
         // if is export, need show that ask by ourself
         bool canceled = false;
-        if(!trueSaveAsFalseExport && File(destPath).existsSync()) {
+        if(!trueSaveAsFalseExport && (await File(destPath).exists())) {
           bool isOk = await Dialogs.showOkOrNoDialog(
             context,
             title: t.overwrite,
@@ -321,11 +335,17 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
           return;
         }
 
-        await _restoreToPath(destPath, trueIsRestoreFalseIsExport: false);
+        await _restoreToPath(
+          getExpectedFilePath(),
+          destPath,
+          trueIsRestoreFalseIsExport: false,
+          srcOid: getExpectedOid(),
+        );
       }
     );
   }
 
+  // restore to workdir
   Future<void> _restore() async {
     if(workdirFilePath.isEmpty) {
       showMsg("workdir file path is empty");
@@ -340,7 +360,12 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
           doActWithPageLoading(
             actName: "restore objects",
             act: () async {
-              await _restoreToPath(workdirFilePath, trueIsRestoreFalseIsExport: true);
+              await _restoreToPath(
+                getExpectedFilePath(),
+                workdirFilePath,
+                trueIsRestoreFalseIsExport: true,
+                srcOid: getExpectedOid(),
+              );
             }
           );
         }
@@ -348,10 +373,29 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   }
 
   Future<void> _restoreToPath(
-    final String fullPath, {
+    final String srcFullPath,
+    final String destFullPath, {
     required final bool trueIsRestoreFalseIsExport,
+    // 虽然恢复目标是路径，但比较的是两个oid，所以src必然有关联的oid，
+    // 这里接收这个参数是为了判断源oid是否是deleted，若是则删除dest path关联的文件
+    required VersionOid srcOid,
   }) async {
-    final canonicalFullPath = FilePath.canonicalizePath(fullPath);
+    final srcCanonicalFullPath = FilePath.canonicalizePath(srcFullPath);
+    if(srcCanonicalFullPath.isEmpty) {
+      showMsgLong("src path is empty");
+      return;
+    }
+
+    final destCanonicalFullPath = FilePath.canonicalizePath(destFullPath);
+    if(destCanonicalFullPath.isEmpty) {
+      showMsgLong("dest path is empty");
+      return;
+    }
+
+    if(srcCanonicalFullPath == destCanonicalFullPath) {
+      showMsgLong("src and dest are the same");
+      return;
+    }
 
     setState(() {
       pageLoading = true;
@@ -361,26 +405,22 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
 
     try {
       final openedRepo = this.openedRepo;
-      if (openedRepo == null) {
+      if(openedRepo == null) {
         showMsg("repo is null");
         return;
       }
 
-      final objFile = this.objFile;
-      if (objFile == null) {
-        showMsg("obj file is null");
-        return;
-      }
+      final srcObjFile = File(srcCanonicalFullPath);
 
       // 若是恢复且oid是删除，则删除对应条目；
       // 否则，则导出包含对应数据的文件到指定路径（若oid是删除则导出空文件）
-      if(trueIsRestoreFalseIsExport && oid.value == VersionOid.deleted.value) {
-        await deleteFileIfExists(File(canonicalFullPath));
-        showMsgLong("${t.deleted}: $canonicalFullPath");
+      if(trueIsRestoreFalseIsExport && srcOid.isDeleted()) {
+        await deleteFileIfExists(File(destCanonicalFullPath));
+        showMsgLong("${t.deleted}: $destCanonicalFullPath");
       }else {
-        final filePath = await getFileAndMakeSureParentDirExist(canonicalFullPath);
-        await objFile.copy(filePath.absolute.path);
-        showMsgLong("${t.success}: $canonicalFullPath");
+        await getFileAndMakeSureParentDirExist(destCanonicalFullPath);
+        await srcObjFile.copy(destCanonicalFullPath);
+        showMsgLong("${t.success}: $destCanonicalFullPath");
       }
 
     }catch(e) {
@@ -392,8 +432,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
       });
 
       // 如果恢复或导出到正在对比的文件路径，则需要重载diff文本
-      if(canonicalFullPath == objFilePath
-        || canonicalFullPath == objFileRightPath) {
+      if(destCanonicalFullPath == objFilePath
+        || destCanonicalFullPath == objFileRightPath) {
         await _loadDiffText();
       }
     }

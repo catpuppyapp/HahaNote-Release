@@ -76,6 +76,7 @@ class VersionOid {
   }
 
   bool isWorkdir() => value == specialOidValueWorkdir;
+  bool isDeleted() => value == deleted.value;
 
   // 特殊oid，用来代表文件已不存在。
 

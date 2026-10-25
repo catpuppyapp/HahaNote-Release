@@ -126,6 +126,7 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
     item as VersionNode;
     final lastIndex = items.length - 1;
 
+    // even named as "compare to previous", actually is "compare previous to current item"
     Future<void> compareToPrevious() async {
       await _view(index >= lastIndex ? VersionOid.deleted : items[index+1].oid, oidRight: item.oid);
     }

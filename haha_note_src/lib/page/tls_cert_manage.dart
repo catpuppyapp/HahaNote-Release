@@ -89,13 +89,13 @@ class _TlsCertManageState extends SearchablePageState<TlsCertManage> {
         if(await savePath.exists()) {
           if(!mounted) return;
 
-          Dialogs.showOkOrNoDialog(
+          await Dialogs.showOkOrNoDialog(
             context,
             title: t.overwrite,
             text: t.fileAlreadyExistsOverwriteAsk,
-            onOk: () {
-              // 就一句，没"then"，await与否无意义
-              save();
+            onOk: () async {
+              // 就一句，没"then"，await与否其实都一样
+              await save();
             }
           );
         }else {

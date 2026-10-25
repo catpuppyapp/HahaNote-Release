@@ -1048,7 +1048,7 @@ class _EditorPageState extends MyPageState<EditorPage> {
         // if is save as, system dialog will show overwrite ask dialog when file exists
         // if is export, need show that ask by ourself
         bool canceled = false;
-        if(!trueSaveAsFalseExport && destFile.existsSync()) {
+        if(!trueSaveAsFalseExport && (await destFile.exists())) {
           bool isOk = await Dialogs.showOkOrNoDialog(
             context,
             title: t.overwrite,
