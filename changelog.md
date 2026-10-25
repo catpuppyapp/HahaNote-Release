@@ -1,5 +1,10 @@
 
 ---
+1.0.16+17 20261025:
+- file node supports compare to previous version
+- 文件节点支持和上一版本比较
+
+---
 1.0.15+16 20261020:
 - support export md to html
 - 支持导出md为html

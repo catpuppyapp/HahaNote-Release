@@ -7,8 +7,8 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- support export md to html
-- 支持导出md为html
+- file node supports compare to previous version
+- 文件节点支持和上一版本比较
 """;
 
 class ChangelogDialog extends StatelessWidget {
