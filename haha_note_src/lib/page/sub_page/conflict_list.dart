@@ -10,6 +10,7 @@ import 'package:hahanote_app/hahanote_lib_sync/storage/msg/msg.dart' show MsgDat
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/repo.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/sync.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/related_oids.dart';
+import 'package:hahanote_app/hahanote_lib_sync/storage/versioning/version.dart';
 import 'package:hahanote_app/i18n/strings.g.dart';
 import 'package:hahanote_app/page/base/searchable_widget_state.dart';
 import 'package:hahanote_app/util/hardware_key_util.dart';
@@ -62,7 +63,11 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
   }
 
 
-  Future<void> _view(Msg msg, String targetType) async {
+  Future<void> _view(Msg msg, String targetType, {String? oidRight}) async {
+    if(oidRight == null) {
+      oidRight = VersionOid.specialOidValueWorkdir;
+    }
+
     if(!mounted) return;
 
     final repo = this.repo;
@@ -97,7 +102,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
     Navigator.pushNamed(
       context,
       Cons.routeViewObject,
-      arguments: {"path": msgExtra.path, "oid": oid}
+      arguments: {"path": msgExtra.path, "oid": oid, "oidRight": oidRight}
     );
   }
 
@@ -217,6 +222,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
     final workdirOid = itemData.workdirOid;
     final filePath = FilePath.fromString(getItemPath(item));
     final parentPath = filePath.parent().toUnixPathStr();
+    final resolveStrategyIsWorkdirOverwriteRemote = itemData.resolveStrategy == ConflictResolveStrategy.workdirOverwriteRemote.value;
 
     void onLongPress() {
       setState(() {
@@ -238,6 +244,23 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           )
         );
       });
+    }
+
+    // 预览被覆盖的版本和覆盖它的版本的区别，
+    // 例如，本地workdir覆盖了远程最新节点，则预览 远程最新节点 to workdir 的 changes
+    Future<void> compareOverwrittenToOverwriter() async {
+      _view(
+          item,
+          // 被覆盖的版本：
+          // 如果冲突覆盖策略是workdir覆盖remote，则remote；
+          // 如果冲突策略是remote覆盖workdir，则workdir
+          resolveStrategyIsWorkdirOverwriteRemote
+              ? MsgDataConflictTargetType.remote
+              : MsgDataConflictTargetType.workdir,
+
+          // 覆盖的版本
+          oidRight: resolveStrategyIsWorkdirOverwriteRemote ? workdirOid?.value : remoteOid?.value
+      );
     }
 
     return LabelValueTile(
@@ -268,15 +291,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           return;
         }
 
-        _view(
-          item,
-          // 预览被覆盖的版本：
-          // 如果冲突覆盖策略是workdir覆盖remote，则预览remote；
-          // 如果冲突策略是remote覆盖workdir，则预览被覆盖的workdir文件
-          itemData.resolveStrategy == ConflictResolveStrategy.workdirOverwriteRemote.value
-            ? MsgDataConflictTargetType.remote
-            : MsgDataConflictTargetType.workdir
-        );
+        compareOverwrittenToOverwriter();
       },
       selected: isItemSelected(item),
       onLongPress: onLongPress,
