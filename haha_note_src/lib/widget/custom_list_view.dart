@@ -93,7 +93,9 @@ class LabelValueTile extends StatelessWidget {
       items.add(
         PopupMenuItem<String>(
           value: m.value,
-          child: Text(m.text),
+          child: m.isDefaultClickBehavior
+            ? Text(m.text, style: const TextStyle(fontWeight: FontWeight.bold))
+            : Text(m.text),
         )
       );
     }

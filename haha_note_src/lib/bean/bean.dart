@@ -76,10 +76,11 @@ class MenuItem {
   final String value;
   final String text;
   final Future<void> Function()? onClick;
+  final bool isDefaultClickBehavior;  // if true, will bold text
 
-  MenuItem({this.value = "", this.text = "", this.onClick});
+  const MenuItem({this.value = "", this.text = "", this.onClick, this.isDefaultClickBehavior = false});
 
-  static final divider = MenuItem(value: "MENU_ITEM_DIVIDER_15802383");
+  static const divider = MenuItem(value: "MENU_ITEM_DIVIDER_15802383");
 }
 
 class LabelValue {

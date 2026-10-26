@@ -328,6 +328,7 @@ class ConflictListPageState extends SearchableWidgetState<ConflictListPage> {
           value: "compareOverwrittenToOverwriter",
           // can assert not null due to 上面判断了 remoteOid != null 和 workdirOid != null
           text: t.aToBArrowRight(a: getOverwritten()!.shortValue(), b: getOverwriter()!.shortValue()),
+          isDefaultClickBehavior: true,
           onClick: () async {
             compareOverwrittenToOverwriter();
           },

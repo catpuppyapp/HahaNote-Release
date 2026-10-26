@@ -319,6 +319,14 @@ class DeletedPageState extends SearchableWidgetState<DeletedPage> {
       onLongPress: onLongPress,
       menuItems: [
         MenuItem(
+          value: "view",
+          text: t.view,
+          isDefaultClickBehavior: true,
+          onClick: () async {
+            _view(item);
+          },
+        ),
+        MenuItem(
           value: "history",
           text: t.history,
           onClick: () async {

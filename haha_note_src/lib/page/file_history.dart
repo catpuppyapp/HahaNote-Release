@@ -146,7 +146,7 @@ class _FileHistoryPageState extends SearchablePageState<FileHistoryPage> {
         compareToPrevious();
       },
       menuItems: [
-        MenuItem(value: "compare_to_previous", text: t.compareToPrevious, onClick: () async {
+        MenuItem(value: "compare_to_previous", text: t.compareToPrevious, isDefaultClickBehavior: true, onClick: () async {
           compareToPrevious();
         }),
         MenuItem(value: "compare_to_workdir", text: t.compareToWorkdir, onClick: () async {
