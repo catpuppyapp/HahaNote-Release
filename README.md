@@ -41,7 +41,7 @@ So You can use any editor to edit your md/txt or any other files, then use HahaN
 
 
 ### Why E2EE
-HahaNote is an E2EE note sync app, that means all your files decrypted on local and encrypted before leave your device, it can avoid platforms read your files. (example, even github or dropbox have data leak, your haha note data still safe, due to is encrypted)
+HahaNote is an E2EE note sync app, that means all your files decrypted on local and encrypted before leaving your device, it can avoid data storage platforms read your files. (example, even github or dropbox have data leak, your haha note data still safe, due to is encrypted)
 
 E2EE promise data encrypted before leaving your device, but on your local device, all data is decrypted, so you can edit them by any regular text editor, like VSCode, Zed, Notepad++, Obsidian.
 
@@ -53,7 +53,7 @@ E2EE promise data encrypted before leaving your device, but on your local device
 
 
 ### Mac and IOS
-HahaNote will supports mac and ios when I got them, your [donation](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) can help me get them earlier.
+HahaNote will supports mac and ios when I got them, your [donation](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) can help me get them early.
 
 
 
