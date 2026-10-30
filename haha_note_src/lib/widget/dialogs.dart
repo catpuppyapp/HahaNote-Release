@@ -722,6 +722,10 @@ abstract class Dialogs {
     required void Function(String) showMsg,
     required void Function(String) showMsgLong,
     required Future<void> Function(int newSize) onSave,
+
+    // 用来在仓库级弹窗里显示全局值，例如“设为0以使用全局设置"文案后面，
+    // 若传此值，将会在后面显示全局设置的值，不传则不显示
+    int? globalSettingsValue,
   }) async {
     // 注：若想改限制的大小限制，直接改[sizeLimitAtLeast]和[sizeLimitAtMost]即可，
     // 底层没限制，就在这里输入的时候限制了下而已
@@ -743,7 +747,7 @@ abstract class Dialogs {
       initialValue: Fs.humanFriendlySize(currentSizeInBytes),
       showMsg: showMsg,
       showMsgLong: showMsgLong,
-      notes: isGlobal ? [sizeLimit, sizeNote] : [t.setToZeroToUseGlobalSettings, sizeLimit, sizeNote]
+      notes: isGlobal ? [sizeLimit, sizeNote] : [globalSettingsValue == null ? t.setToZeroToUseGlobalSettings : t.setToZeroToUseGlobalSettingsWithValue(value: Fs.humanFriendlySize(globalSettingsValue)), sizeLimit, sizeNote]
     );
 
     if(value == null || value.isEmpty) {

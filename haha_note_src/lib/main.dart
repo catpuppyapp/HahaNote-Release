@@ -1439,8 +1439,11 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
       return;
     }
 
+    final appConfig = AppConfig.getConfig();
+
     await Dialogs.showUpdatePackFileSizeDialog(
       context,
+      globalSettingsValue: appConfig.syncConfig.packFileMaxLenInBytes,
       isGlobal: false,
       currentSizeInBytes: (await repo.getConfig()).packFileMaxLenInBytes,
       defaultPackFileMaxLenInBytes: defaultPackFileMaxLenInBytes,

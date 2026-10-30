@@ -325,5 +325,6 @@
   "changesFromAToB": "$a 到 $b 的修改",
   "compareToWorkdir": "和工作目录比较",
   "compareToPrevious": "和上一版本比较",
-  "aToBArrowRight": "$a -> $b"
+  "aToBArrowRight": "$a -> $b",
+  "setToZeroToUseGlobalSettingsWithValue": "设为 0 以使用全局设置: $value"
 }

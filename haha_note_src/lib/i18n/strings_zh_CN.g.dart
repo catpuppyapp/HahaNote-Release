@@ -365,6 +365,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get compareToWorkdir => '和工作目录比较';
 	@override String get compareToPrevious => '和上一版本比较';
 	@override String aToBArrowRight({required Object a, required Object b}) => '${a} -> ${b}';
+	@override String setToZeroToUseGlobalSettingsWithValue({required Object value}) => '设为 0 以使用全局设置: ${value}';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -702,6 +703,7 @@ extension on TranslationsZhCn {
 			'compareToWorkdir' => '和工作目录比较',
 			'compareToPrevious' => '和上一版本比较',
 			'aToBArrowRight' => ({required Object a, required Object b}) => '${a} -> ${b}',
+			'setToZeroToUseGlobalSettingsWithValue' => ({required Object value}) => '设为 0 以使用全局设置: ${value}',
 			_ => null,
 		};
 	}

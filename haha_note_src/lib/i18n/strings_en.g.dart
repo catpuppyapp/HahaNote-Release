@@ -1022,6 +1022,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: '$a -> $b'
 	String aToBArrowRight({required Object a, required Object b}) => '${a} -> ${b}';
+
+	/// en: 'Set to 0 to use global settings: $value'
+	String setToZeroToUseGlobalSettingsWithValue({required Object value}) => 'Set to 0 to use global settings: ${value}';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1359,6 +1362,7 @@ extension on Translations {
 			'compareToWorkdir' => 'Compare to workdir',
 			'compareToPrevious' => 'Compare to previous',
 			'aToBArrowRight' => ({required Object a, required Object b}) => '${a} -> ${b}',
+			'setToZeroToUseGlobalSettingsWithValue' => ({required Object value}) => 'Set to 0 to use global settings: ${value}',
 			_ => null,
 		};
 	}
