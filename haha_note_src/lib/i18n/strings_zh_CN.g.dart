@@ -38,7 +38,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	TranslationsZhCn $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsZhCn(meta: meta ?? this.$meta);
 
 	// Translations
-	@override String get appName => 'HahaNote';
+	@override String get appName => '哈哈笔记';
 	@override String get appDesc => '跨平台笔记应用，支持端到端加密同步';
 	@override String get create => '新建';
 	@override String get import => '导入';
@@ -376,7 +376,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 extension on TranslationsZhCn {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
-			'appName' => 'HahaNote',
+			'appName' => '哈哈笔记',
 			'appDesc' => '跨平台笔记应用，支持端到端加密同步',
 			'create' => '新建',
 			'import' => '导入',
