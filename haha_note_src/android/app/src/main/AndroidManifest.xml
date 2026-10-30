@@ -27,7 +27,7 @@
 
 
     <application
-        android:label="HahaNote"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <service
