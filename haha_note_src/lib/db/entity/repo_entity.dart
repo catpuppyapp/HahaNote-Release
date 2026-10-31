@@ -1,11 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:hahanote_app/bean/bean.dart';
+import 'package:hahanote_app/ext/iterable_ext.dart';
 import 'package:hahanote_app/hahanote_lib_sync/serialization/json.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
 import 'package:hahanote_app/hahanote_lib_sync/time/time_data.dart';
-import 'package:hahanote_app/ext/iterable_ext.dart';
 import 'package:hahanote_app/util/fs.dart' show Fs;
-import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart' show HiveObject;
 import 'package:path/path.dart' as p show basename;
 
 part 'repo_entity.g.dart';
@@ -14,7 +13,7 @@ const _maxRecentFiles = 20;
 
 /// 存在db的仓库实体
 @myJsonSerializable
-class RepoEntity extends HiveObject {
+class RepoEntity {
   /// 相当于数据库的key
   String id;
 
