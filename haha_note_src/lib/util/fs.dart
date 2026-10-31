@@ -96,7 +96,12 @@ abstract class Fs {
   }
 
   // 若是移动（isCopy为假），则调用者需在调用后自行删除src目录
-  static Future<void> copyOrMoveFilesOfDirectory(Directory source, Directory destination, {required bool isCopy}) async {
+  static Future<void> copyOrMoveFilesOfDirectory(
+    Directory source,
+    Directory destination, {
+    required bool isCopy,
+    required bool useCopyThenDelInsteadOfRename,
+  }) async {
     // 1. 如果目标目录不存在，先创建它
     if (!await destination.exists()) {
       await destination.create(recursive: true);
@@ -109,14 +114,24 @@ abstract class Fs {
 
       if (src is Directory) {
         // 如果是目录，递归调用
-        await copyOrMoveFilesOfDirectory(src, Directory(target), isCopy: isCopy);
+        await copyOrMoveFilesOfDirectory(
+          src,
+          Directory(target),
+          isCopy: isCopy,
+          useCopyThenDelInsteadOfRename: useCopyThenDelInsteadOfRename
+        );
+
         if(!isCopy) {
           await src.delete(recursive: false);
         }
       } else if (src is File) {
         // 如果是文件，直接拷贝
-        if(isCopy) {
+        if(isCopy || useCopyThenDelInsteadOfRename) {
           await src.copy(target);
+
+          if(!isCopy && useCopyThenDelInsteadOfRename) {
+            await src.delete(recursive: false);
+          }
         }else {
           await src.rename(target);
         }
@@ -132,6 +147,8 @@ abstract class Fs {
     String src,
     String targetDir, {
     required bool isCopy,
+    // true to avoid cross drives moving failed
+    required bool useCopyThenDelInsteadOfRename,
     // 返回true，代表handler处理了，返回false，代表handler未处理，本函数将采用“合并”模式，若是文件，覆盖，若是目录，合并
     required Future<bool> Function(String srcPath, String targetPath) existsTargetFileHandler
   }) async {
@@ -195,17 +212,29 @@ abstract class Fs {
 
     if(srcIsDir) {
       final srcDir = srcPath.toDir();
-      await Fs.copyOrMoveFilesOfDirectory(srcDir, targetPath.toDir(), isCopy: isCopy);
+      await copyOrMoveFilesOfDirectory(
+        srcDir,
+        targetPath.toDir(),
+        isCopy: isCopy,
+        useCopyThenDelInsteadOfRename: useCopyThenDelInsteadOfRename
+      );
+
       if(!isCopy) {
-        // 目录应该空了，普通删除即可
+        // 理论上目录应该空了，普通删除即可，但实践上，有时候recursive传false会删除失败，原因不明，提示无权限之类的，可能是bug？
         await srcDir.delete(recursive: false);
       }
     }else {  // is File
-      if(isCopy) {
-        await srcPath.toFile().copy(targetPath.toString());
+      final srcFile = srcPath.toFile();
+      if(isCopy || useCopyThenDelInsteadOfRename) {
+        await srcFile.copy(targetPath.toString());
+
+        if(!isCopy && useCopyThenDelInsteadOfRename) {
+          // recursive有可能删除失败，提示权限不足，好像是errno 13，但其实有权限操作文件，不过即使删除失败也比误删强
+          await srcFile.delete(recursive: false);
+        }
       }else {
         // will overwrite if target exists
-        await srcPath.toFile().rename(targetPath.toString());
+        await srcFile.rename(targetPath.toString());
       }
     }
   }

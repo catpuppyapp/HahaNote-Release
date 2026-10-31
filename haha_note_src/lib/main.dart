@@ -3354,6 +3354,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
             path,
             targetPathStr,
             isCopy: isCopy,
+            useCopyThenDelInsteadOfRename: true,
             existsTargetFileHandler: (srcPath, targetPath) async {
               if(ask_0_skip_1_overwrite_2_merge_3 == 0) {
                 // 先存上，问用户，再处理
