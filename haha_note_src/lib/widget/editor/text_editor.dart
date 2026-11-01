@@ -189,6 +189,8 @@ class TextEditor extends StatelessWidget {
       enableKeyboardSuggestions: true,  // x fixed maybe, or never a bug, just my mistake?) ime suggestions, if enable, can be lost data on android
       enableLocalSuggestions: false, // I am not sure, maybe this is suggestions from file content context? not lsp or keyboard suggestions.
       extraLanguages: [langC, langJava, langXml, langDart, langRust],
+      useSpaceAsTab: true,
+      tabSize: 2,
     );
   }
 }
