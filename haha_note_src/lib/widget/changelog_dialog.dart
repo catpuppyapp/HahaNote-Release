@@ -7,8 +7,10 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- file node supports compare to previous version
-- 文件节点支持和上一版本比较
+- update text editor (code_forge)
+- fix move files failed when crossing drives
+- 更新文本编辑器 (code_forge)
+- 修复跨设备移动文件失败
 """;
 
 class ChangelogDialog extends StatelessWidget {

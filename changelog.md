@@ -1,5 +1,12 @@
 
 ---
+1.0.17+18 20261102:
+- update text editor (code_forge)
+- fix move files failed when crossing drives
+- 更新文本编辑器 (code_forge)
+- 修复跨设备移动文件失败
+
+---
 1.0.16+17 20261025:
 - file node supports compare to previous version
 - 文件节点支持和上一版本比较

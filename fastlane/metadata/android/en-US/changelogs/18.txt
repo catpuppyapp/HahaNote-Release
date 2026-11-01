@@ -1,0 +1,2 @@
+- update text editor (code_forge)
+- fix move files failed when crossing drives
