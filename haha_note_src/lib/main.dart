@@ -2422,10 +2422,13 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
               }
 
               final fileType = await getFileType(path);
-              if(fileType == FileSystemEntityType.notFound) {
-                showMsgLong(t.pathDoesntExist);
-                return;
-              }
+              // 不检查是否存在更好，直接跳转，有时候需要跳转到已不存在的目录，方便导航到上级目录。
+              // 比如我想跳转到安卓的/storage/emulated/0，在跳转弹窗点击“共享存储”自动填的是/storage/emulated/0/haha_repos，
+              // 而后者不存在，这时候若不检查，直接跳转，然后按下返回键即可抵达期望目录，否则，还得手动编辑路径
+              // if(fileType == FileSystemEntityType.notFound) {
+              //   showMsgLong(t.pathDoesntExist);
+              //   return;
+              // }
 
               final filePath = FilePath.fromString(path);
               if(fileType == FileSystemEntityType.directory) {
