@@ -325,6 +325,10 @@ class FilePath implements MapKey, Oidlize {
     return (await getFileType(toString())) != FileSystemEntityType.notFound;
   }
 
+  bool existsSync() {
+    return getFileTypeSync(toString()) != FileSystemEntityType.notFound;
+  }
+
   @override
   String toMapKey() {
     return toUnixPathStr();

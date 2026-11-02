@@ -3690,6 +3690,12 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
           openInExt: _openFileInExternal,
           goToFilesAndRevealItem: (item) {
             final fp = FilePath.fromString(item.fullPath);
+
+            final canonicalPath = fp.toString();
+            if(getFileTypeSync(canonicalPath) == FileSystemEntityType.notFound) {
+              showMsgLong(t.pathDoesntExist+": $canonicalPath");
+            }
+
             _loadFiles(fp.parent(), name: fp.name());
           },
         )
