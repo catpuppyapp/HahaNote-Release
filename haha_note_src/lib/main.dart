@@ -2424,11 +2424,17 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
               final fileType = await getFileType(path);
               // 不检查是否存在更好，直接跳转，有时候需要跳转到已不存在的目录，方便导航到上级目录。
               // 比如我想跳转到安卓的/storage/emulated/0，在跳转弹窗点击“共享存储”自动填的是/storage/emulated/0/haha_repos，
-              // 而后者不存在，这时候若不检查，直接跳转，然后按下返回键即可抵达期望目录，否则，还得手动编辑路径
-              // if(fileType == FileSystemEntityType.notFound) {
-              //   showMsgLong(t.pathDoesntExist);
-              //   return;
-              // }
+              // 而后者不存在，这时候若不检查，直接跳转，就会自动跳转到不存在路径的上级目录，
+              // 否则，还得手动编辑路径。
+              // 会自动跳转到不存在路径的上级而不是对应路径
+              // 是因为路径不存在时 notFound != directory 为 true，
+              // 路径被判定为非目录了，
+              // 所以触发自动定位到上级目录并选中当前文件的机制，若上级路径仍不存在，
+              // 则会在跳转后的界面显示错误
+              if(fileType == FileSystemEntityType.notFound) {
+                showMsgLong(t.pathDoesntExist);
+              //   return;  // 注释，提示用户路径不存在，但依然跳转
+              }
 
               final filePath = FilePath.fromString(path);
               if(fileType == FileSystemEntityType.directory) {
