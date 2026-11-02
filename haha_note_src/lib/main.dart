@@ -2432,7 +2432,7 @@ class _MyHomePageState extends MyPageState<MyHomePage> {
               // 所以触发自动定位到上级目录并选中当前文件的机制，若上级路径仍不存在，
               // 则会在跳转后的界面显示错误
               if(fileType == FileSystemEntityType.notFound) {
-                showMsgLong(t.pathDoesntExist);
+                showMsgLong(t.pathDoesntExist+": $path");
               //   return;  // 注释，提示用户路径不存在，但依然跳转
               }
 
