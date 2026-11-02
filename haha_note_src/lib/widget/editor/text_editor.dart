@@ -191,6 +191,7 @@ class TextEditor extends StatelessWidget {
       extraLanguages: [langC, langJava, langXml, langDart, langRust],
       useSpaceAsTab: true,
       tabSize: 2,
+      enableMinimap: false,
     );
   }
 }

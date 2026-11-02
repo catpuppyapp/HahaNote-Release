@@ -119,7 +119,8 @@ dependencies:
   
   # TODO BUG: 暂时先固定0.15.6，否则flutter_html会报错，修复后再改成 ^0.15.6
   html: 0.15.6
-  
+  flutter_highlight: ^0.7.0
+
   code_forge: ^11.5.0
   # 因为原版不支持通过环境变量指定rust工具链版本，所以我fork了下，改了下，
   # pr要发到flutter_rust_bridge，但我没看那个库的代码，日后再说
