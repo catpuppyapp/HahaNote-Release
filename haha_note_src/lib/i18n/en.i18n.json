@@ -329,6 +329,6 @@
   "setToZeroToUseGlobalSettingsWithValue": "Set to 0 to use global settings: $value",
   "smbSealEncryption": "Seal Encryption (SMB 3)",
   "smbSigning": "Signing",
-  "smbDomain": "Domain",
+  "smbDomain": "Domain (Optional)",
   "smbShare": "Share Point"
 }

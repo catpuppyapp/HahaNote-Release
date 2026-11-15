@@ -329,6 +329,6 @@
   "setToZeroToUseGlobalSettingsWithValue": "设为 0 以使用全局设置: $value",
   "smbSealEncryption": "Seal 加密 (SMB 3)",
   "smbSigning": "签名",
-  "smbDomain": "域",
+  "smbDomain": "域 (可选)",
   "smbShare": "共享点"
 }

@@ -1032,8 +1032,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'Signing'
 	String get smbSigning => 'Signing';
 
-	/// en: 'Domain'
-	String get smbDomain => 'Domain';
+	/// en: 'Domain (Optional)'
+	String get smbDomain => 'Domain (Optional)';
 
 	/// en: 'Share Point'
 	String get smbShare => 'Share Point';
@@ -1377,7 +1377,7 @@ extension on Translations {
 			'setToZeroToUseGlobalSettingsWithValue' => ({required Object value}) => 'Set to 0 to use global settings: ${value}',
 			'smbSealEncryption' => 'Seal Encryption (SMB 3)',
 			'smbSigning' => 'Signing',
-			'smbDomain' => 'Domain',
+			'smbDomain' => 'Domain (Optional)',
 			'smbShare' => 'Share Point',
 			_ => null,
 		};
