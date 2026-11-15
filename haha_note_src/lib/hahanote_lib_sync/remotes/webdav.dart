@@ -226,7 +226,7 @@ class Webdav extends Remote {
     // 如果日后支持拷贝目录，则path需要用 `appendPathSeparatorIfIsDir()` 处理下
     // 如果拷贝目录，有可能会把目标目录的内容全删除再拷贝，慎用！！
     if(isDir) {
-      throw RemoteException("doesn't support copy dir, 15233305");
+      throw RemoteException("doesn't support copy dir");
     }
 
     final fromFullPath = await preHandlePath(from);
