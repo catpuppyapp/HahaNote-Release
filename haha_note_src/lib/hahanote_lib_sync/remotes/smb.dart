@@ -254,7 +254,7 @@ class Smb extends Remote {
     Smb2Stat remoteFileStat;
     remoteFileStat = await storeClient!.stat(fullPathStr);
     if(!remoteFileStat.isDirectory && !remoteFileStat.isFile) {
-      throw RemoteException("path is not file and dir");
+      throw RemoteException("path is not file or dir");
     }
 
     return RemoteFile.fromSmbFileStat(remoteFileStat, path: fullPathStr);
@@ -312,9 +312,15 @@ class Smb extends Remote {
   }
 
   @override
-  int get maxConcurrencyRead => 5;
-  // 并发写有可能导致移动文件或删除文件出错，算了，不用了
-  // @override
-  // int get maxConcurrencyWrite => 3;
+  int get maxConcurrencyRead => 3;
 
+  @override
+  int get maxConcurrencyWrite => 3;
+
+  @override
+  Future<bool> exists(FilePath path) async {
+    final fullPath = await preHandlePath(path);
+    final fullPathStr = fullPath.toUnixPathStr();
+    return await storeClient!.exists(fullPathStr);
+  }
 }
