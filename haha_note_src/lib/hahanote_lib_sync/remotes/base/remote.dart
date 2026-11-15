@@ -2,6 +2,7 @@ import 'dart:convert' show utf8, jsonEncode, jsonDecode;
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:dart_smb2/dart_smb2.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app_key.dart';
 import 'package:hahanote_app/hahanote_lib_sync/client/client.dart';
@@ -42,7 +43,7 @@ part 'remote.g.dart';
 const _TAG = "remote.dart";
 
 
-// 目前只有webdav应用此值
+// 目前只有webdav/smb应用此值
 const remoteConnectTimeoutInMs = 180_000;
 
 // 值越大越省流量，但越有可能发生冲突，反之，费流量，但冲突的概率降低
@@ -150,6 +151,28 @@ class RemoteFile {
     );
   }
 
+  static RemoteFile fromSmbFile(Smb2DirEntry smbDirEntry) {
+    return RemoteFile(
+      isDir: smbDirEntry.isDirectory,
+      // 取下basename，避免服务器返回的文件名其实是路径，之前有bug，就会这样
+      name: p.basename(smbDirEntry.name),
+      path: FilePath.fromString(smbDirEntry.name),
+      mTimeMs: smbDirEntry.stat.modified.millisecondsSinceEpoch,
+      length: smbDirEntry.size
+    );
+  }
+
+  static RemoteFile fromSmbFileStat(Smb2Stat smbFileStat, {required String path}) {
+    return RemoteFile(
+      isDir: smbFileStat.isDirectory,
+      // 取下basename，避免服务器返回的文件名其实是路径，之前有bug，就会这样
+      name: p.basename(path),
+      path: FilePath.fromString(path),
+      mTimeMs: smbFileStat.modified.millisecondsSinceEpoch,
+      length: smbFileStat.size
+    );
+  }
+
   @override
   String toString() {
     return 'RemoteFile{isDir: $isDir, name: $name, path: $path, mTimeMs: $mTimeMs, length: $length}';
@@ -206,10 +229,12 @@ class RemoteType {
   // static final oneDrive = RemoteType(value: "OneDrive");
   // static final nextCloud = RemoteType(value: "NextCloud");
   static final webDAV = RemoteType(value: "WebDAV");
+  static final smb = RemoteType(value: "SMB");
 
   static final supportedTypes = [
     dropbox,
     webDAV,
+    smb,
     localDir,  // 用于测试，或者用户可能本地目录是挂载的，比如本地目录是onedrive，设置可以用git做backend，如果不嫌麻烦的话
   ];
 
@@ -4390,5 +4415,13 @@ abstract class Remote implements ClosableSession {
       eagerError: concurrencyTasksThrowIfAnyErr,
     );
   }
+
+  // sub classes can overwrite `doInit` to init store client
+  // and the base class need not call this method, so not set it in here
+  // Future<void> initStoreClient() async {}
+
+  // some clients need close
+  /// should call this method in finally where called `remote.doInit()`
+  Future<void> closeStoreClient() async {}
 
 }

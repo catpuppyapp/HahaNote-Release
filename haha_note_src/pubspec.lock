@@ -241,6 +241,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.6"
+  dart_smb2:
+    dependency: "direct main"
+    description:
+      name: dart_smb2
+      sha256: "4d9a87028c6ac9bae6e610cc19f95c1e5a53cbd7d92fd08e61577ecba65a8d8c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.1"
   dart_style:
     dependency: transitive
     description:

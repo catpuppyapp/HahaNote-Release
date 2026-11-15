@@ -63,6 +63,33 @@ Map<String, dynamic> _$RemoteConfigDataForWebdavToJson(
   'debugMode': instance.debugMode,
 };
 
+RemoteConfigDataForSmb _$RemoteConfigDataForSmbFromJson(
+  Map<String, dynamic> json,
+) => RemoteConfigDataForSmb(
+  host: json['host'] as String? ?? '',
+  user: json['user'] as String? ?? '',
+  password: json['password'] as String? ?? '',
+  seal: json['seal'] as bool? ?? true,
+  signing: json['signing'] as bool? ?? true,
+  workers: (json['workers'] as num?)?.toInt() ?? 4,
+  domain: json['domain'] as String?,
+  timeoutInMs:
+      (json['timeoutInMs'] as num?)?.toInt() ?? remoteConnectTimeoutInMs,
+);
+
+Map<String, dynamic> _$RemoteConfigDataForSmbToJson(
+  RemoteConfigDataForSmb instance,
+) => <String, dynamic>{
+  'host': instance.host,
+  'user': instance.user,
+  'password': instance.password,
+  'seal': instance.seal,
+  'signing': instance.signing,
+  'workers': instance.workers,
+  'domain': instance.domain,
+  'timeoutInMs': instance.timeoutInMs,
+};
+
 RemoteConfigDataForLocalDir _$RemoteConfigDataForLocalDirFromJson(
   Map<String, dynamic> json,
 ) => RemoteConfigDataForLocalDir(

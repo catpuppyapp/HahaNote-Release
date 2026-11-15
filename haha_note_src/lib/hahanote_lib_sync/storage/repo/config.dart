@@ -1,6 +1,7 @@
 import 'dart:convert' show utf8, jsonEncode, jsonDecode;
 import 'dart:io' show File;
 
+import 'package:dart_smb2/dart_smb2.dart';
 import 'package:hahanote_app/hahanote_lib_sync/client/client.dart';
 import 'package:hahanote_app/hahanote_lib_sync/crypto/encrypt.dart' show EncryptedData;
 import 'package:hahanote_app/hahanote_lib_sync/crypto/key_data.dart';
@@ -102,6 +103,10 @@ class RemoteConfig {
       return RemoteConfigDataForLocalDir.fromJson(data);
     }
 
+    if(type == RemoteType.smb.value) {
+      return RemoteConfigDataForSmb.fromJson(data);
+    }
+
     return null;
   }
 
@@ -130,6 +135,32 @@ class RemoteConfigDataForWebdav {
   factory RemoteConfigDataForWebdav.fromJson(Map<String, dynamic> json) => _$RemoteConfigDataForWebdavFromJson(json);
 
   Map<String, dynamic> toJson() => _$RemoteConfigDataForWebdavToJson(this);
+
+}
+
+
+@myJsonSerializable
+class RemoteConfigDataForSmb {
+  // https://pub.dev/documentation/dart_smb2/latest/topics/Connection-topic.html
+  String host;
+  String user;
+  String password;
+  // String share; // path
+  bool seal;  // Require SMB3 encryption: AES-256-GCM or AES-128-GCM on SMB 3.1.1, AES-128-CCM on 3.0
+  bool signing;
+  // String version;  // 默认any，自动协商，一般不用指定
+  int workers;  // isolate 池
+  String? domain;  // 不是连接用的域名，而是工作组之类的？
+  int timeoutInMs;  // 连接超时，默认60秒
+
+  RemoteConfigDataForSmb({this.host = '', this.user = '', this.password = '',
+    this.seal = true, this.signing = true, this.workers = 4, this.domain,
+    this.timeoutInMs = remoteConnectTimeoutInMs});
+
+
+  factory RemoteConfigDataForSmb.fromJson(Map<String, dynamic> json) => _$RemoteConfigDataForSmbFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RemoteConfigDataForSmbToJson(this);
 
 }
 

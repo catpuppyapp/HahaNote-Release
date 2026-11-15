@@ -1044,6 +1044,8 @@ class Repo {
 
         // 关闭父线程接收器
         mainRp.close();
+
+        await remote.closeStoreClient();
       }
 
     }
@@ -2674,6 +2676,7 @@ class Repo {
       syncProgressCb?.call(SyncProgressAct.syncFiles, 0, 0, emptyFilePath);
 
     }finally {
+      await remote.closeStoreClient();
       await tempDir.clean();
     }
 
@@ -2777,6 +2780,7 @@ class Repo {
 
       syncProgressCb?.call(SyncProgressAct.syncFiles, 0, 0, emptyFilePath);
     }finally {
+      await remote.closeStoreClient();
       await tempDir.clean();
     }
 
@@ -3997,6 +4001,7 @@ class Repo {
         throwIfInterrupted?.call();
         await remote.deleteRepo(client, actName);
       }finally {
+        await remote.closeStoreClient();
         await tempDir.clean();
       }
     }
@@ -4212,6 +4217,7 @@ class Repo {
         }
       );
     }finally {
+      await remote.closeStoreClient();
       await tempDir.clean();
     }
   }

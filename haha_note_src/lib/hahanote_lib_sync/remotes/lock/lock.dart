@@ -156,6 +156,7 @@ class Lock implements JsonByteStream, Oidlize {
         parentSp.send({"type": lockCmdErr, "err": err.toString(), "st": st.toString()});
       }
 
+      Remote? remote;
 
       try {
         await initSubIsolate();
@@ -181,7 +182,7 @@ class Lock implements JsonByteStream, Oidlize {
         );
         // isChild 不是配置文件中的参数，是个额外参数，用来判断某个remote是否是派生的，
         // 如果是，则会有些限制，不能start session之类的，避免和主remote冲突
-        final remote = await ConfigUtil.createRemoteFromConfig(
+        remote = await ConfigUtil.createRemoteFromConfig(
           remoteConfig,
           isChild: true,
           isLockUploader: true,
@@ -311,6 +312,8 @@ class Lock implements JsonByteStream, Oidlize {
         sendErrToParent(e, st);
       }finally {
         await lockTempDir.clean();
+        await remote?.closeStoreClient();
+
         rp.close();
         // 在内部退出，不要在外部kill
         Isolate.exit();

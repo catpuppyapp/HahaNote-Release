@@ -394,6 +394,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
     bool success = false;
 
     final tempDir = await Fs.createTempDirUnderAppTempDirPath("create_repo_page");
+    Remote? remote;
 
     try {
       clearErr();
@@ -441,7 +442,6 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
         }
       }
 
-      final Remote remote;
       final remoteBasePath = FilePath.fromString(remoteRepoPath.text);
       if(remoteType == RemoteType.dropbox.value) {
         remote = Dropbox(basePath: remoteBasePath, config: remoteDropboxConfig);
@@ -511,7 +511,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
 
       Future<void> updateRemoteConfig(Repo repo) async {
         final config = await repo.getConfig();
-        config.remoteConfig = await remote.toRemoteConfig();
+        config.remoteConfig = await remote!.toRemoteConfig();
         config.client.name = clientName;
         await repo.updateConfig(config);
       }
@@ -536,7 +536,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
               // 所以，若执行到这里，仓库路径要么不存在，
               // 要么只包含temp目录，因此可安全删除
               // （除非用户作死：往 '远程仓库路径/temp' 目录下放重要的文件）
-              await remote.delete(remoteBasePath.copy(), isDir: true);
+              await remote!.delete(remoteBasePath.copy(), isDir: true);
             }catch(e, st) {
               // 创建仓库取消后，尝试删除远程路径错误
               App.logger.debug(_TAG, "after canceled '${CreateRepoMode.valueToText(widget.mode)}' repo, delete remote path err: $e\n$st");
@@ -611,6 +611,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
       App.logger.debug(_TAG, "submit err: $e\n$st");
       setFormErr(e.toString());
     }finally {
+      await remote?.closeStoreClient();
       await tempDir.clean();
 
       // 校验以显示最新设置的错误
