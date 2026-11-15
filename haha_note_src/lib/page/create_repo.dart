@@ -277,6 +277,14 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
       remoteLocalDirGitPullUrl.text = remoteData.gitPullUrl;
       remoteLocalDirGitPushUrl.text = remoteData.gitPushUrl;
       remoteLocalDirGitSyncUrl.text = remoteData.gitSyncUrl;
+    }else if(config.remoteConfig.type == RemoteType.smb.value) {
+      final remoteData = RemoteConfigDataForSmb.fromJson(config.remoteConfig.data);
+      remoteWebdavHost.text = remoteData.host;
+      remoteWebdavUser.text = remoteData.user;
+      remoteWebdavPass.text = remoteData.password;
+      remoteSmbDomain.text = remoteData.domain ?? "";
+      remoteSmbShare.text = remoteData.share;
+      remoteSmbConfig = remoteData;
     }
 
   }

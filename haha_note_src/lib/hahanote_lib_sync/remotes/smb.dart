@@ -208,7 +208,7 @@ class Smb extends Remote {
         actName: "rename",
         act: () async {
           // 最后一个参数是 overwrite
-          await storeClient!.rename(fromFullPathStr, toFullPathStr);
+          await storeClient!.rename(fromFullPathStr, toFullPathStr, overwrite: true);
         },
         mkdirs: tryCreateParentsIfNeed ? () async {
           await mkdir(toFullPath.parent());
