@@ -666,13 +666,9 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
   }
 
 
-  String? _remotePathValidator(String? value, {bool allowEmpty = false}) {
+  String? _remotePathValidator(String? value) {
     if(remoteRepoPathErr.isNotEmpty) {
       return remoteRepoPathErr;
-    }
-
-    if(allowEmpty) {
-      return null;
     }
 
     final emptyErr = FormValidator.errIfPathEmpty(value);
@@ -993,7 +989,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
             ),
             validator: (value) {
               // smb remote path can be empty, representation root
-              return _remotePathValidator(value, allowEmpty: selectedRemoteType.key == RemoteType.smb.value);
+              return _remotePathValidator(value);
             },
           ),
         );
