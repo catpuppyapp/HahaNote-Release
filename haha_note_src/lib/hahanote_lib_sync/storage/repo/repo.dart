@@ -2676,7 +2676,8 @@ class Repo {
       syncProgressCb?.call(SyncProgressAct.syncFiles, 0, 0, emptyFilePath);
 
     }finally {
-      await remote.closeStoreClient(caller: "repo.importSync");
+      // 后面的synWithLock会关连接，所以这里不用关
+      // await remote.closeStoreClient(caller: "repo.importSync");
       await tempDir.clean();
     }
 
@@ -2780,7 +2781,8 @@ class Repo {
 
       syncProgressCb?.call(SyncProgressAct.syncFiles, 0, 0, emptyFilePath);
     }finally {
-      await remote.closeStoreClient(caller: "repo.initSync");
+      // 由后面的syncWithLock关连接，这里不用关
+      // await remote.closeStoreClient(caller: "repo.initSync");
       await tempDir.clean();
     }
 

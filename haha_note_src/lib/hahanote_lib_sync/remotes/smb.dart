@@ -268,6 +268,10 @@ class Smb extends Remote {
   }
 
   Future<void> initStoreClient() async {
+    if(storeClient != null) {
+      await closeStoreClient(caller: "remote.initStoreClient");
+    }
+
     final storeClientTmp = await Smb2Pool.connect(
       host: config.host,
       share: config.share,
@@ -286,10 +290,15 @@ class Smb extends Remote {
   @override
   Future<void> closeStoreClient({String caller = ""}) async {
     if(caller.isNotEmpty) {
-      App.logger.debug(_TAG, "closeStoreClient called by '$caller'");
+      App.logger.debug(_TAG, "closeStoreClient called by '$caller', `storeClient` is null: ${storeClient == null}");
+    }
+
+    if(storeClient == null) {
+      return;
     }
 
     await storeClient?.disconnect();
+    storeClient = null;
   }
 
 
