@@ -10,6 +10,7 @@ import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/dropbox.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/local_dir.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/oauth2/dropbox_oauth2.dart';
+import 'package:hahanote_app/hahanote_lib_sync/remotes/smb.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/webdav.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart';
@@ -121,6 +122,8 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
   final TextEditingController remoteWebdavUser = TextEditingController(text: "");
   final TextEditingController remoteWebdavPass = TextEditingController(text: "");
   final TextEditingController remoteWebdavHost = TextEditingController(text: "");
+  final TextEditingController remoteSmbDomain = TextEditingController(text: "");
+  final TextEditingController remoteSmbShare = TextEditingController(text: "");
 
   bool remoteLocalDirIsGitBackend = false;
   final TextEditingController remoteLocalDirGitPullUrl = TextEditingController(text: "");
@@ -129,6 +132,8 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
 
   // 授权后，获取到的用户名和头像
   RemoteConfigDataForDropbox remoteDropboxConfig = RemoteConfigDataForDropbox();
+  RemoteConfigDataForSmb remoteSmbConfig = RemoteConfigDataForSmb();
+
 
 
   final list = RemoteType.supportedTypes;
@@ -167,6 +172,8 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
     remoteWebdavUser.dispose();
     remoteWebdavPass.dispose();
     remoteWebdavHost.dispose();
+    remoteSmbDomain.dispose();
+    remoteSmbShare.dispose();
     clientName.dispose();
     remoteLocalDirGitPullUrl.dispose();
     remoteLocalDirGitPushUrl.dispose();
@@ -464,6 +471,19 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
             gitSyncUrl: remoteLocalDirGitSyncUrl.text,
           )
         );
+      }else if(remoteType == RemoteType.smb.value) {
+        remote = Smb(
+          basePath: remoteBasePath,
+          config: RemoteConfigDataForSmb(
+            host: remoteWebdavHost.text,
+            share: remoteSmbShare.text,
+            user: remoteWebdavUser.text,
+            password: remoteWebdavPass.text,
+            seal: remoteSmbConfig.seal,
+            signing: remoteSmbConfig.signing,
+            domain: remoteSmbDomain.text.isEmpty ? null : remoteSmbDomain.text,
+          )
+        );
       }else {
         // should never happened
         setFormErr(t.unknownRemoteType);
@@ -638,9 +658,13 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
   }
 
 
-  String? _remotePathValidator(String? value) {
+  String? _remotePathValidator(String? value, {bool allowEmpty = false}) {
     if(remoteRepoPathErr.isNotEmpty) {
       return remoteRepoPathErr;
+    }
+
+    if(allowEmpty) {
+      return null;
     }
 
     final emptyErr = FormValidator.errIfPathEmpty(value);
@@ -688,7 +712,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
       children.add(const SizedBox(height: UI.verticalHeight));
 
 
-      if(selectedRemoteType.key == RemoteType.webDAV.value) {
+      if(selectedRemoteType.key == RemoteType.webDAV.value || selectedRemoteType.key == RemoteType.smb.value) {
         children.add(
           MyTextFormField(
             controller: remoteWebdavHost,
@@ -717,6 +741,70 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
             decoration: InputDecoration(border: OutlineInputBorder(), labelText: t.password),
           )
         );
+
+        if(selectedRemoteType.key == RemoteType.smb.value) {
+          children.add(SizedBox(height: UI.verticalHeight));
+
+          children.add(
+            MyTextFormField(
+              controller: remoteSmbShare,
+              decoration: InputDecoration(border: OutlineInputBorder(), labelText: t.smbShare),
+            )
+          );
+
+          children.add(SizedBox(height: UI.verticalHeight));
+
+          children.add(
+            MyTextFormField(
+              controller: remoteSmbDomain,
+              decoration: InputDecoration(border: OutlineInputBorder(), labelText: t.smbDomain),
+            )
+          );
+
+          children.add(
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: CheckboxListTile(
+                contentPadding: EdgeInsets.all(0),
+                controlAffinity: UI.myCheckBoxControlAffinity,
+                title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(t.smbSealEncryption),
+                    ]
+                ),
+                value: remoteSmbConfig.seal,
+                onChanged: (v) {
+                  setState(() {
+                    remoteSmbConfig.seal = !remoteSmbConfig.seal;
+                  });
+                },
+              ),
+            ),
+          );
+
+          children.add(
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: CheckboxListTile(
+                contentPadding: EdgeInsets.all(0),
+                controlAffinity: UI.myCheckBoxControlAffinity,
+                title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(t.smbSigning),
+                    ]
+                ),
+                value: remoteSmbConfig.signing,
+                onChanged: (v) {
+                  setState(() {
+                    remoteSmbConfig.signing = !remoteSmbConfig.signing;
+                  });
+                },
+              ),
+            ),
+          );
+        }
       }else if(selectedRemoteType.key == RemoteType.dropbox.value) {
         // dropbox
 
@@ -896,7 +984,8 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
               labelText: t.remotePath,
             ),
             validator: (value) {
-              return _remotePathValidator(value);
+              // smb remote path can be empty, representation root
+              return _remotePathValidator(value, allowEmpty: selectedRemoteType.key == RemoteType.smb.value);
             },
           ),
         );

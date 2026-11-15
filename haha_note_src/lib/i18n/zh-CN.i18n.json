@@ -326,5 +326,9 @@
   "compareToWorkdir": "和工作目录比较",
   "compareToPrevious": "和上一版本比较",
   "aToBArrowRight": "$a -> $b",
-  "setToZeroToUseGlobalSettingsWithValue": "设为 0 以使用全局设置: $value"
+  "setToZeroToUseGlobalSettingsWithValue": "设为 0 以使用全局设置: $value",
+  "smbSealEncryption": "Seal 加密 (SMB 3)",
+  "smbSigning": "签名",
+  "smbDomain": "域",
+  "smbShare": "共享点"
 }

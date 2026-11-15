@@ -366,6 +366,10 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get compareToPrevious => '和上一版本比较';
 	@override String aToBArrowRight({required Object a, required Object b}) => '${a} -> ${b}';
 	@override String setToZeroToUseGlobalSettingsWithValue({required Object value}) => '设为 0 以使用全局设置: ${value}';
+	@override String get smbSealEncryption => 'Seal 加密 (SMB 3)';
+	@override String get smbSigning => '签名';
+	@override String get smbDomain => '域';
+	@override String get smbShare => '共享点';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -704,6 +708,10 @@ extension on TranslationsZhCn {
 			'compareToPrevious' => '和上一版本比较',
 			'aToBArrowRight' => ({required Object a, required Object b}) => '${a} -> ${b}',
 			'setToZeroToUseGlobalSettingsWithValue' => ({required Object value}) => '设为 0 以使用全局设置: ${value}',
+			'smbSealEncryption' => 'Seal 加密 (SMB 3)',
+			'smbSigning' => '签名',
+			'smbDomain' => '域',
+			'smbShare' => '共享点',
 			_ => null,
 		};
 	}

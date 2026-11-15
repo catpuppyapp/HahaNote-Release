@@ -15,6 +15,7 @@ import 'package:hahanote_app/hahanote_lib_sync/serialization/stream.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart' show FilePath;
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show getJsonStrFromByteStream;
 
+import '../../remotes/smb.dart';
 import 'sync.dart';
 
 part 'config.g.dart';
@@ -143,6 +144,7 @@ class RemoteConfigDataForWebdav {
 class RemoteConfigDataForSmb {
   // https://pub.dev/documentation/dart_smb2/latest/topics/Connection-topic.html
   String host;
+  String share;
   String user;
   String password;
   // String share; // path
@@ -153,7 +155,7 @@ class RemoteConfigDataForSmb {
   String? domain;  // 不是连接用的域名，而是工作组之类的？
   int timeoutInMs;  // 连接超时，默认60秒
 
-  RemoteConfigDataForSmb({this.host = '', this.user = '', this.password = '',
+  RemoteConfigDataForSmb({this.host = '', this.share = '', this.user = '', this.password = '',
     this.seal = true, this.signing = true, this.workers = 4, this.domain,
     this.timeoutInMs = remoteConnectTimeoutInMs});
 
@@ -297,6 +299,16 @@ abstract class ConfigUtil {
     if(remoteType == RemoteType.webDAV.value) {
       final data = RemoteConfigDataForWebdav.fromJson(remoteConfig.data);
       return Webdav(
+        basePath: basePath,
+        config: data,
+        isChild: isChild,
+        isLockUploader: isLockUploader,
+      );
+    }
+
+    if(remoteType == RemoteType.smb.value) {
+      final data = RemoteConfigDataForSmb.fromJson(remoteConfig.data);
+      return Smb(
         basePath: basePath,
         config: data,
         isChild: isChild,

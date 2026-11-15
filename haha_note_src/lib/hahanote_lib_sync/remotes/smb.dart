@@ -18,7 +18,7 @@ const _TAG = "smb.dart";
 
 class Smb extends Remote {
   @override
-  RemoteType get type => RemoteType.webDAV;
+  RemoteType get type => RemoteType.smb;
 
   // 先设置成假，doInit时会自动探测
   @override
@@ -178,7 +178,11 @@ class Smb extends Remote {
     final fullPath = await preHandlePath(path);
     var fullPathStr = _appendPathSeparatorIfIsDir(fullPath, isDir);
 
-    await storeClient!.deleteFile(fullPathStr);
+    if(isDir) {
+      await storeClient!.rmdir(fullPathStr, recursive: true);
+    }else {
+      await storeClient!.deleteFile(fullPathStr);
+    }
   }
 
   @override
@@ -266,7 +270,7 @@ class Smb extends Remote {
   Future<void> initStoreClient() async {
     final storeClientTmp = await Smb2Pool.connect(
       host: config.host,
-      share: basePath.toUnixPathStr(),
+      share: config.share,
       user: config.user,
       password: config.password,
       seal: config.seal,

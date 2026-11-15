@@ -1025,6 +1025,18 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	/// en: 'Set to 0 to use global settings: $value'
 	String setToZeroToUseGlobalSettingsWithValue({required Object value}) => 'Set to 0 to use global settings: ${value}';
+
+	/// en: 'Seal Encryption (SMB 3)'
+	String get smbSealEncryption => 'Seal Encryption (SMB 3)';
+
+	/// en: 'Signing'
+	String get smbSigning => 'Signing';
+
+	/// en: 'Domain'
+	String get smbDomain => 'Domain';
+
+	/// en: 'Share Point'
+	String get smbShare => 'Share Point';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1363,6 +1375,10 @@ extension on Translations {
 			'compareToPrevious' => 'Compare to previous',
 			'aToBArrowRight' => ({required Object a, required Object b}) => '${a} -> ${b}',
 			'setToZeroToUseGlobalSettingsWithValue' => ({required Object value}) => 'Set to 0 to use global settings: ${value}',
+			'smbSealEncryption' => 'Seal Encryption (SMB 3)',
+			'smbSigning' => 'Signing',
+			'smbDomain' => 'Domain',
+			'smbShare' => 'Share Point',
 			_ => null,
 		};
 	}

@@ -67,6 +67,7 @@ RemoteConfigDataForSmb _$RemoteConfigDataForSmbFromJson(
   Map<String, dynamic> json,
 ) => RemoteConfigDataForSmb(
   host: json['host'] as String? ?? '',
+  share: json['share'] as String? ?? '',
   user: json['user'] as String? ?? '',
   password: json['password'] as String? ?? '',
   seal: json['seal'] as bool? ?? true,
@@ -81,6 +82,7 @@ Map<String, dynamic> _$RemoteConfigDataForSmbToJson(
   RemoteConfigDataForSmb instance,
 ) => <String, dynamic>{
   'host': instance.host,
+  'share': instance.share,
   'user': instance.user,
   'password': instance.password,
   'seal': instance.seal,

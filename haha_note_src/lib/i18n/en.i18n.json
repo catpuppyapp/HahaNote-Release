@@ -326,5 +326,9 @@
   "compareToWorkdir": "Compare to workdir",
   "compareToPrevious": "Compare to previous",
   "aToBArrowRight": "$a -> $b",
-  "setToZeroToUseGlobalSettingsWithValue": "Set to 0 to use global settings: $value"
+  "setToZeroToUseGlobalSettingsWithValue": "Set to 0 to use global settings: $value",
+  "smbSealEncryption": "Seal Encryption (SMB 3)",
+  "smbSigning": "Signing",
+  "smbDomain": "Domain",
+  "smbShare": "Share Point"
 }
