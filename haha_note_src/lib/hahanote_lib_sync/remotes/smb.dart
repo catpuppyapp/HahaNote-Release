@@ -284,7 +284,11 @@ class Smb extends Remote {
   }
 
   @override
-  Future<void> closeStoreClient() async {
+  Future<void> closeStoreClient({String caller = ""}) async {
+    if(caller.isNotEmpty) {
+      App.logger.debug(_TAG, "closeStoreClient called by '$caller'");
+    }
+
     await storeClient?.disconnect();
   }
 

@@ -312,7 +312,7 @@ class Lock implements JsonByteStream, Oidlize {
         sendErrToParent(e, st);
       }finally {
         await lockTempDir.clean();
-        await remote?.closeStoreClient();
+        await remote?.closeStoreClient(caller: "lock_isolate");
 
         rp.close();
         // 在内部退出，不要在外部kill

@@ -639,7 +639,7 @@ class _CreateRepoPageState extends MyPageState<CreateRepoPage> {
       App.logger.debug(_TAG, "submit err: $e\n$st");
       setFormErr(e.toString());
     }finally {
-      await remote?.closeStoreClient();
+      await remote?.closeStoreClient(caller: "create_repo_page");
       await tempDir.clean();
 
       // 校验以显示最新设置的错误

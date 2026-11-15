@@ -1045,7 +1045,7 @@ class Repo {
         // 关闭父线程接收器
         mainRp.close();
 
-        await remote.closeStoreClient();
+        await remote.closeStoreClient(caller: "repo.doActWithLock");
       }
 
     }
@@ -2676,7 +2676,7 @@ class Repo {
       syncProgressCb?.call(SyncProgressAct.syncFiles, 0, 0, emptyFilePath);
 
     }finally {
-      await remote.closeStoreClient();
+      await remote.closeStoreClient(caller: "repo.importSync");
       await tempDir.clean();
     }
 
@@ -2780,7 +2780,7 @@ class Repo {
 
       syncProgressCb?.call(SyncProgressAct.syncFiles, 0, 0, emptyFilePath);
     }finally {
-      await remote.closeStoreClient();
+      await remote.closeStoreClient(caller: "repo.initSync");
       await tempDir.clean();
     }
 
@@ -4001,7 +4001,7 @@ class Repo {
         throwIfInterrupted?.call();
         await remote.deleteRepo(client, actName);
       }finally {
-        await remote.closeStoreClient();
+        await remote.closeStoreClient(caller: "repo.deleteRepo");
         await tempDir.clean();
       }
     }
@@ -4217,7 +4217,7 @@ class Repo {
         }
       );
     }finally {
-      await remote.closeStoreClient();
+      await remote.closeStoreClient(caller: "repo.downloadFilesMapByVer");
       await tempDir.clean();
     }
   }

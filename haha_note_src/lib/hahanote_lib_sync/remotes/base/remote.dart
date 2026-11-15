@@ -4422,6 +4422,7 @@ abstract class Remote implements ClosableSession {
 
   // some clients need close
   /// should call this method in finally where called `remote.doInit()`
-  Future<void> closeStoreClient() async {}
+  /// [caller] used for debug
+  Future<void> closeStoreClient({String caller = ""}) async {}
 
 }
