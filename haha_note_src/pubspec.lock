@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.7.0"
+  asn1lib:
+    dependency: transitive
+    description:
+      name: asn1lib
+      sha256: cfb3cf6a53158918d52dda61bc26f0cc8612a0d3b9dc29e87eaa3423902ca636
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.8"
   async:
     dependency: transitive
     description:
@@ -257,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.7"
+  dartssh2:
+    dependency: transitive
+    description:
+      name: dartssh2
+      sha256: "1a21ef1e62f2ece3ee71de7ec106dc8faf67762b12ca2ab59b1cd08d5aa1f6ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -570,6 +586,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
+  ftpconnect:
+    dependency: "direct main"
+    description:
+      name: ftpconnect
+      sha256: a1e7d2e9cd2cbbfefdae0f9db3f1f8caa142b787c49db1fce02479e461897e87
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -1060,6 +1084,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.1.0"
+  pinenacl:
+    dependency: transitive
+    description:
+      name: pinenacl
+      sha256: "57e907beaacbc3c024a098910b6240758e899674de07d6949a67b52fd984cbdf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   platform:
     dependency: transitive
     description:
@@ -1076,6 +1108,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      sha256: "92aa3841d083cc4b0f4709b5c74fd6409a3e6ba833ffc7dc6a8fee096366acf5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   pool:
     dependency: transitive
     description:

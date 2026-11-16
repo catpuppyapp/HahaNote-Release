@@ -132,6 +132,7 @@ dependencies:
 #      ref: bf86609a3cb187723a7f78585f66f0d043781461
 
   dart_smb2: ^0.4.1
+  ftpconnect: ^3.0.0
 
 dev_dependencies:
   flutter_test:
