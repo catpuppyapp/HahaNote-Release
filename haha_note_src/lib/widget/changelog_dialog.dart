@@ -7,10 +7,8 @@ import '../i18n/strings.g.dart';
 import '../util/app_info.dart';
 
 const _changelog = """
-- update text editor (code_forge)
-- fix move files failed when crossing drives
-- 更新文本编辑器 (code_forge)
-- 修复跨设备移动文件失败
+- supports smb
+- 支持 smb
 """;
 
 class ChangelogDialog extends StatelessWidget {

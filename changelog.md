@@ -1,5 +1,10 @@
 
 ---
+1.0.18+19 20261117:
+- supports smb
+- 支持 smb
+
+---
 1.0.17+18 20261102:
 - update text editor (code_forge)
 - fix move files failed when crossing drives
