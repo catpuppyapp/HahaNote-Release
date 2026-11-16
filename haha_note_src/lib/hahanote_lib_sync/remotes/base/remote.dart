@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dart_smb2/dart_smb2.dart';
-import 'package:ftpconnect/ftpconnect.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app_key.dart';
 import 'package:hahanote_app/hahanote_lib_sync/client/client.dart';
@@ -173,15 +172,15 @@ class RemoteFile {
     );
   }
 
-  static RemoteFile fromFtpEntry(FTPEntry entry, {required String parentPath}) {
-    return RemoteFile(
-      isDir: entry.type == FTPEntryType.dir,
-      name: p.basename(entry.name),
-      path: FilePath.fromString("$parentPath/${entry.name}"),
-      mTimeMs: entry.modifyTime?.millisecondsSinceEpoch ?? 0,
-      length: entry.size ?? 0
-    );
-  }
+  // static RemoteFile fromFtpEntry(FTPEntry entry, {required String parentPath}) {
+  //   return RemoteFile(
+  //     isDir: entry.type == FTPEntryType.dir,
+  //     name: p.basename(entry.name),
+  //     path: FilePath.fromString("$parentPath/${entry.name}"),
+  //     mTimeMs: entry.modifyTime?.millisecondsSinceEpoch ?? 0,
+  //     length: entry.size ?? 0
+  //   );
+  // }
 
   @override
   String toString() {
