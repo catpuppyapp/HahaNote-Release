@@ -266,7 +266,7 @@ class Sftp extends Remote {
       user: config.user,
       pass: config.password,
       port: config.port,
-      timeout: config.timeoutInMs * 1000,
+      timeout: config.timeoutInMs ~/ 1000,
       privateKey: config.privateKey,
       passphrase: config.passphrase,
       showLog: false,
