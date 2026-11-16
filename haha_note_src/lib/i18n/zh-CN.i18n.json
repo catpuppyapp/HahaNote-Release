@@ -330,5 +330,5 @@
   "smbSealEncryption": "Seal 加密 (SMB 3)",
   "smbSigning": "签名",
   "smbDomain": "域 (可选)",
-  "smbShare": "共享点"
+  "smbShare": "共享名"
 }

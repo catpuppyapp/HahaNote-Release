@@ -369,7 +369,7 @@ class TranslationsZhCn with BaseTranslations<AppLocale, Translations> implements
 	@override String get smbSealEncryption => 'Seal 加密 (SMB 3)';
 	@override String get smbSigning => '签名';
 	@override String get smbDomain => '域 (可选)';
-	@override String get smbShare => '共享点';
+	@override String get smbShare => '共享名';
 }
 
 /// The flat map containing all translations for locale <zh-CN>.
@@ -711,7 +711,7 @@ extension on TranslationsZhCn {
 			'smbSealEncryption' => 'Seal 加密 (SMB 3)',
 			'smbSigning' => '签名',
 			'smbDomain' => '域 (可选)',
-			'smbShare' => '共享点',
+			'smbShare' => '共享名',
 			_ => null,
 		};
 	}

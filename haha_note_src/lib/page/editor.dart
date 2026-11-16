@@ -733,9 +733,8 @@ class _EditorPageState extends MyPageState<EditorPage> {
       return;
     }
 
-    final latestStat = await FileStat.fromFile(file);
-    if(latestStat == fileStat) {
-      App.logger.debug(_TAG, "reload check skipped: stat no change");
+    if(fileStat == await FileStat.fromFile(file)) {
+      App.logger.debug(_TAG, "reload check skipped: stat not changed");
       return;
     }
 

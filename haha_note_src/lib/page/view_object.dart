@@ -74,8 +74,8 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
   bool neverShowBlankLinesMayBeIgnored = AppConfig.getConfig().neverShowBlankLinesMayBeIgnoredInDiffView;
   String? objFileText;
   String? objFileTextRight;
-  FileStat objFileStat = FileStat();
-  FileStat objFileStatRight = FileStat();
+  FileStat? objFileStat;
+  FileStat? objFileStatRight;
   bool workdirFileExists = false;
   String objFileSize = "";
   String objFileSizeRight = "";
@@ -507,13 +507,17 @@ class _ViewObjectPageState extends MyPageState<ViewObjectPage> {
     final objFile = isLeft ? this.objFile : objFileRight;
 
     if(objFile == null) {
-      showMsg("err: ${getLeftOrRightText(isLeft)} obj file is null");
+      showMsgLong("err: ${getLeftOrRightText(isLeft)} obj file is null");
       return false;
     }
 
+    final statNeedCheck = isLeft ? objFileStat : objFileStatRight;
     // use file stat to detect file loaded and not modified, if it is, then skip load text of the file
     // 用文件状态检测文件是否已加载且没被修改过，若是则跳过加载
-    if(objFileStat == await FileStat.fromFile(objFile)) {
+    // != null to make sure at least read file once
+    // 不等于null确保至少读一次文件，即使大小和最后修改时间文件都为0
+    if(statNeedCheck != null && statNeedCheck == await FileStat.fromFile(objFile)) {
+      // 若至少读过一次且后来没修改过文件，则返回false，不重新读文件
       return false;
     }
 

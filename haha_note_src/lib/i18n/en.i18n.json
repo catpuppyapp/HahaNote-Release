@@ -330,5 +330,5 @@
   "smbSealEncryption": "Seal Encryption (SMB 3)",
   "smbSigning": "Signing",
   "smbDomain": "Domain (Optional)",
-  "smbShare": "Share Point"
+  "smbShare": "Share Name"
 }

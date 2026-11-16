@@ -1035,8 +1035,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'Domain (Optional)'
 	String get smbDomain => 'Domain (Optional)';
 
-	/// en: 'Share Point'
-	String get smbShare => 'Share Point';
+	/// en: 'Share Name'
+	String get smbShare => 'Share Name';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -1378,7 +1378,7 @@ extension on Translations {
 			'smbSealEncryption' => 'Seal Encryption (SMB 3)',
 			'smbSigning' => 'Signing',
 			'smbDomain' => 'Domain (Optional)',
-			'smbShare' => 'Share Point',
+			'smbShare' => 'Share Name',
 			_ => null,
 		};
 	}
