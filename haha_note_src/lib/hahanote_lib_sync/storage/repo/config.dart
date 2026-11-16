@@ -167,6 +167,29 @@ class RemoteConfigDataForSmb {
 }
 
 @myJsonSerializable
+class RemoteConfigDataForSftp {
+  // https://pub.dev/documentation/dart_smb2/latest/topics/Connection-topic.html
+  String host;
+  int port;
+  String user;
+  String password;
+  String? privateKey;
+  String? passphrase;
+  int timeoutInMs;  // 连接超时，默认60秒
+
+  RemoteConfigDataForSftp({this.host = '', this.user = '', this.password = '',
+    this.port = 22,
+    this.privateKey = '', this.passphrase = '',
+    this.timeoutInMs = remoteConnectTimeoutInMs});
+
+
+  factory RemoteConfigDataForSftp.fromJson(Map<String, dynamic> json) => _$RemoteConfigDataForSftpFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RemoteConfigDataForSftpToJson(this);
+
+}
+
+@myJsonSerializable
 class RemoteConfigDataForLocalDir {
   bool isGitBackend;
   String gitPullUrl;

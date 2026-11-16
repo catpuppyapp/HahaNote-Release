@@ -2,23 +2,22 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dart_smb2/dart_smb2.dart';
+import 'package:ftpconnect/ftpconnect.dart';
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart' show RemoteException;
-import 'package:hahanote_app/hahanote_lib_sync/remotes/base/http.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
-import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart' show RemoteConfig, RemoteConfigDataForWebdav, RemoteConfigDataForSmb;
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart' show RemoteConfig, RemoteConfigDataForSftp;
 import 'package:hahanote_app/hahanote_lib_sync/storage/temp/temp_dir.dart' show TempDir;
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show doInterruptibleTask, safeDeleteFile;
-import 'package:webdav_client/webdav_client.dart' as webdav_client;
 
 import '../app.dart';
 
 
-const _TAG = "smb.dart";
+const _TAG = "sftp.dart";
 
-class Smb extends Remote {
+class Sftp extends Remote {
   @override
-  RemoteType get type => RemoteType.smb;
+  RemoteType get type => RemoteType.sftp;
 
   // 先设置成假，doInit时会自动探测
   @override
@@ -36,23 +35,21 @@ class Smb extends Remote {
   @override
   String pathSeparator = '/';
 
-  Smb2Pool? storeClient;
+  SFTPConnect? storeClient;
 
 
 
-  RemoteConfigDataForSmb config;
-  // File sessionRecordFile;
+  RemoteConfigDataForSftp config;
 
-  // Dropbox({required this.basePath, required this.getToken, required this.sessionRecordFile});
-  Smb({
+  Sftp({
     required this.basePath,
     required this.config,
     this.isChild = false,
     this.isLockUploader = false,
   });
 
-  static Smb fromConfig(RemoteConfig remoteConfig) {
-    return Smb(
+  static Sftp fromConfig(RemoteConfig remoteConfig) {
+    return Sftp(
       basePath: FilePath.fromString(remoteConfig.basePath),
       config: remoteConfig.typedData()
     );
@@ -272,19 +269,31 @@ class Smb extends Remote {
       await closeStoreClient(caller: "remote.initStoreClient");
     }
 
-    final storeClientTmp = await Smb2Pool.connect(
-      host: config.host,
-      share: config.share,
+    final sftpConnect = SFTPConnect(
+      config.host,
       user: config.user,
-      password: config.password,
-      seal: config.seal,
-      signing: config.signing,
-      domain: config.domain,
-      timeout: Duration(milliseconds: config.timeoutInMs),
-      workers: config.workers,
+      pass: config.password,
+      port: config.port,
+      timeout: config.timeoutInMs * 1000,
+      privateKey: config.privateKey,
+      passphrase: config.passphrase,
+      showLog: false,
+      onVerifyHostKey: (type, fingerprint) async {
+        // 用host查指纹，若无，中止连接，询问用户，若用户点是，
+        // 保存指纹，重新连接，若有，检查，如果匹配，继续连接，
+        // 如果不匹配，中止连接，然后弹窗询问“提示密钥变了，之前是a，现在是b”，
+        // 重复以上流程
+        // 在这里把指纹host都抛出去，抛出特定异常，给上层捕获
+        return true;
+      }
     );
 
-    storeClient = storeClientTmp;
+    final success = await sftpConnect.connect();
+    if(!success) {
+      throw RemoteException("connect sftp error");
+    }
+
+    storeClient = sftpConnect;
   }
 
   @override

@@ -230,11 +230,13 @@ class RemoteType {
   // static final nextCloud = RemoteType(value: "NextCloud");
   static final webDAV = RemoteType(value: "WebDAV");
   static final smb = RemoteType(value: "SMB");
+  static final sftp = RemoteType(value: "SFTP");
 
   static final supportedTypes = [
     dropbox,
     webDAV,
     smb,
+    sftp,
     localDir,  // 用于测试，或者用户可能本地目录是挂载的，比如本地目录是onedrive，设置可以用git做backend，如果不嫌麻烦的话
   ];
 

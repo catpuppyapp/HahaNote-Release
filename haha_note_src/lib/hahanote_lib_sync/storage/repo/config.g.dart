@@ -92,6 +92,31 @@ Map<String, dynamic> _$RemoteConfigDataForSmbToJson(
   'timeoutInMs': instance.timeoutInMs,
 };
 
+RemoteConfigDataForSftp _$RemoteConfigDataForSftpFromJson(
+  Map<String, dynamic> json,
+) => RemoteConfigDataForSftp(
+  host: json['host'] as String? ?? '',
+  user: json['user'] as String? ?? '',
+  password: json['password'] as String? ?? '',
+  port: (json['port'] as num?)?.toInt() ?? 22,
+  privateKey: json['privateKey'] as String? ?? '',
+  passphrase: json['passphrase'] as String? ?? '',
+  timeoutInMs:
+      (json['timeoutInMs'] as num?)?.toInt() ?? remoteConnectTimeoutInMs,
+);
+
+Map<String, dynamic> _$RemoteConfigDataForSftpToJson(
+  RemoteConfigDataForSftp instance,
+) => <String, dynamic>{
+  'host': instance.host,
+  'port': instance.port,
+  'user': instance.user,
+  'password': instance.password,
+  'privateKey': instance.privateKey,
+  'passphrase': instance.passphrase,
+  'timeoutInMs': instance.timeoutInMs,
+};
+
 RemoteConfigDataForLocalDir _$RemoteConfigDataForLocalDirFromJson(
   Map<String, dynamic> json,
 ) => RemoteConfigDataForLocalDir(
