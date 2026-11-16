@@ -271,11 +271,19 @@ class Sftp extends Remote {
       passphrase: config.passphrase,
       showLog: false,
       onVerifyHostKey: (type, fingerprint) async {
+        // TODO 新指纹或指纹改变让用户确认的机制：
         // 用host查指纹，若无，中止连接，询问用户，若用户点是，
         // 保存指纹，重新连接，若有，检查，如果匹配，继续连接，
         // 如果不匹配，中止连接，然后弹窗询问“提示密钥变了，之前是a，现在是b”，
         // 重复以上流程
+        //
+        // TODO isolate若先执行init，可能导致main isolate无法捕获到异常而不显示指纹弹窗：
         // 在这里把指纹host都抛出去，抛出特定异常，给上层捕获
+        // 先把弹窗询问改成每次都询问，
+        // 然后测试：创建、导入仓库、同步，是否能正常弹窗，
+        // 若不能，应该是lock先执行了remote.init所以导致不能，
+        // 必须让lock把指纹传给main isolate，
+        // 若能，则说明main isolate先执行的remote.init，则不需要额外处理
         return true;
       }
     );
