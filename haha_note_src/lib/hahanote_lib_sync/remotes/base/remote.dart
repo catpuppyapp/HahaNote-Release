@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dart_smb2/dart_smb2.dart';
+import 'package:ftpconnect/ftpconnect.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app.dart';
 import 'package:hahanote_app/hahanote_lib_sync/app_key.dart';
 import 'package:hahanote_app/hahanote_lib_sync/client/client.dart';
@@ -151,25 +152,34 @@ class RemoteFile {
     );
   }
 
-  static RemoteFile fromSmbFile(Smb2DirEntry smbDirEntry) {
+  static RemoteFile fromSmbFile(Smb2DirEntry smbDirEntry, {required String parentPath}) {
     return RemoteFile(
       isDir: smbDirEntry.isDirectory,
       // 取下basename，避免服务器返回的文件名其实是路径，之前有bug，就会这样
       name: p.basename(smbDirEntry.name),
-      path: FilePath.fromString(smbDirEntry.name),
+      path: FilePath.fromString("$parentPath/${smbDirEntry.name}"),
       mTimeMs: smbDirEntry.stat.modified.millisecondsSinceEpoch,
       length: smbDirEntry.size
     );
   }
 
-  static RemoteFile fromSmbFileStat(Smb2Stat smbFileStat, {required String path}) {
+  static RemoteFile fromSmbFileStat(Smb2Stat smbFileStat, {required String fullPath}) {
     return RemoteFile(
       isDir: smbFileStat.isDirectory,
-      // 取下basename，避免服务器返回的文件名其实是路径，之前有bug，就会这样
-      name: p.basename(path),
-      path: FilePath.fromString(path),
+      name: p.basename(fullPath),
+      path: FilePath.fromString(fullPath),
       mTimeMs: smbFileStat.modified.millisecondsSinceEpoch,
       length: smbFileStat.size
+    );
+  }
+
+  static RemoteFile fromFtpEntry(FTPEntry entry, {required String parentPath}) {
+    return RemoteFile(
+      isDir: entry.type == FTPEntryType.dir,
+      name: p.basename(entry.name),
+      path: FilePath.fromString("$parentPath/${entry.name}"),
+      mTimeMs: entry.modifyTime?.millisecondsSinceEpoch ?? 0,
+      length: entry.size ?? 0
     );
   }
 
@@ -236,7 +246,7 @@ class RemoteType {
     dropbox,
     webDAV,
     smb,
-    sftp,
+    // sftp,
     localDir,  // 用于测试，或者用户可能本地目录是挂载的，比如本地目录是onedrive，设置可以用git做backend，如果不嫌麻烦的话
   ];
 

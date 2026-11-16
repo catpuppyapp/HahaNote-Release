@@ -3,13 +3,11 @@ import 'dart:typed_data';
 
 import 'package:dart_smb2/dart_smb2.dart';
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart' show RemoteException;
-import 'package:hahanote_app/hahanote_lib_sync/remotes/base/http.dart';
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
 import 'package:hahanote_app/hahanote_lib_sync/storage/files/file_path.dart';
-import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart' show RemoteConfig, RemoteConfigDataForWebdav, RemoteConfigDataForSmb;
+import 'package:hahanote_app/hahanote_lib_sync/storage/repo/config.dart' show RemoteConfig, RemoteConfigDataForSmb;
 import 'package:hahanote_app/hahanote_lib_sync/storage/temp/temp_dir.dart' show TempDir;
 import 'package:hahanote_app/hahanote_lib_sync/utils.dart' show doInterruptibleTask, safeDeleteFile;
-import 'package:webdav_client/webdav_client.dart' as webdav_client;
 
 import '../app.dart';
 
@@ -124,7 +122,7 @@ class Smb extends Remote {
     final files = <RemoteFile>[];
     var list = await storeClient!.listDirectory(fullPathStr);
     for (final f in list) {
-      files.add(RemoteFile.fromSmbFile(f));
+      files.add(RemoteFile.fromSmbFile(f, parentPath: fullPathStr));
     }
     
     return files;
@@ -257,7 +255,7 @@ class Smb extends Remote {
       throw RemoteException("path is not file or dir");
     }
 
-    return RemoteFile.fromSmbFileStat(remoteFileStat, path: fullPathStr);
+    return RemoteFile.fromSmbFileStat(remoteFileStat, fullPath: fullPathStr);
   }
 
 

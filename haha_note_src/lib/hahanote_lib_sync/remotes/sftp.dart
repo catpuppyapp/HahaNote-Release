@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:dart_smb2/dart_smb2.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:hahanote_app/hahanote_lib_sync/exception/exception.dart' show RemoteException;
 import 'package:hahanote_app/hahanote_lib_sync/remotes/base/remote.dart';
@@ -15,6 +13,8 @@ import '../app.dart';
 
 const _TAG = "sftp.dart";
 
+/// unimplemented yet, sftp does not supports copy, need down then upload, is bad
+/// recommend use webdav instead
 class Sftp extends Remote {
   @override
   RemoteType get type => RemoteType.sftp;
@@ -83,17 +83,15 @@ class Sftp extends Remote {
     // fix 下载路径末尾无 / 导致下载失败
     var fullPathStr = _appendPathSeparatorIfIsDir(fullPath, false);
 
-    final cancelToken = Smb2CancelToken();
 
     final tempFile = await tempDir.createTempFile();
 
     try {
       await doInterruptibleTask(
-        task: storeClient!.downloadToFile(fullPathStr, tempFile.absolute.path, cancelToken: cancelToken),
+        task: storeClient!.downloadFile(fullPathStr, tempFile),
         throwIfInterrupted: throwIfSessionInterrupted
       );
     }catch(e) {
-      cancelToken.cancel("download interrupted by: $e");
       await safeDeleteFile(tempFile);
       rethrow;
     }
@@ -119,9 +117,9 @@ class Sftp extends Remote {
     final fullPathStr = _appendPathSeparatorIfIsDir(fullPath, true);
 
     final files = <RemoteFile>[];
-    var list = await storeClient!.listDirectory(fullPathStr);
+    var list = await storeClient!.listDirectoryContent(fullPathStr);
     for (final f in list) {
-      files.add(RemoteFile.fromSmbFile(f));
+      files.add(RemoteFile.fromFtpEntry(f, parentPath: fullPathStr));
     }
     
     return files;
@@ -139,22 +137,16 @@ class Sftp extends Remote {
     await doActIfErrAndDontSupportAutoMkdirsThenMkdirsThenTryAgain(
       actName: "uploadFile",
       act: () async {
-        final cancelToken = Smb2CancelToken();
 
         try {
           await doInterruptibleTask(
-            task: storeClient!.streamWrite(
-              tempPathStr,
-              file.openRead().map(Uint8List.fromList),
-              onProgress: (c, t) {},
-              cancelToken: cancelToken
+            task: storeClient!.uploadFile(
+              file,
+              sRemoteName: tempPathStr,
             ),
             throwIfInterrupted: throwIfSessionInterrupted
           );
         }catch (e) {
-          // 取消上传即可，不用管远程文件，上传到temp目录的，就算文件不完整也无妨，
-          // 下次同步一调用remote.sessionStart()就把temp目录清了
-          cancelToken.cancel("upload interrupted by: $e");
           rethrow;
         }
 
@@ -176,7 +168,7 @@ class Sftp extends Remote {
     var fullPathStr = _appendPathSeparatorIfIsDir(fullPath, isDir);
 
     if(isDir) {
-      await storeClient!.rmdir(fullPathStr, recursive: true);
+      await storeClient!.deleteDirectory(fullPathStr);
     }else {
       await storeClient!.deleteFile(fullPathStr);
     }
@@ -187,7 +179,7 @@ class Sftp extends Remote {
     App.logger.debug(_TAG, "#mkdir(): path='$path'");
 
     final fullPath = await preHandlePath(path, makeSureParentExists: false);
-    await storeClient!.mkdir(_appendPathSeparatorIfIsDir(fullPath, true), recursive: true);
+    await storeClient!.createFolderIfNotExist(_appendPathSeparatorIfIsDir(fullPath, true));
   }
 
   @override
@@ -204,8 +196,7 @@ class Sftp extends Remote {
     await doActIfErrAndDontSupportAutoMkdirsThenMkdirsThenTryAgain(
         actName: "rename",
         act: () async {
-          // 最后一个参数是 overwrite
-          await storeClient!.rename(fromFullPathStr, toFullPathStr, overwrite: true);
+          await storeClient!.rename(fromFullPathStr, toFullPathStr);
         },
         mkdirs: tryCreateParentsIfNeed ? () async {
           await mkdir(toFullPath.parent());
@@ -233,8 +224,7 @@ class Sftp extends Remote {
     await doActIfErrAndDontSupportAutoMkdirsThenMkdirsThenTryAgain(
       actName: "copy",
       act: () async {
-        // 最后一个参数是overwrite
-        await storeClient!.copy(_appendPathSeparatorIfIsDir(fromFullPath, isDir), _appendPathSeparatorIfIsDir(toFullPath, isDir));
+        // await storeClient!.doesNotSupportCopyYetCanUseDownThenUploadInstead(_appendPathSeparatorIfIsDir(fromFullPath, isDir), _appendPathSeparatorIfIsDir(toFullPath, isDir));
       },
       mkdirs: tryCreateParentsIfNeed ? () async {
         await mkdir(toFullPath.parent());
@@ -244,17 +234,19 @@ class Sftp extends Remote {
 
   @override
   Future<RemoteFile> getMetadata(FilePath path) async {
-    App.logger.debug(_TAG, "#getMetadata(): path='$path'");
-
-    final fullPath = await preHandlePath(path);
-    final fullPathStr = fullPath.toUnixPathStr();
-    Smb2Stat remoteFileStat;
-    remoteFileStat = await storeClient!.stat(fullPathStr);
-    if(!remoteFileStat.isDirectory && !remoteFileStat.isFile) {
-      throw RemoteException("path is not file or dir");
-    }
-
-    return RemoteFile.fromSmbFileStat(remoteFileStat, path: fullPathStr);
+    // TODO
+    // App.logger.debug(_TAG, "#getMetadata(): path='$path'");
+    //
+    // final fullPath = await preHandlePath(path);
+    // final fullPathStr = fullPath.toUnixPathStr();
+    // Smb2Stat remoteFileStat;
+    // remoteFileStat = await storeClient!.stat(fullPathStr);
+    // if(!remoteFileStat.isDirectory && !remoteFileStat.isFile) {
+    //   throw RemoteException("path is not file or dir");
+    // }
+    //
+    // return RemoteFile.fromSmbFileStat(remoteFileStat, path: fullPathStr);
+    return RemoteFile(isDir: false, name: "", path: path, mTimeMs: 0, length: 0);
   }
 
 
@@ -330,6 +322,6 @@ class Sftp extends Remote {
   Future<bool> exists(FilePath path) async {
     final fullPath = await preHandlePath(path);
     final fullPathStr = fullPath.toUnixPathStr();
-    return await storeClient!.exists(fullPathStr);
+    return await storeClient!.existFile(fullPathStr);
   }
 }

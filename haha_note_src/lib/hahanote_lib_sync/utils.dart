@@ -358,7 +358,7 @@ Future<void> doInterruptibleTask<T>({
   // 则抛出异常
   task.whenComplete(() => done = true);
 
-  duration = duration ?? const Duration(milliseconds: 500);
+  duration = duration ?? const Duration(milliseconds: 1000);
   while(!done) {
     try {
       // 每500毫秒检查一次会话是否已经取消
