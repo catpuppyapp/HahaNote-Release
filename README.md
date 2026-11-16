@@ -7,13 +7,6 @@
 [IzzyOnDroid (Android only)](https://apt.izzysoft.de/fdroid/index/apk/com.catpuppyapp.hahanote)
 
 
-## If you want more features
-If you want more features, such as: better editor/faster sync speed/more sync methods/supports mac/etc...
-You can [donate](https://github.com/catpuppyapp/PuppyGit/blob/main/donate.md) to make them become truth.
-Or you can contribute code.
-If this app can supports my life, I'd like to improve it. else, I only write the necessary features.
-
-
 ### Tutorial
 [How To Use](how_to_use.md)
 
